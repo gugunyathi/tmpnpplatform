@@ -1,0 +1,158 @@
+<svg viewBox="0 0 500 500" width="500" height="500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White Background -->
+  <rect width="500" height="500" fill="#FFFFFF" />
+
+  <!-- Top TM Emblem Card -->
+  <g id="tm-emblem-card">
+    <!-- Royal Blue Background Box -->
+    <rect
+      x="70"
+      y="75"
+      width="360"
+      height="235"
+      rx="24"
+      fill="#0d6ab7"
+    />
+
+    <!-- Inner White Stroke Outline -->
+    <rect
+      x="88"
+      y="93"
+      width="324"
+      height="199"
+      rx="10"
+      fill="none"
+      stroke="#FFFFFF"
+      stroke-width="5"
+    />
+
+    <!-- Letter 'T' -->
+    <g id="letter-t">
+      <!-- T Top Horizontal Capsule -->
+      <rect
+        x="105"
+        y="115"
+        width="135"
+        height="50"
+        rx="25"
+        fill="#60c7f6"
+        stroke="#FFFFFF"
+        stroke-width="7"
+      />
+      <!-- T Vertical Stem Capsule -->
+      <rect
+        x="145"
+        y="140"
+        width="55"
+        height="132"
+        rx="27.5"
+        fill="#60c7f6"
+        stroke="#FFFFFF"
+        stroke-width="7"
+      />
+    </g>
+
+    <!-- Letter 'M' (3 Parallel Leaning Slanted Capsules) -->
+    <g id="letter-m">
+      <!-- M Stroke 1 (Left) -->
+      <path
+        d="M 245 118 C 257 114 269 122 273 134 L 328 245 C 332 257 325 270 312 273 C 300 277 287 269 283 257 L 228 146 C 224 134 232 122 245 118 Z"
+        fill="#60c7f6"
+        stroke="#FFFFFF"
+        stroke-width="7"
+        stroke-linejoin="round"
+      />
+      <!-- M Stroke 2 (Middle) -->
+      <path
+        d="M 293 118 C 305 114 317 122 321 134 L 376 245 C 380 257 373 270 360 273 C 348 277 335 269 331 257 L 276 146 C 272 134 280 122 293 118 Z"
+        fill="#60c7f6"
+        stroke="#FFFFFF"
+        stroke-width="7"
+        stroke-linejoin="round"
+      />
+      <!-- M Stroke 3 (Right) -->
+      <path
+        d="M 341 118 C 353 114 365 122 369 134 L 424 245 C 428 257 421 270 408 273 C 396 277 383 269 379 257 L 324 146 C 320 134 328 122 341 118 Z"
+        fill="#60c7f6"
+        stroke="#FFFFFF"
+        stroke-width="7"
+        stroke-linejoin="round"
+      />
+    </g>
+  </g>
+
+  <!-- Bottom Pick n Pay Wordmark -->
+  <g id="pick-n-pay-text" transform="translate(0, 10)">
+    <!-- 'Pick' Box & Text -->
+    <!-- Navy Box for 'P' -->
+    <rect
+      x="72"
+      y="345"
+      width="64"
+      height="64"
+      rx="12"
+      fill="#0c2340"
+    />
+    <!-- White 'P' inside Navy Box -->
+    <path
+      d="M 91 362 L 109 362 C 117 362 122 366 122 373 C 122 380 117 384 109 384 L 100 384 L 100 395 L 91 395 Z M 100 370 L 100 376 L 108 376 C 111 376 113 375 113 373 C 113 371 111 370 108 370 Z"
+      fill="#FFFFFF"
+    />
+
+    <!-- 'ıck n' Text in Navy -->
+    <!-- Letter 'ı' (dotless stem) -->
+    <rect x="146" y="367" width="9" height="28" rx="2" fill="#0c2340" />
+    
+    <!-- Letter 'c' -->
+    <path
+      d="M 183 375 C 180 369 173 366 167 366 C 158 366 151 373 151 381 C 151 389 158 396 167 396 C 173 396 180 393 183 387 L 175 383 C 173 386 170 388 167 388 C 162 388 159 385 159 381 C 159 377 162 374 167 374 C 170 374 173 376 175 379 Z"
+      fill="#0c2340"
+    />
+
+    <!-- Letter 'k' -->
+    <path
+      d="M 188 355 L 196 355 L 196 376 L 206 367 L 217 367 L 204 379 L 218 395 L 207 395 L 196 383 L 196 395 L 188 395 Z"
+      fill="#0c2340"
+    />
+
+    <!-- Letter 'n' -->
+    <path
+      d="M 238 367 L 246 367 L 246 372 C 249 368 254 366 260 366 C 269 366 274 371 274 380 L 274 395 L 266 395 L 266 382 C 266 377 263 374 257 374 C 252 374 246 378 246 383 L 246 395 L 238 395 Z"
+      fill="#0c2340"
+    />
+
+    <!-- 'Pay' Box & Text -->
+    <!-- Red Box for 'P' -->
+    <rect
+      x="286"
+      y="345"
+      width="64"
+      height="64"
+      rx="12"
+      fill="#c8102e"
+    />
+    <!-- White 'P' inside Red Box -->
+    <path
+      d="M 305 362 L 323 362 C 331 362 336 366 336 373 C 336 380 331 384 323 384 L 314 384 L 314 395 L 305 395 Z M 314 370 L 314 376 L 322 376 C 325 376 327 375 327 373 C 327 371 325 370 322 370 Z"
+      fill="#c8102e"
+      fill-rule="evenodd"
+    />
+    <!-- Overwrite with White P -->
+    <path
+      d="M 305 362 L 323 362 C 331 362 336 366 336 373 C 336 380 331 384 323 384 L 314 384 L 314 395 L 305 395 Z M 314 370 L 314 376 L 322 376 C 325 376 327 375 327 373 C 327 371 325 370 322 370 Z"
+      fill="#FFFFFF"
+    />
+
+    <!-- Letter 'a' in Red -->
+    <path
+      d="M 360 381 C 360 372 366 366 376 366 C 385 366 392 371 392 379 L 392 395 L 384 395 L 384 391 C 381 394 376 396 371 396 C 364 396 360 391 360 385 C 360 379 365 375 374 374 L 384 373 L 384 372 C 384 368 380 365 375 365 C 370 365 367 367 365 370 Z M 384 380 L 376 381 C 371 382 368 384 368 386 C 368 389 371 391 374 391 C 380 391 384 386 384 382 Z"
+      fill="#c8102e"
+    />
+
+    <!-- Letter 'y' in Red -->
+    <path
+      d="M 397 367 L 406 367 L 413 387 L 420 367 L 429 367 L 417 398 C 414 405 409 408 402 408 L 397 408 L 397 401 L 401 401 C 405 401 407 399 409 394 L 410 390 Z"
+      fill="#c8102e"
+    />
+  </g>
+</svg>
