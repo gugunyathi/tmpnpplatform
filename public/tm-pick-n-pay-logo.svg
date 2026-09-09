@@ -1,157 +1,146 @@
-<svg viewBox="0 0 500 500" width="500" height="500" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- White Background -->
-  <rect width="500" height="500" fill="#FFFFFF" />
+<svg viewBox="0 0 200 200" width="200" height="200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Clean White Canvas -->
+  <rect width="200" height="200" fill="#FFFFFF" />
 
   <!-- Top TM Emblem Card -->
   <g id="tm-emblem-card">
-    <!-- Royal Blue Background Box -->
+    <!-- Royal Blue Rounded Box -->
     <rect
-      x="70"
-      y="75"
-      width="360"
-      height="235"
-      rx="24"
-      fill="#0d6ab7"
+      x="14"
+      y="16"
+      width="172"
+      height="112"
+      rx="10"
+      fill="#0c67b9"
     />
 
-    <!-- Inner White Stroke Outline -->
+    <!-- Inset White Border Line -->
     <rect
-      x="88"
-      y="93"
-      width="324"
-      height="199"
-      rx="10"
+      x="22"
+      y="24"
+      width="156"
+      height="96"
+      rx="4"
       fill="none"
       stroke="#FFFFFF"
-      stroke-width="5"
+      stroke-width="2.4"
     />
 
     <!-- Letter 'T' -->
     <g id="letter-t">
-      <!-- T Top Horizontal Capsule -->
+      <!-- T-Top Horizontal Bar -->
       <rect
-        x="105"
-        y="115"
-        width="135"
-        height="50"
-        rx="25"
-        fill="#60c7f6"
+        x="29"
+        y="34"
+        width="63"
+        height="24"
+        rx="12"
+        fill="#5ec8f8"
         stroke="#FFFFFF"
-        stroke-width="7"
+        stroke-width="3.2"
       />
-      <!-- T Vertical Stem Capsule -->
+      <!-- T-Stem Vertical Bar -->
       <rect
-        x="145"
-        y="140"
-        width="55"
-        height="132"
-        rx="27.5"
-        fill="#60c7f6"
+        x="48"
+        y="45"
+        width="25"
+        height="62"
+        rx="12.5"
+        fill="#5ec8f8"
         stroke="#FFFFFF"
-        stroke-width="7"
+        stroke-width="3.2"
       />
     </g>
 
-    <!-- Letter 'M' (3 Parallel Leaning Slanted Capsules) -->
+    <!-- Letter 'M' (3 Parallel Leaning Capsules) -->
     <g id="letter-m">
-      <!-- M Stroke 1 (Left) -->
+      <!-- Stroke 1 (Left) -->
       <path
-        d="M 245 118 C 257 114 269 122 273 134 L 328 245 C 332 257 325 270 312 273 C 300 277 287 269 283 257 L 228 146 C 224 134 232 122 245 118 Z"
-        fill="#60c7f6"
+        d="M 103 36 C 109 36 114 41 114 47 L 97 97 C 97 103 92 108 86 108 C 80 108 75 103 75 97 L 92 47 C 92 41 97 36 103 36 Z"
+        fill="#5ec8f8"
         stroke="#FFFFFF"
-        stroke-width="7"
+        stroke-width="3.2"
         stroke-linejoin="round"
       />
-      <!-- M Stroke 2 (Middle) -->
+      <!-- Stroke 2 (Middle) -->
       <path
-        d="M 293 118 C 305 114 317 122 321 134 L 376 245 C 380 257 373 270 360 273 C 348 277 335 269 331 257 L 276 146 C 272 134 280 122 293 118 Z"
-        fill="#60c7f6"
+        d="M 129 36 C 135 36 140 41 140 47 L 123 97 C 123 103 118 108 112 108 C 106 108 101 103 101 97 L 118 47 C 118 41 123 36 129 36 Z"
+        fill="#5ec8f8"
         stroke="#FFFFFF"
-        stroke-width="7"
+        stroke-width="3.2"
         stroke-linejoin="round"
       />
-      <!-- M Stroke 3 (Right) -->
+      <!-- Stroke 3 (Right) -->
       <path
-        d="M 341 118 C 353 114 365 122 369 134 L 424 245 C 428 257 421 270 408 273 C 396 277 383 269 379 257 L 324 146 C 320 134 328 122 341 118 Z"
-        fill="#60c7f6"
+        d="M 155 36 C 161 36 166 41 166 47 L 149 97 C 149 103 144 108 138 108 C 132 108 127 103 127 97 L 144 47 C 144 41 149 36 155 36 Z"
+        fill="#5ec8f8"
         stroke="#FFFFFF"
-        stroke-width="7"
+        stroke-width="3.2"
         stroke-linejoin="round"
       />
     </g>
   </g>
 
   <!-- Bottom Pick n Pay Wordmark -->
-  <g id="pick-n-pay-text" transform="translate(0, 10)">
-    <!-- 'Pick' Box & Text -->
-    <!-- Navy Box for 'P' -->
+  <g id="pick-n-pay-wordmark">
+    <!-- Dark Navy Square for 'P' (Pick) -->
     <rect
-      x="72"
-      y="345"
-      width="64"
-      height="64"
-      rx="12"
+      x="14"
+      y="144"
+      width="32"
+      height="32"
+      rx="5"
       fill="#0c2340"
     />
-    <!-- White 'P' inside Navy Box -->
     <path
-      d="M 91 362 L 109 362 C 117 362 122 366 122 373 C 122 380 117 384 109 384 L 100 384 L 100 395 L 91 395 Z M 100 370 L 100 376 L 108 376 C 111 376 113 375 113 373 C 113 371 111 370 108 370 Z"
+      d="M 23 152 L 31.5 152 C 35 152 37.5 153.8 37.5 157 C 37.5 160.2 35 162 31.5 162 L 27.5 162 L 27.5 168 L 23 168 Z M 27.5 155.5 L 27.5 158.5 L 31 158.5 C 32.5 158.5 33.2 158 33.2 157 C 33.2 156 32.5 155.5 31 155.5 Z"
       fill="#FFFFFF"
     />
 
-    <!-- 'ıck n' Text in Navy -->
-    <!-- Letter 'ı' (dotless stem) -->
-    <rect x="146" y="367" width="9" height="28" rx="2" fill="#0c2340" />
-    
-    <!-- Letter 'c' -->
+    <!-- Letter 'ı' (dotless stem in navy) -->
+    <rect x="50" y="154" width="4.5" height="14" rx="1" fill="#0c2340" />
+
+    <!-- Letter 'c' (navy) -->
     <path
-      d="M 183 375 C 180 369 173 366 167 366 C 158 366 151 373 151 381 C 151 389 158 396 167 396 C 173 396 180 393 183 387 L 175 383 C 173 386 170 388 167 388 C 162 388 159 385 159 381 C 159 377 162 374 167 374 C 170 374 173 376 175 379 Z"
+      d="M 68 158.5 C 66.5 155.5 63 153.5 59.5 153.5 C 55 153.5 51.5 157 51.5 161 C 51.5 165 55 168.5 59.5 168.5 C 63 168.5 66.5 166.5 68 163.5 L 64 161.5 C 63 163 61.5 164.5 59.5 164.5 C 57 164.5 55.5 163 55.5 161 C 55.5 159 57 157.5 59.5 157.5 C 61.5 157.5 63 159 64 160.5 Z"
       fill="#0c2340"
     />
 
-    <!-- Letter 'k' -->
+    <!-- Letter 'k' (navy) -->
     <path
-      d="M 188 355 L 196 355 L 196 376 L 206 367 L 217 367 L 204 379 L 218 395 L 207 395 L 196 383 L 196 395 L 188 395 Z"
+      d="M 70 148 L 74 148 L 74 158.5 L 79.5 154 L 85 154 L 78.5 159.5 L 85.5 168 L 80 168 L 74 161.5 L 74 168 L 70 168 Z"
       fill="#0c2340"
     />
 
-    <!-- Letter 'n' -->
+    <!-- Letter 'n' (navy) -->
     <path
-      d="M 238 367 L 246 367 L 246 372 C 249 368 254 366 260 366 C 269 366 274 371 274 380 L 274 395 L 266 395 L 266 382 C 266 377 263 374 257 374 C 252 374 246 378 246 383 L 246 395 L 238 395 Z"
+      d="M 93 154 L 97 154 L 97 157 C 98.8 154.5 101.5 153.5 104.5 153.5 C 109 153.5 111.5 156 111.5 160 L 111.5 168 L 107.5 168 L 107.5 161 C 107.5 158.5 106 157 103.5 157 C 100.5 157 97 159 97 162 L 97 168 L 93 168 Z"
       fill="#0c2340"
     />
 
-    <!-- 'Pay' Box & Text -->
-    <!-- Red Box for 'P' -->
+    <!-- Crimson Red Square for 'P' (Pay) -->
     <rect
-      x="286"
-      y="345"
-      width="64"
-      height="64"
-      rx="12"
+      x="117"
+      y="144"
+      width="32"
+      height="32"
+      rx="5"
       fill="#c8102e"
     />
-    <!-- White 'P' inside Red Box -->
     <path
-      d="M 305 362 L 323 362 C 331 362 336 366 336 373 C 336 380 331 384 323 384 L 314 384 L 314 395 L 305 395 Z M 314 370 L 314 376 L 322 376 C 325 376 327 375 327 373 C 327 371 325 370 322 370 Z"
-      fill="#c8102e"
-      fill-rule="evenodd"
-    />
-    <!-- Overwrite with White P -->
-    <path
-      d="M 305 362 L 323 362 C 331 362 336 366 336 373 C 336 380 331 384 323 384 L 314 384 L 314 395 L 305 395 Z M 314 370 L 314 376 L 322 376 C 325 376 327 375 327 373 C 327 371 325 370 322 370 Z"
+      d="M 126 152 L 134.5 152 C 138 152 140.5 153.8 140.5 157 C 140.5 160.2 138 162 134.5 162 L 130.5 162 L 130.5 168 L 126 168 Z M 130.5 155.5 L 130.5 158.5 L 134 158.5 C 135.5 158.5 136.2 158 136.2 157 C 136.2 156 135.5 155.5 134 155.5 Z"
       fill="#FFFFFF"
     />
 
-    <!-- Letter 'a' in Red -->
+    <!-- Letter 'a' (red) -->
     <path
-      d="M 360 381 C 360 372 366 366 376 366 C 385 366 392 371 392 379 L 392 395 L 384 395 L 384 391 C 381 394 376 396 371 396 C 364 396 360 391 360 385 C 360 379 365 375 374 374 L 384 373 L 384 372 C 384 368 380 365 375 365 C 370 365 367 367 365 370 Z M 384 380 L 376 381 C 371 382 368 384 368 386 C 368 389 371 391 374 391 C 380 391 384 386 384 382 Z"
+      d="M 152 161 C 152 156.5 155.5 153.5 160 153.5 C 164.5 153.5 168 156.5 168 160.5 L 168 168 L 164 168 L 164 166 C 162.5 167.5 160 168.5 157.5 168.5 C 154 168.5 151.5 166 151.5 162.5 C 151.5 159 154 157 158.5 156.5 L 164 156 L 164 155.5 C 164 153.5 162 152 159.5 152 C 157 152 155 153 154 154.5 Z M 164 160.5 L 160 161 C 157.5 161.5 156 162.5 156 163.5 C 156 165 157.5 166 159.5 166 C 162.5 166 164 163.5 164 161.5 Z"
       fill="#c8102e"
     />
 
-    <!-- Letter 'y' in Red -->
+    <!-- Letter 'y' (red) -->
     <path
-      d="M 397 367 L 406 367 L 413 387 L 420 367 L 429 367 L 417 398 C 414 405 409 408 402 408 L 397 408 L 397 401 L 401 401 C 405 401 407 399 409 394 L 410 390 Z"
+      d="M 170 154 L 174.5 154 L 178 164 L 181.5 154 L 186 154 L 180 170 C 178.5 173.5 176 175.5 172.5 175.5 L 170 175.5 L 170 171.5 L 172 171.5 C 174 171.5 175.5 170.5 176.5 168 L 177 166 Z"
       fill="#c8102e"
     />
   </g>

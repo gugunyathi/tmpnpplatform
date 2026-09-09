@@ -20,7 +20,7 @@ export const TMPicknPaySquareLogo: React.FC<TMPicknPaySquareLogoProps> = ({
     <div
       className={`bg-white rounded-lg p-0.5 shadow-sm inline-flex items-center justify-center select-none flex-shrink-0 overflow-hidden ${className}`}
       style={dimensionStyle}
-      title="TM Pick n Pay"
+      title={alt}
     >
       <img
         src="/tm-pick-n-pay-logo.svg"

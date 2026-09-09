@@ -35,6 +35,7 @@ import { ExecutiveSummaryView } from './components/ExecutiveSummaryView';
 import { ExecutiveDeckView } from './components/ExecutiveDeckView';
 import { ProposalDocumentView } from './components/ProposalDocumentView';
 import { TextOnlyDocumentView } from './components/TextOnlyDocumentView';
+import { DemoAppView } from './components/DemoAppView';
 import { TMPicknPaySquareLogo } from './components/TMPicknPaySquareLogo';
 import { PROPOSAL_METADATA } from './data/proposalData';
 import {
@@ -42,8 +43,9 @@ import {
   downloadSlideDeckPDFDirect,
   downloadTextDocumentPDFDirect
 } from './utils/pdfGenerator';
+import { Smartphone } from 'lucide-react';
 
-type ViewTab = 'a4-document' | 'text-doc' | 'text-only-doc' | 'simulator' | 'slides' | 'summary';
+type ViewTab = 'a4-document' | 'text-doc' | 'text-only-doc' | 'simulator' | 'slides' | 'demo-app' | 'summary';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ViewTab>('a4-document');
