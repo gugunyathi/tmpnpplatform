@@ -278,6 +278,20 @@ export default function App() {
           </button>
 
           <button
+            onClick={() => setActiveTab('demo-app')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
+              activeTab === 'demo-app'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="hidden md:inline">Demo App</span>
+            <span className="md:hidden">Demo</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('summary')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
               activeTab === 'summary'
@@ -561,6 +575,9 @@ export default function App() {
 
         {/* Slide Deck View */}
         {activeTab === 'slides' && <ExecutiveDeckView />}
+
+        {/* Live Demo App View */}
+        {activeTab === 'demo-app' && <DemoAppView />}
 
         {/* Executive Summary Brief View */}
         {activeTab === 'summary' && <ExecutiveSummaryView />}
