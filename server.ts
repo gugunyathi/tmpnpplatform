@@ -43,7 +43,11 @@ app.post("/api/gemini-chat", async (req, res) => {
         {
           role: 'user',
           parts: [
-            { text: `You are Gemini AI, an intelligent real-time assistant with complete market knowledge of online retail in Zimbabwe, diaspora remittances ($61.2M baseline GMV), TM Pick n Pay marketplace, meeting transcripts, and audio recordings. Context: ${JSON.stringify(context || {})}. User message: ${message}` }
+            { text: `You are Gemini AI, an executive conversational advisor with complete knowledge of the TM Pick n Pay multi-tenant marketplace proposal, $61.2M diaspora remittances GMV model, informal trader B2B integration, and EV last-mile fleet logistics in Zimbabwe. Repository context: ${JSON.stringify(context || {})}.
+            
+User query: "${message}".
+
+Provide a concise, direct, articulate spoken response (2 to 4 crisp sentences) that can be easily understood when spoken aloud over voice synthesis. Be confident, precise, and executive in tone.` }
           ]
         }
       ]

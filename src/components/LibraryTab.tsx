@@ -138,7 +138,7 @@ export const LibraryTab: React.FC = () => {
   const [playbackRate, setPlaybackRate] = useState(1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Gemini AI Chat State
+  // Gemini AI Chat & Voice State
   const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'assistant'; text: string; time: string }>>([
     {
       role: 'assistant',
@@ -151,35 +151,187 @@ export const LibraryTab: React.FC = () => {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isRealtimeVoiceActive, setIsRealtimeVoiceActive] = useState(false);
-  const recognitionRef = useRef<any>(null);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [micPermissionState, setMicPermissionState] = useState<'idle' | 'granted' | 'denied'>('idle');
+  const [voiceStatusMsg, setVoiceStatusMsg] = useState('Voice assistant ready');
 
-  const startRealtimeVoiceConversation = () => {
-    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-      alert('Speech Recognition is not supported in this browser. Please use Chrome or Edge for voice chat.');
+  // Mutable refs to prevent React stale closure bugs
+  const isRealtimeVoiceActiveRef = useRef(false);
+  const isSpeakingRef = useRef(false);
+  const recognitionRef = useRef<any>(null);
+  const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioStreamRef = useRef<MediaStream | null>(null);
+
+  // Web Audio Tone generator for immediate auditory feedback
+  const playAudioTone = (freq: number = 520, type: OscillatorType = 'sine', duration: number = 0.15) => {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      gain.gain.setValueAtTime(0.12, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + duration);
+    } catch (e) {
+      console.log('Audio tone error:', e);
+    }
+  };
+
+  // Speak AI response with SpeechSynthesis
+  const speakAIResponse = (text: string, onDone?: () => void) => {
+    if (!('speechSynthesis' in window)) {
+      onDone?.();
       return;
     }
+
+    if (!soundEnabled) {
+      onDone?.();
+      return;
+    }
+
+    try {
+      window.speechSynthesis.cancel();
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+
+      // Clean markdown asterisks, hashes, and bullets for clean pronunciation
+      const cleanedText = text
+        .replace(/\*\*/g, '')
+        .replace(/\*/g, '')
+        .replace(/#/g, '')
+        .replace(/\[inaudible\]/gi, '')
+        .replace(/GMV/g, 'G M V')
+        .replace(/USD|US\$/g, 'US Dollars')
+        .trim();
+
+      const utterance = new SpeechSynthesisUtterance(cleanedText);
+      activeUtteranceRef.current = utterance;
+      utterance.rate = 1.05;
+      utterance.pitch = 1.0;
+
+      // Select natural English voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel') || v.name.includes('Karen')));
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+
+      utterance.onstart = () => {
+        isSpeakingRef.current = true;
+        setIsSpeaking(true);
+        setVoiceStatusMsg('Gemini AI speaking response aloud...');
+      };
+
+      utterance.onend = () => {
+        isSpeakingRef.current = false;
+        setIsSpeaking(false);
+        setVoiceStatusMsg('Listening... Speak now');
+        if (onDone) {
+          onDone();
+        } else if (isRealtimeVoiceActiveRef.current) {
+          setTimeout(() => {
+            if (isRealtimeVoiceActiveRef.current && !isSpeakingRef.current) {
+              runVoiceListeningLoop();
+            }
+          }, 300);
+        }
+      };
+
+      utterance.onerror = () => {
+        isSpeakingRef.current = false;
+        setIsSpeaking(false);
+        onDone?.();
+      };
+
+      window.speechSynthesis.speak(utterance);
+    } catch (err) {
+      console.error('Speech synthesis error:', err);
+      isSpeakingRef.current = false;
+      setIsSpeaking(false);
+      onDone?.();
+    }
+  };
+
+  // Test Voice & Sound button handler
+  const handleTestVoiceOutput = () => {
+    playAudioTone(640, 'triangle', 0.2);
+    const testPhrase = "Sound and Gemini voice synthesis are online and operational. Microphone and speakers are ready for conversation.";
+    speakAIResponse(testPhrase);
+  };
+
+  const startRealtimeVoiceConversation = async () => {
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      alert('Speech Recognition is not supported in this browser. Please use Chrome, Edge, or a modern browser for live voice conversations.');
+      return;
+    }
+
+    // Explicitly prompt and request microphone permission
+    try {
+      setVoiceStatusMsg('Requesting microphone permission...');
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioStreamRef.current = stream;
+      setMicPermissionState('granted');
+    } catch (micErr) {
+      console.warn('Microphone access warning:', micErr);
+      setMicPermissionState('denied');
+    }
+
+    isRealtimeVoiceActiveRef.current = true;
     setIsRealtimeVoiceActive(true);
-    runVoiceListeningLoop();
+    setVoiceStatusMsg('Gemini voice conversation connected');
+    playAudioTone(587, 'sine', 0.2);
+
+    // Initial greeting aloud
+    const greeting = "Hello! Gemini Real-Time Voice Assistant is listening. Ask me about the TM Pick n Pay proposal, diaspora remittances, informal traders, or EV fleet operations.";
+    speakAIResponse(greeting, () => {
+      if (isRealtimeVoiceActiveRef.current) {
+        runVoiceListeningLoop();
+      }
+    });
   };
 
   const stopRealtimeVoiceConversation = () => {
+    isRealtimeVoiceActiveRef.current = false;
+    isSpeakingRef.current = false;
     setIsRealtimeVoiceActive(false);
     setIsListening(false);
     setIsSpeaking(false);
+    setVoiceStatusMsg('Voice conversation paused');
+
     if (recognitionRef.current) {
-      try { recognitionRef.current.stop(); } catch(e) {}
+      try {
+        recognitionRef.current.abort();
+      } catch(e) {}
     }
+
+    if (audioStreamRef.current) {
+      audioStreamRef.current.getTracks().forEach(t => t.stop());
+      audioStreamRef.current = null;
+    }
+
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
   };
 
   const runVoiceListeningLoop = () => {
-    if (!isRealtimeVoiceActive) return;
+    if (!isRealtimeVoiceActiveRef.current || isSpeakingRef.current) return;
+
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) return;
 
     try {
+      if (recognitionRef.current) {
+        try { recognitionRef.current.abort(); } catch(e) {}
+      }
+
       const recognition = new SpeechRecognition();
       recognitionRef.current = recognition;
       recognition.continuous = false;
@@ -187,19 +339,28 @@ export const LibraryTab: React.FC = () => {
       recognition.lang = 'en-US';
 
       recognition.onstart = () => {
-        setIsListening(true);
+        if (isRealtimeVoiceActiveRef.current) {
+          setIsListening(true);
+          setVoiceStatusMsg('Listening... Speak your question now');
+        }
       };
 
       recognition.onresult = async (event: any) => {
-        const transcript = event.results[0][0].transcript;
         setIsListening(false);
-        if (!transcript.trim()) return;
+        const transcript = event.results[0][0].transcript;
+        if (!transcript.trim()) {
+          if (isRealtimeVoiceActiveRef.current && !isSpeakingRef.current) {
+            setTimeout(() => runVoiceListeningLoop(), 400);
+          }
+          return;
+        }
 
         const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         setChatMessages(prev => [...prev, { role: 'user', text: transcript, time: now }]);
         setIsAiProcessing(true);
+        setVoiceStatusMsg('Analyzing your query...');
 
-        let reply = "Based on our repository transcripts and market knowledge, TM Pick n Pay is uniquely positioned as the principal anchor retail partner.";
+        let reply = "Based on our repository transcripts and market evaluation, TM Pick n Pay is uniquely positioned as the principal anchor retail partner.";
         try {
           const res = await fetch('/api/gemini-chat', {
             method: 'POST',
@@ -211,51 +372,90 @@ export const LibraryTab: React.FC = () => {
         } catch (err) {
           const lower = transcript.toLowerCase();
           if (lower.includes('diaspora') || lower.includes('remittance')) {
-            reply = "The diaspora corridor represents 100k to 500k+ active senders across South Africa, UK, USA, and Australia, generating US$61,200,000 in baseline retail GMV.";
+            reply = "The diaspora corridor represents 100,000 to 500,000 active senders across South Africa, UK, USA, and Australia, generating 61.2 million US Dollars in baseline retail Gross Merchandise Value.";
           } else if (lower.includes('spaza') || lower.includes('informal') || lower.includes('trader')) {
-            reply = "Informal township tuck-shops represent a massive wholesale supply gap. TM Pick n Pay can step in as bulk wholesale supplier with zero store CapEx.";
-          } else if (lower.includes('fleet') || lower.includes('delivery') || lower.includes('scooter')) {
-            reply = "The green EV last-mile grid deploys 500 to 2,000 cargo e-tricycles on a 12-month rent-to-buy lease model with ~5 month asset payback.";
+            reply = "Informal township tuck-shops represent a massive wholesale supply gap. TM Pick n Pay can step in as the bulk wholesale supplier with zero store capital expenditure.";
+          } else if (lower.includes('fleet') || lower.includes('delivery') || lower.includes('scooter') || lower.includes('ev')) {
+            reply = "The green EV last-mile grid deploys 500 to 2,000 cargo electric tricycles on a 12-month rent-to-buy lease model with approximately 5 month asset payback.";
           }
         }
 
         setIsAiProcessing(false);
         setChatMessages(prev => [...prev, { role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
 
-        if ('speechSynthesis' in window) {
-          setIsSpeaking(true);
-          const utterance = new SpeechSynthesisUtterance(reply);
-          utterance.rate = 1.0;
-          utterance.onend = () => {
-            setIsSpeaking(false);
+        // Speak back aloud
+        speakAIResponse(reply, () => {
+          if (isRealtimeVoiceActiveRef.current) {
             setTimeout(() => {
-              if (isRealtimeVoiceActive) {
+              if (isRealtimeVoiceActiveRef.current && !isSpeakingRef.current) {
                 runVoiceListeningLoop();
               }
-            }, 600);
-          };
-          utterance.onerror = () => {
-            setIsSpeaking(false);
-          };
-          window.speechSynthesis.speak(utterance);
-        }
+            }, 300);
+          }
+        });
       };
 
-      recognition.onerror = () => {
+      recognition.onerror = (event: any) => {
         setIsListening(false);
-        if (isRealtimeVoiceActive) {
-          setTimeout(() => runVoiceListeningLoop(), 1000);
+        console.log('Speech recognition event:', event.error);
+        if (isRealtimeVoiceActiveRef.current && !isSpeakingRef.current && event.error !== 'aborted') {
+          setTimeout(() => {
+            if (isRealtimeVoiceActiveRef.current && !isSpeakingRef.current) {
+              runVoiceListeningLoop();
+            }
+          }, 800);
         }
       };
 
       recognition.onend = () => {
         setIsListening(false);
+        if (isRealtimeVoiceActiveRef.current && !isSpeakingRef.current && !isAiProcessing) {
+          setTimeout(() => {
+            if (isRealtimeVoiceActiveRef.current && !isSpeakingRef.current && !isAiProcessing) {
+              runVoiceListeningLoop();
+            }
+          }, 500);
+        }
       };
 
       recognition.start();
     } catch (e) {
+      console.log('Recognition start error:', e);
       setIsListening(false);
     }
+  };
+
+  // Quick Prompt Trigger for Voice/Chat
+  const handleTriggerQuickTopic = (topicQuery: string) => {
+    setInputQuery(topicQuery);
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    setChatMessages(prev => [...prev, { role: 'user', text: topicQuery, time: now }]);
+    setIsAiProcessing(true);
+
+    fetch('/api/gemini-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: topicQuery, context: { itemsCount: items.length } })
+    })
+      .then(res => res.json())
+      .then(data => {
+        const reply = data.reply || "Based on our repository transcripts and market evaluation, TM Pick n Pay captures substantial value across diaspora and last-mile channels.";
+        setChatMessages(prev => [...prev, { role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
+        setIsAiProcessing(false);
+        speakAIResponse(reply);
+      })
+      .catch(() => {
+        let reply = "The diaspora corridor represents 100k to 500k+ active senders across South Africa, UK, USA, and Australia, generating US$61,200,000 in baseline retail GMV.";
+        const lower = topicQuery.toLowerCase();
+        if (lower.includes('spaza') || lower.includes('informal')) {
+          reply = "Informal township tuck-shops represent a massive wholesale supply gap. TM Pick n Pay can step in as bulk wholesale supplier with zero store CapEx.";
+        } else if (lower.includes('fleet') || lower.includes('ev')) {
+          reply = "The green EV last-mile grid deploys 500 to 2,000 cargo e-tricycles on a 12-month rent-to-buy lease model with ~5 month asset payback.";
+        }
+        setChatMessages(prev => [...prev, { role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
+        setIsAiProcessing(false);
+        speakAIResponse(reply);
+      });
   };
 
   // Document Editor & Drafts State
@@ -349,9 +549,8 @@ export const LibraryTab: React.FC = () => {
       setChatMessages(prev => [...prev, { role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
       setIsAiProcessing(false);
 
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(reply);
-        window.speechSynthesis.speak(utterance);
+      if (soundEnabled) {
+        speakAIResponse(reply);
       }
     } catch (err) {
       console.error("AI Chat error:", err);
@@ -366,6 +565,9 @@ export const LibraryTab: React.FC = () => {
       }
       setChatMessages(prev => [...prev, { role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
       setIsAiProcessing(false);
+      if (soundEnabled) {
+        speakAIResponse(reply);
+      }
     }
   };
 
@@ -564,17 +766,60 @@ export const LibraryTab: React.FC = () => {
               </div>
             </div>
 
-            {/* Search Bar */}
-            <div className="relative mb-4">
-              <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search transcripts, recordings, documents..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-red-600/20 focus:border-red-600"
-              />
-            </div>
+            {/* Dedicated Transcripts 3-Document Showcase */}
+            {activeLibraryView === 'transcripts' && (
+              <div className="mb-6 bg-slate-900 text-white rounded-xl p-4 border border-slate-800">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="p-1.5 bg-red-600/20 text-red-400 rounded-lg">
+                      <BookOpen className="w-4 h-4" />
+                    </span>
+                    <div>
+                      <h4 className="text-xs font-bold text-white uppercase tracking-wider">3 Verbatim Executive Meeting Transcripts</h4>
+                      <p className="text-[10px] text-slate-400">All 3 source meeting text transcripts from September 9, 2026</p>
+                    </div>
+                  </div>
+                  <span className="text-[11px] font-mono px-2 py-0.5 bg-red-600/30 text-red-300 rounded border border-red-500/30">
+                    3 Documents Ready
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {items.filter(i => i.type === 'transcript').map((tItem, idx) => (
+                    <div key={tItem.id} className="bg-slate-950 p-3 rounded-lg border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                      <div>
+                        <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono mb-1">
+                          <span className="text-red-400 font-bold">Transcript #{idx + 1}</span>
+                          <span>{tItem.size}</span>
+                        </div>
+                        <h5 className="text-xs font-bold text-white line-clamp-2 mb-1.5">{tItem.title}</h5>
+                        <p className="text-[10px] text-slate-400 line-clamp-2 mb-2 font-mono">
+                          {tItem.transcriptText?.slice(0, 90)}...
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 pt-2 border-t border-slate-900">
+                        <button
+                          onClick={() => setActiveViewerItem(tItem)}
+                          className="flex-1 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded text-[11px] font-bold text-center transition cursor-pointer"
+                        >
+                          Read Transcript
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActivePlayerItem(items[1]);
+                            setIsPlaying(true);
+                          }}
+                          className="px-2 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[11px] transition cursor-pointer"
+                          title="Listen to recording"
+                        >
+                          <Play className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Files List */}
             <div className={`space-y-2.5 ${activeLibraryView === 'transcripts' ? 'max-h-[500px]' : 'max-h-[360px]'} overflow-y-auto pr-1`}>
@@ -762,17 +1007,45 @@ export const LibraryTab: React.FC = () => {
         {(activeLibraryView === 'all' || activeLibraryView === 'assistant') && (
         <div className={`${activeLibraryView === 'assistant' ? 'lg:col-span-12' : 'lg:col-span-6'} bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all duration-300`}>
           <div>
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+            <div className="flex flex-wrap items-center justify-between pb-3 mb-4 border-b border-slate-100 gap-2">
               <div className="flex items-center gap-2">
                 <div className="p-2 bg-purple-100 text-purple-700 rounded-lg">
                   <Bot className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-900">Gemini AI Real-Time Assistant Workspace</h3>
-                  <p className="text-[10px] text-slate-500">Query all transcripts, recordings, proposals &amp; global retail knowledge</p>
+                  <p className="text-[10px] text-slate-500">{voiceStatusMsg}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Test Sound Button */}
+                <button
+                  onClick={handleTestVoiceOutput}
+                  className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                  title="Test audio output & speech synthesis"
+                >
+                  <Volume2 className="w-3.5 h-3.5 text-purple-600" />
+                  <span>Test Voice Sound</span>
+                </button>
+
+                {/* Sound Output Toggle */}
+                <button
+                  onClick={() => {
+                    setSoundEnabled(!soundEnabled);
+                    if (soundEnabled && 'speechSynthesis' in window) {
+                      window.speechSynthesis.cancel();
+                    }
+                  }}
+                  className={`px-2.5 py-1.5 text-xs font-bold rounded-xl border transition flex items-center gap-1 cursor-pointer ${
+                    soundEnabled ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-slate-100 text-slate-400 border-slate-200'
+                  }`}
+                  title={soundEnabled ? "AI Voice Output is Active" : "AI Voice Output is Muted"}
+                >
+                  {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                  <span>{soundEnabled ? "Sound ON" : "Muted"}</span>
+                </button>
+
+                {/* Voice Chat Toggle */}
                 {isRealtimeVoiceActive ? (
                   <button
                     onClick={stopRealtimeVoiceConversation}
@@ -784,12 +1057,13 @@ export const LibraryTab: React.FC = () => {
                 ) : (
                   <button
                     onClick={startRealtimeVoiceConversation}
-                    className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow flex items-center gap-1.5 cursor-pointer"
+                    className="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow flex items-center gap-1.5 cursor-pointer"
                   >
                     <Mic className="w-3.5 h-3.5" />
                     <span>Start Real-Time Voice Chat</span>
                   </button>
                 )}
+
                 <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full flex items-center gap-1">
                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
                   Online
@@ -797,32 +1071,82 @@ export const LibraryTab: React.FC = () => {
               </div>
             </div>
 
+            {/* Microphone permission alert if denied */}
+            {micPermissionState === 'denied' && (
+              <div className="bg-amber-50 border border-amber-200 text-amber-900 p-2.5 rounded-xl mb-3 text-xs flex items-center justify-between">
+                <span>⚠️ Microphone permission was blocked by browser. Please allow microphone in browser URL settings or use text &amp; quick chips below.</span>
+                <button onClick={startRealtimeVoiceConversation} className="underline font-bold ml-2 cursor-pointer">Retry</button>
+              </div>
+            )}
+
             {/* Realtime voice conversational active status banner */}
             {isRealtimeVoiceActive && (
-              <div className="bg-purple-900 text-purple-100 p-3 rounded-xl mb-4 flex items-center justify-between shadow-inner">
+              <div className="bg-gradient-to-r from-purple-900 via-slate-900 to-purple-950 text-purple-100 p-3.5 rounded-xl mb-4 border border-purple-700/50 shadow-inner flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex items-center justify-center w-8 h-8 bg-purple-600 rounded-full">
-                    <Mic className="w-4 h-4 text-white animate-bounce" />
+                  <div className="relative flex items-center justify-center w-9 h-9 bg-purple-600 rounded-full shadow-lg">
+                    {isSpeaking ? (
+                      <Volume2 className="w-4 h-4 text-white animate-pulse" />
+                    ) : (
+                      <Mic className="w-4 h-4 text-white animate-bounce" />
+                    )}
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
                   </div>
                   <div>
                     <div className="text-xs font-extrabold flex items-center gap-2">
                       <span>Real-Time Voice Conversation Active</span>
-                      {isListening && <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded font-mono">🔴 Listening... Speak now</span>}
-                      {isSpeaking && <span className="text-[10px] bg-emerald-500 text-white px-1.5 py-0.5 rounded font-mono">🔊 AI Speaking...</span>}
-                      {isAiProcessing && <span className="text-[10px] bg-amber-500 text-white px-1.5 py-0.5 rounded font-mono">✨ Processing...</span>}
+                      {isListening && <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded-full font-mono animate-pulse">🔴 Listening... Speak now</span>}
+                      {isSpeaking && <span className="text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-full font-mono">🔊 AI Speaking Aloud</span>}
+                      {isAiProcessing && <span className="text-[10px] bg-amber-500 text-white px-2 py-0.5 rounded-full font-mono">✨ Processing...</span>}
                     </div>
-                    <p className="text-[10px] text-purple-300 mt-0.5">Gemini is listening continuously. Speak naturally—it responds back aloud and keeps the conversation flowing.</p>
+                    <p className="text-[10px] text-purple-300 mt-0.5">Continuous two-way audio link open. Speak naturally or select a prompt below—Gemini speaks back automatically.</p>
                   </div>
                 </div>
-                <button
-                  onClick={stopRealtimeVoiceConversation}
-                  className="px-2.5 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-bold transition"
-                >
-                  End Chat
-                </button>
+
+                <div className="flex items-center gap-2">
+                  {isSpeaking && (
+                    <button
+                      onClick={() => {
+                        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                        setIsSpeaking(false);
+                        isSpeakingRef.current = false;
+                        if (isRealtimeVoiceActiveRef.current) runVoiceListeningLoop();
+                      }}
+                      className="px-2.5 py-1 bg-purple-700 hover:bg-purple-600 text-white rounded-lg text-xs font-bold transition"
+                    >
+                      Skip Speech
+                    </button>
+                  )}
+                  <button
+                    onClick={stopRealtimeVoiceConversation}
+                    className="px-2.5 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-bold transition cursor-pointer"
+                  >
+                    End Chat
+                  </button>
+                </div>
               </div>
             )}
+
+            {/* Quick Topic Chips for Instant Voice/Text Answers */}
+            <div className="mb-3">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Quick Interactive Prompts (AI Speaks Answer):</span>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { label: '💰 $61.2M Diaspora Model', q: 'Explain the $61.2M diaspora remittance GMV financial model and sender demographics.' },
+                  { label: '🏪 Informal Traders & Spaza', q: 'How does TM Pick n Pay integrate 10,000+ informal retail traders without store CapEx?' },
+                  { label: '⚡ EV Fleet Payback', q: 'What are the economics and ~5 month asset payback of the EV delivery fleet?' },
+                  { label: '🛒 TM PnP Strategic Value', q: 'Why is TM Pick n Pay uniquely positioned as the principal anchor retail marketplace partner?' },
+                ].map((chip, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleTriggerQuickTopic(chip.q)}
+                    className="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 hover:text-purple-900 border border-purple-200 rounded-lg text-[11px] font-medium transition cursor-pointer flex items-center gap-1"
+                  >
+                    <span>{chip.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Chat Messages Box */}
             <div className={`space-y-3 ${activeLibraryView === 'assistant' ? 'max-h-[420px]' : 'max-h-[280px]'} overflow-y-auto mb-4 pr-1`}>

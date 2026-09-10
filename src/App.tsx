@@ -46,7 +46,83 @@ import {
 } from './utils/pdfGenerator';
 import { Smartphone, FolderOpen } from 'lucide-react';
 
-type ViewTab = 'slides' | 'library' | 'a4-document' | 'text-doc' | 'text-only-doc' | 'simulator' | 'demo-app' | 'summary';
+type ViewTab = 'slides' | 'library' | 'a4-document' | 'text-doc' | 'text-only-doc' | 'simulator' | 'summary' | 'demo-app';
+
+interface NavigationTabItem {
+  id: ViewTab;
+  label: string;
+  badge: string;
+  icon: React.ComponentType<{ className?: string }>;
+  iconColor: string;
+  shortcut: string;
+}
+
+const NAVIGATION_TABS: NavigationTabItem[] = [
+  {
+    id: 'slides',
+    label: 'Slide Deck',
+    badge: '14 Slides',
+    icon: Presentation,
+    iconColor: 'text-amber-400',
+    shortcut: '1'
+  },
+  {
+    id: 'library',
+    label: 'Library & AI',
+    badge: 'Audio & Docs',
+    icon: FolderOpen,
+    iconColor: 'text-yellow-400',
+    shortcut: '2'
+  },
+  {
+    id: 'a4-document',
+    label: 'A4 Pages',
+    badge: '10 Pages',
+    icon: BookOpen,
+    iconColor: 'text-blue-400',
+    shortcut: '3'
+  },
+  {
+    id: 'text-doc',
+    label: 'Proposal Document',
+    badge: 'A4 Formal',
+    icon: FileText,
+    iconColor: 'text-emerald-400',
+    shortcut: '4'
+  },
+  {
+    id: 'text-only-doc',
+    label: 'Text Only Document',
+    badge: 'Reader',
+    icon: AlignLeft,
+    iconColor: 'text-indigo-400',
+    shortcut: '5'
+  },
+  {
+    id: 'simulator',
+    label: 'Financial Simulator',
+    badge: '$61.2M Model',
+    icon: Sliders,
+    iconColor: 'text-cyan-400',
+    shortcut: '6'
+  },
+  {
+    id: 'summary',
+    label: 'Executive Brief',
+    badge: 'Strategic',
+    icon: Sparkles,
+    iconColor: 'text-purple-400',
+    shortcut: '7'
+  },
+  {
+    id: 'demo-app',
+    label: 'Demo App',
+    badge: 'Live Handset',
+    icon: Smartphone,
+    iconColor: 'text-emerald-400',
+    shortcut: '8'
+  }
+];
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ViewTab>('slides');
@@ -61,6 +137,30 @@ export default function App() {
   const [showExportMenu, setShowExportMenu] = useState<boolean>(false);
 
   const totalPages = 10;
+
+  // Keyboard shortcut listener for instantaneous 1-click view switching
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
+      const tabKeyMap: Record<string, ViewTab> = {
+        '1': 'slides',
+        '2': 'library',
+        '3': 'a4-document',
+        '4': 'text-doc',
+        '5': 'text-only-doc',
+        '6': 'simulator',
+        '7': 'summary',
+        '8': 'demo-app',
+      };
+      if (tabKeyMap[e.key]) {
+        setActiveTab(tabKeyMap[e.key]);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const handleDirectDownload = async () => {
     setShowExportMenu(false);
@@ -196,222 +296,162 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans antialiased">
       {/* Top Header / App Bar (Hidden during Print) */}
-      <header className="no-print sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 px-4 lg:px-6 py-2.5 shadow-md flex items-center justify-between">
-        {/* Left: Branding */}
-        <div className="flex items-center space-x-3">
-          <TMPicknPaySquareLogo size={38} className="ring-1 ring-white/20 shadow-md" />
-          <div className="hidden sm:block h-7 w-px bg-slate-700/80"></div>
-          <div className="hidden sm:block">
-            <h1 className="text-xs font-bold text-white tracking-tight leading-none">
-              Marketplace &amp; Last-Mile Infrastructure Proposal
-            </h1>
-            <span className="text-[10px] text-slate-400 font-mono">
-              A4 Portrait Executive Format · {PROPOSAL_METADATA.documentCode}
-            </span>
-          </div>
-        </div>
-
-        {/* Center: View Switcher Tabs */}
-        <nav className="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs font-semibold overflow-x-auto max-w-full">
-          <button
-            onClick={() => setActiveTab('slides')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'slides'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Presentation className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Slide Deck</span>
-            <span className="md:hidden">Slides</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('library')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'library'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <FolderOpen className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden md:inline">Library &amp; AI</span>
-            <span className="md:hidden">Library</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('a4-document')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'a4-document'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">A4 Pages</span>
-            <span className="md:hidden">A4</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('text-doc')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'text-doc'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <FileText className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Proposal Document (A4)</span>
-            <span className="md:hidden">A4 Doc</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('text-only-doc')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'text-only-doc'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <AlignLeft className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Text Only Document</span>
-            <span className="md:hidden">Text Only</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('simulator')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'simulator'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Sliders className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Financial Simulator</span>
-            <span className="md:hidden">Simulator</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('summary')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'summary'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Executive Brief</span>
-            <span className="md:hidden">Brief</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('demo-app')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'demo-app'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden md:inline">Demo App</span>
-            <span className="md:hidden">Demo</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          </button>
-        </nav>
-
-        {/* Right: Print / Export / Actions */}
-        <div className="flex items-center space-x-2 relative">
-          {/* Main Direct PDF Download Button */}
-          <button
-            onClick={handleDirectDownload}
-            disabled={isGeneratingPDF}
-            className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition"
-            title="Download Full 10-Page A4 PDF directly"
-          >
-            {isGeneratingPDF ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            ) : (
-              <Download className="w-3.5 h-3.5" />
-            )}
-            <span className="hidden sm:inline">
-              {isGeneratingPDF
-                ? 'Generating PDF...'
-                : activeTab === 'slides'
-                ? 'Download Slide Deck (A4 PDF)'
-                : activeTab === 'text-doc' || activeTab === 'text-only-doc'
-                ? 'Download Document (A4 PDF)'
-                : 'Download Full Proposal (PDF)'}
-            </span>
-            <span className="sm:hidden">PDF</span>
-          </button>
-
-          {/* Export Options Dropdown Menu */}
-          <div className="relative">
-            <button
-              onClick={() => setShowExportMenu(!showExportMenu)}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
-              title="More export and print options"
-            >
-              <Printer className="w-3.5 h-3.5" />
-            </button>
-
-            {showExportMenu && (
-              <div className="absolute right-0 mt-2 w-64 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl py-1 z-50 text-xs">
-                <button
-                  onClick={handleDirectDownload}
-                  className="w-full text-left px-3 py-2 hover:bg-slate-800 text-white flex items-center gap-2"
-                >
-                  <Download className="w-3.5 h-3.5 text-red-400" />
-                  <div>
-                    <div className="font-semibold">Full 10-Page Proposal PDF</div>
-                    <div className="text-[10px] text-slate-400">A4 Portrait Business Case</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={handleDownloadSlideDeck}
-                  className="w-full text-left px-3 py-2 hover:bg-slate-800 text-white flex items-center gap-2 border-t border-slate-800"
-                >
-                  <Presentation className="w-3.5 h-3.5 text-amber-400" />
-                  <div>
-                    <div className="font-semibold">14-Slide Executive Deck PDF</div>
-                    <div className="text-[10px] text-slate-400">Calibrated A4 Landscape</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={handleDownloadTextDoc}
-                  className="w-full text-left px-3 py-2 hover:bg-slate-800 text-white flex items-center gap-2 border-t border-slate-800"
-                >
-                  <FileText className="w-3.5 h-3.5 text-emerald-400" />
-                  <div>
-                    <div className="font-semibold">8-Page Strategic Text Doc PDF</div>
-                    <div className="text-[10px] text-slate-400">Zero-Cutoff A4 Document</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={handlePrint}
-                  className="w-full text-left px-3 py-2 hover:bg-slate-800 text-white flex items-center gap-2 border-t border-slate-800"
-                >
-                  <Printer className="w-3.5 h-3.5 text-blue-400" />
-                  <div>
-                    <div className="font-semibold">Print / Browser Print Dialog</div>
-                    <div className="text-[10px] text-slate-400">Open native print dialog</div>
-                  </div>
-                </button>
+      <header className="no-print sticky top-0 z-50 bg-slate-900/98 backdrop-blur-md border-b border-slate-800 shadow-xl">
+        {/* Top Tier: Branding, Document Code & Action Controls */}
+        <div className="px-4 lg:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/60">
+          {/* Left: Branding & Document Title */}
+          <div className="flex items-center space-x-3">
+            <TMPicknPaySquareLogo size={36} className="ring-1 ring-white/20 shadow-md flex-shrink-0" />
+            <div className="hidden sm:block h-7 w-px bg-slate-700/80"></div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xs sm:text-sm font-bold text-white tracking-tight leading-none">
+                  Pick n Pay × TM Marketplace
+                </h1>
+                <span className="hidden md:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-red-950 text-red-400 border border-red-800/50">
+                  {PROPOSAL_METADATA.documentCode}
+                </span>
               </div>
-            )}
+              <p className="text-[10px] text-slate-400 font-mono mt-0.5">
+                Marketplace &amp; Last-Mile Infrastructure Executive Proposal · 2026
+              </p>
+            </div>
           </div>
 
-          <button
-            onClick={handleShare}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
-            title="Copy Proposal URL"
-          >
-            {copiedLink ? <CheckCircle className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
-          </button>
+          {/* Right: Quick Actions & Export Menu */}
+          <div className="flex items-center space-x-2 relative">
+            {/* Active View Quick Pill */}
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800 text-[11px] text-slate-400 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="hidden sm:inline">Active:</span>
+              <strong className="text-white">
+                {NAVIGATION_TABS.find((t) => t.id === activeTab)?.label || 'View'}
+              </strong>
+            </div>
+
+            {/* Export Options Dropdown Menu */}
+            <div className="relative">
+              <button
+                onClick={() => setShowExportMenu(!showExportMenu)}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700 flex items-center gap-1.5 px-2.5"
+                title="Export & Print Options"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span className="text-xs hidden sm:inline">Export / Print</span>
+              </button>
+
+              {showExportMenu && (
+                <div className="absolute right-0 mt-2 w-64 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl py-1 z-50 text-xs">
+                  <button
+                    onClick={handleDirectDownload}
+                    className="w-full text-left px-3 py-2 hover:bg-slate-800 text-white flex items-center gap-2"
+                  >
+                    <Download className="w-3.5 h-3.5 text-red-400" />
+                    <div>
+                      <div className="font-semibold">Full 10-Page Proposal PDF</div>
+                      <div className="text-[10px] text-slate-400">A4 Portrait Business Case</div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={handleDownloadSlideDeck}
+                    className="w-full text-left px-3 py-2 hover:bg-slate-800 text-white flex items-center gap-2 border-t border-slate-800"
+                  >
+                    <Presentation className="w-3.5 h-3.5 text-amber-400" />
+                    <div>
+                      <div className="font-semibold">14-Slide Executive Deck PDF</div>
+                      <div className="text-[10px] text-slate-400">Calibrated A4 Landscape</div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={handleDownloadTextDoc}
+                    className="w-full text-left px-3 py-2 hover:bg-slate-800 text-white flex items-center gap-2 border-t border-slate-800"
+                  >
+                    <FileText className="w-3.5 h-3.5 text-emerald-400" />
+                    <div>
+                      <div className="font-semibold">8-Page Strategic Text Doc PDF</div>
+                      <div className="text-[10px] text-slate-400">Zero-Cutoff A4 Document</div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={handlePrint}
+                    className="w-full text-left px-3 py-2 hover:bg-slate-800 text-white flex items-center gap-2 border-t border-slate-800"
+                  >
+                    <Printer className="w-3.5 h-3.5 text-blue-400" />
+                    <div>
+                      <div className="font-semibold">Print / Browser Print Dialog</div>
+                      <div className="text-[10px] text-slate-400">Open native print dialog</div>
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={handleShare}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700"
+              title="Copy Proposal URL"
+            >
+              {copiedLink ? <CheckCircle className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
+
+        {/* Second Tier: Prominent Responsive Clickable Navigation Buttons Bar (No Horizontal Scrollbar) */}
+        <nav
+          aria-label="Main Executive Views"
+          className="px-2 sm:px-4 lg:px-6 py-2 bg-slate-950"
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1.5 sm:gap-2">
+            {NAVIGATION_TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  id={`nav-tab-btn-${tab.id}`}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative flex items-center justify-start gap-2 px-2.5 py-2 rounded-lg transition-all duration-150 text-left border ${
+                    isActive
+                      ? 'bg-red-600 border-red-500 text-white shadow-md ring-1 ring-red-400/40 font-bold'
+                      : 'bg-slate-900/90 border-slate-800/90 text-slate-300 hover:text-white hover:bg-slate-800 hover:border-slate-700 font-medium'
+                  }`}
+                  title={`${tab.label} (Press ${tab.shortcut})`}
+                >
+                  <Icon
+                    className={`w-4 h-4 flex-shrink-0 ${
+                      isActive ? 'text-white' : tab.iconColor
+                    }`}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-xs font-semibold leading-tight truncate">
+                        {tab.label}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <span
+                        className={`text-[9px] font-mono px-1 py-0.2 rounded leading-tight ${
+                          isActive
+                            ? 'bg-black/30 text-red-100'
+                            : 'bg-slate-950 text-slate-400'
+                        }`}
+                      >
+                        {tab.badge}
+                      </span>
+                    </div>
+                  </div>
+
+                  {tab.id === 'demo-app' && (
+                    <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </nav>
       </header>
 
       {/* PDF Generation Progress Modal / Banner */}
@@ -451,66 +491,89 @@ export default function App() {
 
       {/* Secondary Controls Bar for Document Mode (Hidden during Print) */}
       {activeTab === 'a4-document' && (
-        <div className="no-print bg-slate-900 border-b border-slate-800/80 px-4 py-2 flex flex-wrap items-center justify-between text-xs text-slate-300 gap-3">
-          {/* Page Jump Selector */}
-          <div className="flex items-center space-x-2">
-            <span className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Page:</span>
-            <select
-              value={activePage}
-              onChange={(e) => scrollToPage(Number(e.target.value))}
-              className="bg-slate-800 border border-slate-700 rounded px-2.5 py-1 text-xs text-white focus:outline-none focus:border-red-500 font-medium"
-            >
-              {pageNames.map((name, i) => (
-                <option key={i + 1} value={i + 1}>
-                  Page {i + 1}: {name}
-                </option>
-              ))}
-            </select>
+        <div className="no-print bg-slate-900 border-b border-slate-800/80 px-4 py-2.5 flex flex-wrap items-center justify-between text-xs text-slate-300 gap-3 shadow-sm">
+          {/* Left: Page Selector & View Mode */}
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Page Jump Selector */}
+            <div className="flex items-center space-x-2">
+              <span className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Page:</span>
+              <select
+                value={activePage}
+                onChange={(e) => scrollToPage(Number(e.target.value))}
+                className="bg-slate-800 border border-slate-700 rounded px-2.5 py-1 text-xs text-white focus:outline-none focus:border-red-500 font-medium"
+              >
+                {pageNames.map((name, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    Page {i + 1}: {name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* View Toggle: Continuous vs Single Page */}
+            <div className="flex items-center space-x-1.5 bg-slate-950 px-2 py-1 rounded border border-slate-800">
+              <button
+                onClick={() => setSinglePageView(false)}
+                className={`px-2 py-0.5 rounded text-[11px] font-semibold transition ${
+                  !singlePageView ? 'bg-slate-800 text-white shadow-xs' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Continuous (All 10 Pages)
+              </button>
+              <button
+                onClick={() => setSinglePageView(true)}
+                className={`px-2 py-0.5 rounded text-[11px] font-semibold transition ${
+                  singlePageView ? 'bg-slate-800 text-white shadow-xs' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Single Page Focus
+              </button>
+            </div>
           </div>
 
-          {/* View Toggle: Continuous vs Single Page */}
-          <div className="flex items-center space-x-2 bg-slate-950 px-2 py-1 rounded border border-slate-800">
+          {/* Right: Dedicated Download Proposal (PDF) & Zoom Controls */}
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Dedicated Download Proposal (PDF) Button for A4 Pages */}
             <button
-              onClick={() => setSinglePageView(false)}
-              className={`px-2 py-0.5 rounded text-[11px] font-semibold ${
-                !singlePageView ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'
-              }`}
+              onClick={handleDirectDownload}
+              disabled={isGeneratingPDF}
+              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-md transition ring-1 ring-red-400/40"
+              title="Download Full 10-Page A4 Executive Board Proposal PDF"
             >
-              Continuous (All 10 Pages)
+              {isGeneratingPDF ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Download className="w-3.5 h-3.5" />
+              )}
+              <span>
+                {isGeneratingPDF ? 'Generating Proposal PDF...' : 'Download Proposal (PDF)'}
+              </span>
             </button>
-            <button
-              onClick={() => setSinglePageView(true)}
-              className={`px-2 py-0.5 rounded text-[11px] font-semibold ${
-                singlePageView ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Single Page Focus
-            </button>
-          </div>
 
-          {/* Zoom Controls */}
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setZoomLevel((z) => Math.max(70, z - 10))}
-              className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300"
-              title="Zoom Out"
-            >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-            <span className="font-mono text-xs font-semibold w-10 text-center">{zoomLevel}%</span>
-            <button
-              onClick={() => setZoomLevel((z) => Math.min(150, z + 10))}
-              className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300"
-              title="Zoom In"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => setZoomLevel(100)}
-              className="text-[10px] text-slate-400 hover:text-white ml-1 underline"
-            >
-              Reset
-            </button>
+            {/* Zoom Controls */}
+            <div className="flex items-center space-x-1.5 bg-slate-950 px-2 py-1 rounded border border-slate-800">
+              <button
+                onClick={() => setZoomLevel((z) => Math.max(70, z - 10))}
+                className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                title="Zoom Out"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <span className="font-mono text-xs font-semibold w-10 text-center text-slate-200">{zoomLevel}%</span>
+              <button
+                onClick={() => setZoomLevel((z) => Math.min(150, z + 10))}
+                className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                title="Zoom In"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => setZoomLevel(100)}
+                className="text-[10px] text-slate-400 hover:text-white ml-1 underline"
+              >
+                Reset
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -22,8 +22,12 @@ import {
   DollarSign,
   Scale,
   Calendar,
-  AlertTriangle
+  AlertTriangle,
+  Loader2,
+  FileCode,
 } from 'lucide-react';
+import { downloadProposalDocx } from '../utils/docxGenerator';
+import { downloadTextOnlyPDF } from '../utils/pdfGenerator';
 
 export const RAW_PROPOSAL_TEXT = `Strategic Evaluation and Commercial Business Case
 Positioning TM Pick n Pay as the Foundational Fulfillment Engine for an Open Multi-Tenant Marketplace and Electric Vehicle Last-Mile Logistics Grid
@@ -234,10 +238,35 @@ export const TextOnlyDocumentView: React.FC = () => {
     return Math.ceil(totalWords / 220);
   }, [totalWords]);
 
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [isGeneratingDocx, setIsGeneratingDocx] = useState(false);
+
   const handleCopyClean = () => {
     navigator.clipboard.writeText(RAW_PROPOSAL_TEXT);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleDownloadPdf = async () => {
+    setIsGeneratingPdf(true);
+    try {
+      await downloadTextOnlyPDF(RAW_PROPOSAL_TEXT);
+    } catch (err) {
+      console.error('Failed to download PDF:', err);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
+  const handleDownloadDocx = async () => {
+    setIsGeneratingDocx(true);
+    try {
+      await downloadProposalDocx();
+    } catch (err) {
+      console.error('Failed to download DOCX:', err);
+    } finally {
+      setIsGeneratingDocx(false);
+    }
   };
 
   const handleDownloadTxt = () => {
@@ -426,10 +455,57 @@ export const TextOnlyDocumentView: React.FC = () => {
             </button>
           </div>
 
-          {/* Export and Copy Buttons */}
+          {/* Primary Download Buttons: PDF & Word (.DOCX) */}
+          <button
+            onClick={handleDownloadPdf}
+            disabled={isGeneratingPdf}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-xs font-bold border border-red-500 shadow-md transition"
+            title="Download executive formatted PDF text document"
+          >
+            {isGeneratingPdf ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Download className="w-3.5 h-3.5" />
+            )}
+            <span>{isGeneratingPdf ? 'Generating PDF...' : 'Download PDF'}</span>
+          </button>
+
+          <button
+            onClick={handleDownloadDocx}
+            disabled={isGeneratingDocx}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-bold border border-blue-500 shadow-md transition"
+            title="Download formatted Microsoft Word (.docx) proposal"
+          >
+            {isGeneratingDocx ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <FileText className="w-3.5 h-3.5" />
+            )}
+            <span>{isGeneratingDocx ? 'Generating Word...' : 'Download Word (DOCX)'}</span>
+          </button>
+
+          {/* Additional Export and Copy Buttons */}
+          <button
+            onClick={handleDownloadTxt}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
+            title="Download as .txt text file"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-400" />
+            <span>.TXT</span>
+          </button>
+
+          <button
+            onClick={handleDownloadMd}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
+            title="Download as .md Markdown file"
+          >
+            <FileCode className="w-3.5 h-3.5 text-slate-400" />
+            <span>.MD</span>
+          </button>
+
           <button
             onClick={handleCopyClean}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
             title="Copy full text document to clipboard"
           >
             {copied ? (
@@ -440,32 +516,14 @@ export const TextOnlyDocumentView: React.FC = () => {
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5" />
-                <span>Copy Text</span>
+                <span>Copy</span>
               </>
             )}
           </button>
 
           <button
-            onClick={handleDownloadTxt}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
-            title="Download as .txt text file"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>.TXT</span>
-          </button>
-
-          <button
-            onClick={handleDownloadMd}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
-            title="Download as .md Markdown file"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>.MD</span>
-          </button>
-
-          <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition"
             title="Print clean text document"
           >
             <Printer className="w-3.5 h-3.5" />
@@ -497,7 +555,7 @@ export const TextOnlyDocumentView: React.FC = () => {
             />
           </div>
 
-          <nav className="space-y-1 text-xs max-h-[60vh] overflow-y-auto pr-1">
+          <nav className="space-y-1 text-xs max-h-[50vh] overflow-y-auto pr-1">
             {parsedSections.map((sec, idx) => {
               const IconComp = sec.icon;
               const matchesSearch =
@@ -524,7 +582,7 @@ export const TextOnlyDocumentView: React.FC = () => {
             })}
           </nav>
 
-          <div className="mt-4 pt-4 border-t border-slate-800/80 text-[11px] text-slate-400 space-y-1.5">
+          <div className="mt-4 pt-4 border-t border-slate-800/80 text-[11px] text-slate-400 space-y-2">
             <div className="flex justify-between">
               <span>Format:</span>
               <span className="font-mono font-bold text-white">Full Long-Form Text</span>
@@ -536,6 +594,26 @@ export const TextOnlyDocumentView: React.FC = () => {
             <div className="flex justify-between">
               <span>Reading Duration:</span>
               <span className="font-mono text-white">~{readTimeMinutes} minutes</span>
+            </div>
+
+            {/* Quick Download Panel in Sidebar */}
+            <div className="pt-2 grid grid-cols-2 gap-2">
+              <button
+                onClick={handleDownloadPdf}
+                disabled={isGeneratingPdf}
+                className="w-full flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-[11px] font-bold shadow transition"
+              >
+                <Download className="w-3 h-3" />
+                <span>PDF Document</span>
+              </button>
+              <button
+                onClick={handleDownloadDocx}
+                disabled={isGeneratingDocx}
+                className="w-full flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-[11px] font-bold shadow transition"
+              >
+                <FileText className="w-3 h-3" />
+                <span>Word (.docx)</span>
+              </button>
             </div>
           </div>
         </div>
