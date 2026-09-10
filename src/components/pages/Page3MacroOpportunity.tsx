@@ -22,36 +22,36 @@ export const Page3MacroOpportunity: React.FC<PageProps> = ({ idPrefix, extraClas
             </p>
           </div>
 
-          {/* Core Problem Narrative */}
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="border border-slate-200 rounded p-3 bg-white">
-              <div className="flex items-center gap-1.5 text-red-600 mb-1">
-                <ShieldAlert className="w-3.5 h-3.5" />
-                <h4 className="text-[11px] font-bold uppercase">Gray Market Leakage</h4>
-              </div>
-              <p className="text-[10px] text-slate-600 leading-relaxed">
-                Un-policed cross-border gray trading, unregulated bus couriers (Malitsha), and undeclared merchandise create severe tax leakage and expose households to counterfeit food and goods.
-              </p>
+          {/* The Optimization Gap Section */}
+          <div className="border border-slate-200 rounded p-3 bg-white mb-3 shadow-xs">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-1.5 h-3.5 bg-red-600 rounded-xs"></div>
+              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+                The Optimization Gap
+              </h3>
             </div>
-
-            <div className="border border-slate-200 rounded p-3 bg-white">
-              <div className="flex items-center gap-1.5 text-amber-600 mb-1">
-                <RefreshCw className="w-3.5 h-3.5" />
-                <h4 className="text-[11px] font-bold uppercase">Store-Bound Friction</h4>
+            <p className="text-[10.5px] font-medium text-slate-700 leading-relaxed mb-2">
+              A multi‑million dollar distribution gap exists that can only be closed by an open platform integrating three vectors:
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="p-2 bg-slate-50 border border-slate-200 rounded">
+                <h4 className="text-[10px] font-bold text-slate-900 mb-0.5">Diaspora Market</h4>
+                <p className="text-[9.5px] text-slate-600 leading-relaxed">
+                  Buyers continue to buy via cross-boarder delivery, exposing a resilient remittance shopper market ripe for capture.
+                </p>
               </div>
-              <p className="text-[10px] text-slate-600 leading-relaxed">
-                Legacy "Click &amp; Collect" requires elderly or rural recipients to spend excessive travel time and taxi fares reaching flagship urban branches, depressing repeat conversion rates.
-              </p>
-            </div>
-
-            <div className="border border-slate-200 rounded p-3 bg-white">
-              <div className="flex items-center gap-1.5 text-blue-600 mb-1">
-                <Landmark className="w-3.5 h-3.5" />
-                <h4 className="text-[11px] font-bold uppercase">Remittance Diversion</h4>
+              <div className="p-2 bg-slate-50 border border-slate-200 rounded">
+                <h4 className="text-[10px] font-bold text-slate-900 mb-0.5">Informal Retail Traders</h4>
+                <p className="text-[9.5px] text-slate-600 leading-relaxed">
+                  A wholesale supply gap exists, creating an opportunity to aggregate informal traders to distribution partners.
+                </p>
               </div>
-              <p className="text-[10px] text-slate-600 leading-relaxed">
-                Cash remittances sent via Western Union / Mukuru are often eroded by cash-out fees or diverted away from essential grocery baskets into informal street speculation.
-              </p>
+              <div className="p-2 bg-slate-50 border border-slate-200 rounded">
+                <h4 className="text-[10px] font-bold text-slate-900 mb-0.5">Customer Convenience</h4>
+                <p className="text-[9.5px] text-slate-600 leading-relaxed">
+                  Online ordering and payment of goods plus doorstep delivery saves costs on transport, fuel, and time.
+                </p>
+              </div>
             </div>
           </div>
 

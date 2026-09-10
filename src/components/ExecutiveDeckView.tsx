@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
@@ -23,7 +23,10 @@ import {
   ShoppingBag,
   Store,
   RefreshCw,
-  Award
+  Award,
+  Play,
+  X,
+  Tv
 } from 'lucide-react';
 import { downloadSlideDeckPDFDirect, PDFProgressCallback } from '../utils/pdfGenerator';
 import { MobileAppHandset } from './MobileAppHandset';
@@ -34,27 +37,105 @@ export const ExecutiveDeckView: React.FC = () => {
   const [isGridView, setIsGridView] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [showHUD, setShowHUD] = useState(true);
   const [downloadProgress, setDownloadProgress] = useState<{ current: number; total: number; message: string }>({
     current: 0,
     total: 14,
     message: '',
   });
 
+  // Touch gesture tracking
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const hudTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev < 13 ? prev + 1 : 0));
+  const prevSlide = () => setCurrentSlide((prev) => (prev > 0 ? prev - 1 : 13));
+
+  // Toggle Presentation Mode
+  const handleToggleFullscreen = () => {
+    if (!isFullscreen) {
+      setIsFullscreen(true);
+      setIsGridView(false);
+      try {
+        if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      } catch (e) {}
+    } else {
+      setIsFullscreen(false);
+      try {
+        if (document.exitFullscreen && document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        }
+      } catch (e) {}
+    }
+  };
+
+  // Touch handlers for swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaX = touchStartX.current - touchEndX;
+    const deltaY = touchStartY.current - touchEndY;
+
+    // Verify it's primarily a horizontal swipe (>40px)
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+      if (deltaX > 0) {
+        // Swipe Left -> Next Slide
+        nextSlide();
+      } else {
+        // Swipe Right -> Prev Slide
+        prevSlide();
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === 'Space') {
+      if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'PageDown' || e.key === 'Enter') {
         setCurrentSlide((prev) => (prev < 13 ? prev + 1 : 0));
-      } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : 13));
       } else if (e.key === 'Escape') {
         setIsFullscreen(false);
         setIsGridView(false);
+        try {
+          if (document.exitFullscreen && document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+          }
+        } catch (err) {}
+      } else if (e.key.toLowerCase() === 'f') {
+        handleToggleFullscreen();
+      } else if (e.key === 'Home') {
+        setCurrentSlide(0);
+      } else if (e.key === 'End') {
+        setCurrentSlide(13);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [isFullscreen]);
+
+  // Auto-hide HUD during fullscreen presentation
+  const handleMouseMoveHUD = () => {
+    setShowHUD(true);
+    if (hudTimeoutRef.current) clearTimeout(hudTimeoutRef.current);
+    hudTimeoutRef.current = setTimeout(() => {
+      if (isFullscreen) {
+        setShowHUD(false);
+      }
+    }, 3500);
+  };
 
   const handleDownloadPDF = async () => {
     if (isGeneratingPDF) return;
@@ -73,9 +154,6 @@ export const ExecutiveDeckView: React.FC = () => {
       setIsGeneratingPDF(false);
     }
   };
-
-  const nextSlide = () => setCurrentSlide((prev) => (prev < 13 ? prev + 1 : 0));
-  const prevSlide = () => setCurrentSlide((prev) => (prev > 0 ? prev - 1 : 13));
 
   // Slide Metadata for quick references
   const slideTitles = [
@@ -120,6 +198,16 @@ export const ExecutiveDeckView: React.FC = () => {
 
         {/* Action Controls */}
         <div className="flex items-center flex-wrap gap-2.5">
+          {/* Present Fullscreen Button */}
+          <button
+            onClick={handleToggleFullscreen}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950/40 border border-emerald-500/40 transition active:scale-95"
+            title="Start full screen presentation with touch swipe and keyboard controls"
+          >
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>Present Deck</span>
+          </button>
+
           <button
             onClick={() => setIsGridView(!isGridView)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
@@ -146,7 +234,7 @@ export const ExecutiveDeckView: React.FC = () => {
             ) : (
               <>
                 <Download className="w-3.5 h-3.5" />
-                <span>Download Deck (A4 Landscape PDF)</span>
+                <span>Download Deck (PDF)</span>
               </>
             )}
           </button>
@@ -209,18 +297,53 @@ export const ExecutiveDeckView: React.FC = () => {
         </div>
       ) : (
         /* Active Single Slide Presentation Container (16:10 / 1.414 A4 Landscape Ratio) */
-        <div className="relative bg-slate-950 rounded-2xl overflow-hidden shadow-2xl border border-slate-800 transition-all">
-          {/* Main Slide Viewer */}
-          <div className="w-full flex items-center justify-center p-2 sm:p-4 bg-slate-950">
-            <div className="w-full max-w-[1000px] aspect-[1.414/1] bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-700/50 flex flex-col justify-between">
+        <div className="relative bg-slate-950 rounded-2xl overflow-hidden shadow-2xl border border-slate-800 transition-all group">
+          {/* Main Slide Viewer with Touch Swipe & Click Areas */}
+          <div
+            className="w-full flex items-center justify-center p-2 sm:p-4 bg-slate-950 relative"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* Click Navigation Overlay Buttons on Left & Right */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-red-600 text-white border border-slate-700 shadow-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 focus:opacity-100"
+              title="Previous Slide (or Left Arrow / Swipe Right)"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-red-600 text-white border border-slate-700 shadow-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 focus:opacity-100"
+              title="Next Slide (or Right Arrow / Swipe Left)"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            {/* Slide Canvas */}
+            <div className="w-full max-w-[1000px] aspect-[1.414/1] bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-700/50 flex flex-col justify-between select-none">
               {renderSlideContent(currentSlide + 1)}
             </div>
           </div>
 
-          {/* Slide Navigation Controls */}
-          <div className="bg-slate-950 px-6 py-4 border-t border-slate-800 flex items-center justify-between text-white select-none">
+          {/* Slide Navigation Controls Bar */}
+          <div className="bg-slate-950 px-6 py-3.5 border-t border-slate-800 flex items-center justify-between text-white select-none">
+            {/* Left: Presentation Shortcut Tip */}
+            <div className="hidden lg:flex items-center space-x-2 text-[11px] text-slate-400">
+              <span className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] font-mono font-bold text-slate-300">
+                ← / →
+              </span>
+              <span>or Swipe to navigate</span>
+              <span className="text-slate-600">·</span>
+              <span className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] font-mono font-bold text-slate-300">
+                F
+              </span>
+              <span>Present Fullscreen</span>
+            </div>
+
             {/* Slide Dots Indicator */}
-            <div className="hidden sm:flex items-center space-x-1.5 overflow-x-auto max-w-md py-1">
+            <div className="flex items-center space-x-1.5 overflow-x-auto max-w-xs sm:max-w-md py-1">
               {Array.from({ length: 14 }).map((_, idx) => (
                 <button
                   key={idx}
@@ -233,22 +356,160 @@ export const ExecutiveDeckView: React.FC = () => {
               ))}
             </div>
 
-            {/* Prev / Counter / Next Controls */}
-            <div className="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+            {/* Prev / Counter / Next / Present Controls */}
+            <div className="flex items-center space-x-2.5">
               <button
                 onClick={prevSlide}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition active:scale-95"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Prev</span>
+              </button>
+
+              <span className="font-mono text-xs text-slate-400 font-bold px-1.5">
+                {String(currentSlide + 1).padStart(2, '0')} / 14
+              </span>
+
+              <button
+                onClick={nextSlide}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow transition active:scale-95"
+              >
+                <span className="hidden sm:inline">Next</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={handleToggleFullscreen}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white transition"
+                title="Present Fullscreen (Press F)"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DEDICATED FULL-SCREEN PRESENTATION OVERLAY */}
+      {isFullscreen && (
+        <div
+          className="fixed inset-0 z-[100] bg-slate-950/98 backdrop-blur-md flex flex-col justify-between select-none overflow-hidden"
+          onMouseMove={handleMouseMoveHUD}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Top HUD Bar */}
+          <div
+            className={`w-full px-6 py-3.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between z-30 transition-opacity duration-300 ${
+              showHUD ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <div className="flex items-center space-x-3">
+              <TMPicknPaySquareLogo size={28} className="shadow-sm ring-1 ring-white/10" />
+              <div>
+                <span className="text-xs font-bold text-white tracking-tight">
+                  TM Pick n Pay Express · Board Presentation
+                </span>
+                <span className="hidden sm:inline text-xs text-slate-400 ml-2 font-mono">
+                  — {slideTitles[currentSlide]}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <span className="px-2 py-0.5 bg-slate-800 border border-slate-700 text-slate-300 rounded font-mono text-xs font-bold">
+                Slide {currentSlide + 1} of 14
+              </span>
+              <span className="hidden md:inline text-[11px] text-slate-400 font-mono">
+                Press [ESC] to Exit · [← / →] to Navigate
+              </span>
+              <button
+                onClick={handleToggleFullscreen}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow transition"
+              >
+                <Minimize2 className="w-3.5 h-3.5" />
+                <span>Exit Fullscreen</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Center Stage Presentation Canvas */}
+          <div className="flex-1 flex items-center justify-center p-2 sm:p-6 md:p-8 relative overflow-hidden">
+            {/* Left Edge Click Button */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-slate-900/80 hover:bg-red-600 text-white border border-slate-700/80 shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+              title="Previous Slide (Swipe Right / Left Arrow)"
+            >
+              <ChevronLeft className="w-7 h-7" />
+            </button>
+
+            {/* Right Edge Click Button */}
+            <button
+              onClick={nextSlide}
+              className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-slate-900/80 hover:bg-red-600 text-white border border-slate-700/80 shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+              title="Next Slide (Swipe Left / Right Arrow / Click Slide)"
+            >
+              <ChevronRight className="w-7 h-7" />
+            </button>
+
+            {/* Fullscreen Scaled Slide Container (Strict 1.414 Landscape Ratio) */}
+            <div
+              className="w-full max-w-[1240px] max-h-[85vh] aspect-[1.414/1] bg-white rounded-2xl shadow-[0_0_80px_rgba(0,0,0,0.8)] border border-slate-700/60 overflow-hidden flex flex-col justify-between cursor-pointer"
+              onClick={nextSlide}
+              title="Click anywhere on slide to advance to next"
+            >
+              {renderSlideContent(currentSlide + 1)}
+            </div>
+          </div>
+
+          {/* Bottom HUD Bar & Scrubber */}
+          <div
+            className={`w-full px-6 py-3 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between z-30 transition-opacity duration-300 ${
+              showHUD ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            {/* Scrubber Dots */}
+            <div className="flex items-center space-x-1.5 overflow-x-auto max-w-lg py-1">
+              {Array.from({ length: 14 }).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentSlide(idx);
+                  }}
+                  className={`h-2.5 rounded-full transition-all ${
+                    currentSlide === idx
+                      ? 'w-8 bg-red-600 shadow-md shadow-red-600/50'
+                      : 'w-2.5 bg-slate-700 hover:bg-slate-500'
+                  }`}
+                  title={`Go to Slide ${idx + 1}: ${slideTitles[idx]}`}
+                />
+              ))}
+            </div>
+
+            {/* Bottom Controls */}
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevSlide();
+                }}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span>Prev</span>
               </button>
 
-              <span className="font-mono text-xs text-slate-400 font-bold px-2">
+              <span className="font-mono text-xs text-slate-300 font-bold px-2">
                 {String(currentSlide + 1).padStart(2, '0')} / 14
               </span>
 
               <button
-                onClick={nextSlide}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextSlide();
+                }}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow transition"
               >
                 <span>Next</span>
@@ -494,18 +755,24 @@ function getSlideBody(slideNum: number, isPrintExport: boolean) {
               </div>
             </div>
 
-            {/* Card 2 */}
+            {/* Card 2: The Optimization Gap */}
             <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2 flex flex-col justify-between">
               <div className="space-y-2">
                 <div className="w-6 h-1 bg-red-600 rounded"></div>
-                <h3 className="font-bold text-xs uppercase tracking-wide text-slate-900">The Three-Pillar Intersection</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  A multi-million dollar distribution gap exists that can only be closed by an open platform integrating three vectors:
+                <h3 className="font-bold text-xs uppercase tracking-wide text-slate-900">The Optimization Gap</h3>
+                <p className="text-xs font-medium text-slate-700 leading-relaxed">
+                  A multi‑million dollar distribution gap exists that can only be closed by an open platform integrating three vectors:
                 </p>
-                <div className="space-y-1.5 text-xs text-slate-600 pt-1">
-                  <p>• <strong>Data-Smart CLV:</strong> Actively identifying, tracking, and strategically incentivizing the local consumer base.</p>
-                  <p>• <strong>Informal Aggregation:</strong> Embracing informal traders as strategic, localized B2B distribution and fulfillment partners.</p>
-                  <p>• <strong>Diaspora Capture:</strong> Intercepting a resilient remittance corridor of 100,000–500,000 global participants.</p>
+                <div className="space-y-2 text-xs text-slate-600 pt-1">
+                  <p>
+                    <strong className="text-slate-900">Diaspora Market</strong> – Buyers continue to buy via cross-boarder delivery, exposing a resilient remittance shopper market ripe for capture.
+                  </p>
+                  <p>
+                    <strong className="text-slate-900">Informal Retail Traders</strong> – A wholesale supply gap exists, creating an opportunity to aggregate informal traders to distribution partners.
+                  </p>
+                  <p>
+                    <strong className="text-slate-900">Customer Convenience</strong> – Online ordering and payment of goods plus doorstep delivery saves costs on transport, fuel, and time.
+                  </p>
                 </div>
               </div>
             </div>

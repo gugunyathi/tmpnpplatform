@@ -36,6 +36,7 @@ import { ExecutiveDeckView } from './components/ExecutiveDeckView';
 import { ProposalDocumentView } from './components/ProposalDocumentView';
 import { TextOnlyDocumentView } from './components/TextOnlyDocumentView';
 import { DemoAppView } from './components/DemoAppView';
+import { LibraryTab } from './components/LibraryTab';
 import { TMPicknPaySquareLogo } from './components/TMPicknPaySquareLogo';
 import { PROPOSAL_METADATA } from './data/proposalData';
 import {
@@ -43,12 +44,12 @@ import {
   downloadSlideDeckPDFDirect,
   downloadTextDocumentPDFDirect
 } from './utils/pdfGenerator';
-import { Smartphone } from 'lucide-react';
+import { Smartphone, FolderOpen } from 'lucide-react';
 
-type ViewTab = 'a4-document' | 'text-doc' | 'text-only-doc' | 'simulator' | 'slides' | 'demo-app' | 'summary';
+type ViewTab = 'slides' | 'library' | 'a4-document' | 'text-doc' | 'text-only-doc' | 'simulator' | 'demo-app' | 'summary';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ViewTab>('a4-document');
+  const [activeTab, setActiveTab] = useState<ViewTab>('slides');
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [activePage, setActivePage] = useState<number>(1);
   const [singlePageView, setSinglePageView] = useState<boolean>(false);
@@ -213,6 +214,32 @@ export default function App() {
         {/* Center: View Switcher Tabs */}
         <nav className="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs font-semibold overflow-x-auto max-w-full">
           <button
+            onClick={() => setActiveTab('slides')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
+              activeTab === 'slides'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Presentation className="w-3.5 h-3.5" />
+            <span className="hidden md:inline">Slide Deck</span>
+            <span className="md:hidden">Slides</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('library')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
+              activeTab === 'library'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <FolderOpen className="w-3.5 h-3.5 text-amber-400" />
+            <span className="hidden md:inline">Library &amp; AI</span>
+            <span className="md:hidden">Library</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('a4-document')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
               activeTab === 'a4-document'
@@ -265,16 +292,16 @@ export default function App() {
           </button>
 
           <button
-            onClick={() => setActiveTab('slides')}
+            onClick={() => setActiveTab('summary')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'slides'
+              activeTab === 'summary'
                 ? 'bg-red-600 text-white shadow-sm'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <Presentation className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Slide Deck</span>
-            <span className="md:hidden">Slides</span>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span className="hidden md:inline">Executive Brief</span>
+            <span className="md:hidden">Brief</span>
           </button>
 
           <button
@@ -289,19 +316,6 @@ export default function App() {
             <span className="hidden md:inline">Demo App</span>
             <span className="md:hidden">Demo</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('summary')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition whitespace-nowrap ${
-              activeTab === 'summary'
-                ? 'bg-red-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Executive Brief</span>
-            <span className="md:hidden">Brief</span>
           </button>
         </nav>
 
@@ -575,6 +589,9 @@ export default function App() {
 
         {/* Slide Deck View */}
         {activeTab === 'slides' && <ExecutiveDeckView />}
+
+        {/* Library & AI Hub View */}
+        {activeTab === 'library' && <LibraryTab />}
 
         {/* Live Demo App View */}
         {activeTab === 'demo-app' && <DemoAppView />}

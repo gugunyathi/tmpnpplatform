@@ -412,9 +412,34 @@ export const ProposalDocumentView: React.FC = () => {
                 3. Strategic Opportunity &amp; Enterprise Thesis
               </h2>
 
-              <p className="mb-2 text-justify text-slate-800">
+              <p className="mb-2.5 text-justify text-slate-800">
                 Single-retailer apps face crippling customer acquisition costs and low basket frequency because a courier fleet cannot achieve density when serving only one catalog. Our model establishes an <strong>open-architecture, multi-tenant digital commerce marketplace</strong>. TM Pick n Pay acts as the principal anchor retail partner and wholesale fulfillment backbone, aggregating complementary categories (pharmacy, hardware, bakeries) to achieve maximum logistics route density.
               </p>
+
+              {/* The Optimization Gap Block */}
+              <div className="p-2.5 bg-slate-50 border border-slate-200 rounded mb-3">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="w-1.5 h-3 bg-red-600 inline-block rounded-xs"></span>
+                  <h3 className="font-bold text-[11px] uppercase tracking-wide text-slate-900">The Optimization Gap</h3>
+                </div>
+                <p className="text-[10px] font-medium text-slate-700 leading-relaxed mb-1.5">
+                  A multi‑million dollar distribution gap exists that can only be closed by an open platform integrating three vectors:
+                </p>
+                <div className="grid grid-cols-3 gap-2 text-[9.5px]">
+                  <div className="p-1.5 bg-white border border-slate-200 rounded">
+                    <strong className="text-slate-900 block mb-0.5">Diaspora Market</strong>
+                    <span className="text-slate-600">Buyers continue to buy via cross-boarder delivery, exposing a resilient remittance shopper market ripe for capture.</span>
+                  </div>
+                  <div className="p-1.5 bg-white border border-slate-200 rounded">
+                    <strong className="text-slate-900 block mb-0.5">Informal Retail Traders</strong>
+                    <span className="text-slate-600">A wholesale supply gap exists, creating an opportunity to aggregate informal traders to distribution partners.</span>
+                  </div>
+                  <div className="p-1.5 bg-white border border-slate-200 rounded">
+                    <strong className="text-slate-900 block mb-0.5">Customer Convenience</strong>
+                    <span className="text-slate-600">Online ordering and payment of goods plus doorstep delivery saves costs on transport, fuel, and time.</span>
+                  </div>
+                </div>
+              </div>
 
               <h2 className="text-sm font-bold font-serif text-slate-900 border-b border-slate-300 pb-1 mb-2 flex items-center gap-1.5">
                 <span className="w-1.5 h-3.5 bg-red-600 inline-block rounded-sm"></span>

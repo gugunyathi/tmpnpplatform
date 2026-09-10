@@ -18,6 +18,12 @@ The Zimbabwean retail economy has experienced extensive informalization. While p
 
 **Core Positioning:** TM Pick n Pay is uniquely positioned as the primary anchor retail tenant and wholesale supply backbone of an open-architecture, multi-tenant marketplace ("Takealot for Southern Africa"), capturing both diaspora remittances and informal township trade.
 
+### The Optimization Gap
+A multi‑million dollar distribution gap exists that can only be closed by an open platform integrating three vectors:
+- **Diaspora Market** – Buyers continue to buy via cross-boarder delivery, exposing a resilient remittance shopper market ripe for capture.
+- **Informal Retail Traders** – A wholesale supply gap exists, creating an opportunity to aggregate informal traders to distribution partners.
+- **Customer Convenience** – Online ordering and payment of goods plus doorstep delivery saves costs on transport, fuel, and time.
+
 ---
 
 ### 2. The Four Pillars of Strategic Intervention
@@ -98,6 +104,31 @@ The Zimbabwean retail economy has experienced extensive informalization. While p
         <div className="bg-slate-50 border-l-4 border-red-600 p-4 rounded-r text-slate-700">
           <strong className="text-slate-900 block text-sm mb-1">Strategic Context:</strong>
           {PROPOSAL_METADATA.strategicPositioning}
+        </div>
+
+        {/* The Optimization Gap Card */}
+        <div className="border border-slate-200 rounded-xl p-4 bg-white not-prose shadow-xs space-y-2">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-4 bg-red-600 rounded-xs"></div>
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">The Optimization Gap</h3>
+          </div>
+          <p className="text-xs font-medium text-slate-700 leading-relaxed">
+            A multi‑million dollar distribution gap exists that can only be closed by an open platform integrating three vectors:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-1 text-xs text-slate-600">
+            <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+              <strong className="text-slate-900 block mb-0.5">Diaspora Market</strong>
+              <span>Buyers continue to buy via cross-boarder delivery, exposing a resilient remittance shopper market ripe for capture.</span>
+            </div>
+            <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+              <strong className="text-slate-900 block mb-0.5">Informal Retail Traders</strong>
+              <span>A wholesale supply gap exists, creating an opportunity to aggregate informal traders to distribution partners.</span>
+            </div>
+            <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+              <strong className="text-slate-900 block mb-0.5">Customer Convenience</strong>
+              <span>Online ordering and payment of goods plus doorstep delivery saves costs on transport, fuel, and time.</span>
+            </div>
+          </div>
         </div>
 
         <div>

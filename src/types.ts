@@ -54,3 +54,26 @@ export interface FleetSpec {
   value: string;
   detail: string;
 }
+
+export interface LibraryItem {
+  id: string;
+  title: string;
+  type: 'audio' | 'transcript' | 'pdf' | 'document' | 'presentation';
+  category: string;
+  date: string;
+  size?: string;
+  duration?: string;
+  content?: string;
+  audioUrl?: string;
+  transcriptText?: string;
+}
+
+export interface DraftEdit {
+  id: string;
+  title: string;
+  targetDocument: string;
+  content: string;
+  createdAt: string;
+  status: 'draft' | 'applied';
+}
+
