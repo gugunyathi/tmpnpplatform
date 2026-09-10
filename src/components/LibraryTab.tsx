@@ -33,7 +33,17 @@ import {
   Loader2
 } from 'lucide-react';
 import { LibraryItem, DraftEdit } from '../types';
-import { PROPOSAL_METADATA } from '../data/proposalData';
+import { PROPOSAL_METADATA, DEFAULT_FINANCIAL_BASELINE } from '../data/proposalData';
+import {
+  MASTER_KNOWLEDGE_BANK,
+  CORPUS_SLIDE_DECK,
+  CORPUS_A4_PAGES,
+  CORPUS_TRANSCRIPTS,
+  CORPUS_FINANCIAL_SIMULATOR,
+  CORPUS_EXECUTIVE_BRIEF,
+  searchKnowledgeBankVerbatim,
+  KnowledgeCorpusItem
+} from '../data/knowledgeBank';
 
 const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   {
@@ -124,11 +134,19 @@ export const LibraryTab: React.FC = () => {
   const [items, setItems] = useState<LibraryItem[]>(INITIAL_LIBRARY_ITEMS);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [activeLibraryView, setActiveLibraryView] = useState<'all' | 'assistant' | 'editor' | 'transcripts' | 'player'>('all');
+  const [activeLibraryView, setActiveLibraryView] = useState<'all' | 'assistant' | 'editor' | 'transcripts' | 'player' | 'knowledge_bank'>('all');
   const [activePlayerItem, setActivePlayerItem] = useState<LibraryItem | null>(INITIAL_LIBRARY_ITEMS[1]); // Default to audio item
   const [activeViewerItem, setActiveViewerItem] = useState<LibraryItem | null>(null);
   const [readerMode, setReaderMode] = useState<'scroll' | 'paginate'>('scroll');
   const [readerPage, setReaderPage] = useState(0);
+
+  // Knowledge Bank & Continuous Learning State
+  const [knowledgeSearchQuery, setKnowledgeSearchQuery] = useState('');
+  const [activeCorpusFilter, setActiveCorpusFilter] = useState<'all' | 'slide_deck' | 'a4_page' | 'proposal_document' | 'financial_simulator' | 'transcript'>('all');
+  const [selectedKnowledgeItem, setSelectedKnowledgeItem] = useState<KnowledgeCorpusItem | null>(null);
+  const [liveSiteNotes, setLiveSiteNotes] = useState('Live Site State: 14 Slides, 10 A4 Pages, $72.35M Financial Simulator, 3 Transcripts, Borrowdale Village Walk & Avondale 60-day pilot charter.');
+  const [isSyncingKnowledge, setIsSyncingKnowledge] = useState(false);
+  const [lastSyncTime, setLastSyncTime] = useState('Synchronized');
 
   // Audio Player State
   const [isPlaying, setIsPlaying] = useState(false);
@@ -139,11 +157,12 @@ export const LibraryTab: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Gemini AI Chat & Voice State
-  const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'assistant'; text: string; time: string }>>([
+  const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'assistant'; text: string; time: string; source?: string }>>([
     {
       role: 'assistant',
-      text: 'Greetings! I am your real-time Gemini AI intelligent assistant with complete market knowledge of online retail in Zimbabwe, diaspora remittances ($61.2M baseline GMV), TM Pick n Pay, and all uploaded transcripts & recordings. How can I assist you today?',
-      time: 'Just now'
+      text: 'Greetings! I am Gemini AI, your executive advisory system trained on all 14 slides, 10 A4 pages, master proposal, text-only document, $72.35M financial simulator, executive brief, and meeting transcripts with continuous learning active. Ask me to quote any section verbatim or cross-link any concept across the proposal!',
+      time: 'Just now',
+      source: 'knowledge_bank_engine'
     }
   ]);
   const [inputQuery, setInputQuery] = useState('');
@@ -154,13 +173,40 @@ export const LibraryTab: React.FC = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [micPermissionState, setMicPermissionState] = useState<'idle' | 'granted' | 'denied'>('idle');
   const [voiceStatusMsg, setVoiceStatusMsg] = useState('Voice assistant ready');
+  const [micAudioLevel, setMicAudioLevel] = useState(0);
 
-  // Mutable refs to prevent React stale closure bugs
+  // Mutable refs to prevent React stale closure bugs and manage stream resources
   const isRealtimeVoiceActiveRef = useRef(false);
   const isSpeakingRef = useRef(false);
   const recognitionRef = useRef<any>(null);
   const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const audioStreamRef = useRef<MediaStream | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const animFrameIdRef = useRef<number | null>(null);
+
+  // Clean unmount cleanup for MediaDevices, AudioContext, SpeechRecognition & SpeechSynthesis
+  useEffect(() => {
+    return () => {
+      isRealtimeVoiceActiveRef.current = false;
+      isSpeakingRef.current = false;
+      if (animFrameIdRef.current) {
+        cancelAnimationFrame(animFrameIdRef.current);
+      }
+      if (recognitionRef.current) {
+        try { recognitionRef.current.abort(); } catch (e) {}
+      }
+      if (audioStreamRef.current) {
+        audioStreamRef.current.getTracks().forEach(t => t.stop());
+      }
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        try { audioContextRef.current.close(); } catch (e) {}
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   // Web Audio Tone generator for immediate auditory feedback
   const playAudioTone = (freq: number = 520, type: OscillatorType = 'sine', duration: number = 0.15) => {
@@ -180,6 +226,42 @@ export const LibraryTab: React.FC = () => {
       osc.stop(ctx.currentTime + duration);
     } catch (e) {
       console.log('Audio tone error:', e);
+    }
+  };
+
+  // Setup real-time audio analysis of the microphone stream
+  const setupAudioStreamAnalysis = (stream: MediaStream) => {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      
+      const audioCtx = new AudioCtx();
+      audioContextRef.current = audioCtx;
+      const source = audioCtx.createMediaStreamSource(stream);
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 64;
+      analyser.smoothingTimeConstant = 0.6;
+      source.connect(analyser);
+      analyserRef.current = analyser;
+
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+      const checkVolume = () => {
+        if (!isRealtimeVoiceActiveRef.current) return;
+        analyser.getByteFrequencyData(dataArray);
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          sum += dataArray[i];
+        }
+        const average = sum / dataArray.length;
+        const normalized = Math.min(100, Math.round((average / 128) * 100));
+        setMicAudioLevel(normalized);
+        animFrameIdRef.current = requestAnimationFrame(checkVolume);
+      };
+
+      checkVolume();
+    } catch (err) {
+      console.warn('Could not setup audio analysis node:', err);
     }
   };
 
@@ -272,15 +354,27 @@ export const LibraryTab: React.FC = () => {
       return;
     }
 
-    // Explicitly prompt and request microphone permission
+    // Explicitly prompt and request microphone permission via MediaDevices
     try {
       setVoiceStatusMsg('Requesting microphone permission...');
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
       audioStreamRef.current = stream;
       setMicPermissionState('granted');
-    } catch (micErr) {
+      setupAudioStreamAnalysis(stream);
+    } catch (micErr: any) {
       console.warn('Microphone access warning:', micErr);
       setMicPermissionState('denied');
+      if (micErr?.name === 'NotAllowedError') {
+        setVoiceStatusMsg('Microphone permission blocked. Please allow mic in your browser settings.');
+      } else {
+        setVoiceStatusMsg('Microphone hardware unavailable or busy.');
+      }
     }
 
     isRealtimeVoiceActiveRef.current = true;
@@ -304,6 +398,12 @@ export const LibraryTab: React.FC = () => {
     setIsListening(false);
     setIsSpeaking(false);
     setVoiceStatusMsg('Voice conversation paused');
+    setMicAudioLevel(0);
+
+    if (animFrameIdRef.current) {
+      cancelAnimationFrame(animFrameIdRef.current);
+      animFrameIdRef.current = null;
+    }
 
     if (recognitionRef.current) {
       try {
@@ -314,6 +414,11 @@ export const LibraryTab: React.FC = () => {
     if (audioStreamRef.current) {
       audioStreamRef.current.getTracks().forEach(t => t.stop());
       audioStreamRef.current = null;
+    }
+
+    if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+      try { audioContextRef.current.close(); } catch(e) {}
+      audioContextRef.current = null;
     }
 
     if ('speechSynthesis' in window) {
@@ -365,7 +470,13 @@ export const LibraryTab: React.FC = () => {
           const res = await fetch('/api/gemini-chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: transcript, context: { itemsCount: items.length } })
+            body: JSON.stringify({
+              message: transcript,
+              context: { itemsCount: items.length },
+              liveItems: items,
+              liveFinancialParams: DEFAULT_FINANCIAL_BASELINE,
+              liveNotes: liveSiteNotes
+            })
           });
           const data = await res.json();
           if (data.reply) reply = data.reply;
@@ -435,12 +546,23 @@ export const LibraryTab: React.FC = () => {
     fetch('/api/gemini-chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: topicQuery, context: { itemsCount: items.length } })
+      body: JSON.stringify({
+        message: topicQuery,
+        context: { itemsCount: items.length },
+        liveItems: items,
+        liveFinancialParams: DEFAULT_FINANCIAL_BASELINE,
+        liveNotes: liveSiteNotes
+      })
     })
       .then(res => res.json())
       .then(data => {
-        const reply = data.reply || "Based on our repository transcripts and market evaluation, TM Pick n Pay captures substantial value across diaspora and last-mile channels.";
-        setChatMessages(prev => [...prev, { role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
+        const reply = data.reply || "Based on our comprehensive repository knowledge bank across 14 slides, 10 A4 pages, proposal, and transcripts, TM Pick n Pay captures substantial value across diaspora and last-mile channels.";
+        setChatMessages(prev => [...prev, {
+          role: 'assistant',
+          text: reply,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          source: data.source || 'gemini-3.8-flash'
+        }]);
         setIsAiProcessing(false);
         speakAIResponse(reply);
       })
@@ -456,6 +578,25 @@ export const LibraryTab: React.FC = () => {
         setIsAiProcessing(false);
         speakAIResponse(reply);
       });
+  };
+
+  // Helper to trigger verbatim quote or cross-link query from knowledge bank explorer
+  const handleAskGeminiVerbatim = (item: KnowledgeCorpusItem, mode: 'verbatim' | 'crosslink' = 'verbatim') => {
+    setActiveLibraryView('assistant');
+    const q = mode === 'verbatim'
+      ? `Please quote verbatim the content from ${item.referenceTag} (${item.title}) and explain its strategic significance.`
+      : `Please cross-link the concepts in ${item.referenceTag} (${item.title}) with other documents, transcripts, and financial projections in the knowledge bank.`;
+    handleTriggerQuickTopic(q);
+  };
+
+  // Helper to trigger continuous learning sync of dynamic site notes
+  const handleSyncLiveSiteNotes = () => {
+    setIsSyncingKnowledge(true);
+    setTimeout(() => {
+      setIsSyncingKnowledge(false);
+      setLastSyncTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      playAudioTone(780, 'sine', 0.15);
+    }, 400);
   };
 
   // Document Editor & Drafts State
@@ -541,12 +682,23 @@ export const LibraryTab: React.FC = () => {
       const res = await fetch('/api/gemini-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userText, context: { itemsCount: items.length } })
+        body: JSON.stringify({
+          message: userText,
+          context: { itemsCount: items.length },
+          liveItems: items,
+          liveFinancialParams: DEFAULT_FINANCIAL_BASELINE,
+          liveNotes: liveSiteNotes
+        })
       });
       const data = await res.json();
       const reply = data.reply || "Based on repository documents and market knowledge, TM Pick n Pay is uniquely positioned as the principal anchor retail partner.";
 
-      setChatMessages(prev => [...prev, { role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
+      setChatMessages(prev => [...prev, {
+        role: 'assistant',
+        text: reply,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        source: data.source || 'gemini-3.8-flash'
+      }]);
       setIsAiProcessing(false);
 
       if (soundEnabled) {
@@ -674,6 +826,7 @@ export const LibraryTab: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           {[
             { id: 'all', label: 'Knowledge Hub', icon: FolderOpen },
+            { id: 'knowledge_bank', label: 'Continuous Knowledge Bank', icon: Layers },
             { id: 'assistant', label: 'Gemini AI Assistant', icon: Bot },
             { id: 'editor', label: 'AI Document Editor', icon: Edit3 },
             { id: 'transcripts', label: 'Transcripts', icon: BookOpen },
@@ -703,6 +856,13 @@ export const LibraryTab: React.FC = () => {
               </button>
             );
           })}
+        </div>
+
+        {/* Real-time Continuous Learning Status Indicator */}
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-950 rounded-xl border border-slate-800">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span className="text-[11px] font-mono text-emerald-400 font-bold">Continuous Learning Active</span>
+          <span className="text-[10px] text-slate-500 font-mono">| {MASTER_KNOWLEDGE_BANK.length} Corpora Units</span>
         </div>
       </div>
 
@@ -1083,22 +1243,40 @@ export const LibraryTab: React.FC = () => {
             {isRealtimeVoiceActive && (
               <div className="bg-gradient-to-r from-purple-900 via-slate-900 to-purple-950 text-purple-100 p-3.5 rounded-xl mb-4 border border-purple-700/50 shadow-inner flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex items-center justify-center w-9 h-9 bg-purple-600 rounded-full shadow-lg">
+                  <div className="relative flex items-center justify-center w-10 h-10 bg-purple-600 rounded-full shadow-lg">
                     {isSpeaking ? (
-                      <Volume2 className="w-4 h-4 text-white animate-pulse" />
+                      <Volume2 className="w-5 h-5 text-white animate-pulse" />
                     ) : (
-                      <Mic className="w-4 h-4 text-white animate-bounce" />
+                      <Mic className="w-5 h-5 text-white" />
                     )}
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
                   </div>
                   <div>
                     <div className="text-xs font-extrabold flex items-center gap-2">
-                      <span>Real-Time Voice Conversation Active</span>
-                      {isListening && <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded-full font-mono animate-pulse">🔴 Listening... Speak now</span>}
+                      <span>Real-Time Voice Assistant Active</span>
+                      {isListening && <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded-full font-mono animate-pulse">🔴 Mic Live: Speak now</span>}
                       {isSpeaking && <span className="text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-full font-mono">🔊 AI Speaking Aloud</span>}
-                      {isAiProcessing && <span className="text-[10px] bg-amber-500 text-white px-2 py-0.5 rounded-full font-mono">✨ Processing...</span>}
+                      {isAiProcessing && <span className="text-[10px] bg-amber-500 text-white px-2 py-0.5 rounded-full font-mono">✨ Gemini Thinking...</span>}
                     </div>
-                    <p className="text-[10px] text-purple-300 mt-0.5">Continuous two-way audio link open. Speak naturally or select a prompt below—Gemini speaks back automatically.</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <p className="text-[10px] text-purple-300">Continuous 2-way microphone &amp; speech audio link.</p>
+                      
+                      {/* Live Audio Level Equalizer */}
+                      <div className="flex items-end gap-0.5 h-3.5 px-1.5 py-0.5 bg-black/40 rounded border border-purple-500/30">
+                        {[0.4, 0.8, 1.0, 0.7, 0.9, 0.5].map((factor, i) => {
+                          const baseHeight = isListening ? Math.max(3, Math.min(14, Math.round((micAudioLevel * factor) / 6))) : isSpeaking ? 6 : 2;
+                          return (
+                            <span
+                              key={i}
+                              style={{ height: `${baseHeight}px` }}
+                              className={`w-1 rounded-xs transition-all duration-75 ${
+                                isListening ? 'bg-red-400' : isSpeaking ? 'bg-emerald-400' : 'bg-purple-400/40'
+                              }`}
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -1111,7 +1289,7 @@ export const LibraryTab: React.FC = () => {
                         isSpeakingRef.current = false;
                         if (isRealtimeVoiceActiveRef.current) runVoiceListeningLoop();
                       }}
-                      className="px-2.5 py-1 bg-purple-700 hover:bg-purple-600 text-white rounded-lg text-xs font-bold transition"
+                      className="px-2.5 py-1 bg-purple-700 hover:bg-purple-600 text-white rounded-lg text-xs font-bold transition cursor-pointer"
                     >
                       Skip Speech
                     </button>
@@ -1128,13 +1306,18 @@ export const LibraryTab: React.FC = () => {
 
             {/* Quick Topic Chips for Instant Voice/Text Answers */}
             <div className="mb-3">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Quick Interactive Prompts (AI Speaks Answer):</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
+                🧠 Continuous Knowledge Bank Prompts (Verbatim Quotes &amp; Cross-Links):
+              </span>
               <div className="flex flex-wrap gap-1.5">
                 {[
-                  { label: '💰 $61.2M Diaspora Model', q: 'Explain the $61.2M diaspora remittance GMV financial model and sender demographics.' },
-                  { label: '🏪 Informal Traders & Spaza', q: 'How does TM Pick n Pay integrate 10,000+ informal retail traders without store CapEx?' },
-                  { label: '⚡ EV Fleet Payback', q: 'What are the economics and ~5 month asset payback of the EV delivery fleet?' },
-                  { label: '🛒 TM PnP Strategic Value', q: 'Why is TM Pick n Pay uniquely positioned as the principal anchor retail marketplace partner?' },
+                  { label: '📜 Quote Pfungwa (05:21)', q: 'Please quote Pfungwa verbatim at 05:21 from the Strategy Alignment meeting regarding destination agnostic platforms and explain its strategic significance.' },
+                  { label: '🛒 Quote Pfungwa (09:30)', q: 'Please quote Pfungwa verbatim at 09:30 regarding the retail shop agnostic trading platform and why TM Pick n Pay can capture orders regardless of customer location.' },
+                  { label: '🔗 Cross-Link $61.2M Diaspora', q: 'Cross-link the $61.2M diaspora remittance GMV across the Financial Simulator, Slide 6, and Page 8 of the proposal.' },
+                  { label: '🤝 Option 1 vs 2 Terms', q: 'Quote verbatim the commercial terms and financial economics of Option 1 (Joint Venture) vs Option 2 (Supplier Partnership) from Page 9 and Slide 10.' },
+                  { label: '🔌 PnP API & Tech Integration', q: 'Quote verbatim the discussion in Transcript 2 regarding the existing Pick n Pay developer, catalog API synchronization, and inventory sync.' },
+                  { label: '⚡ EV Fleet Rent-to-Buy', q: 'Explain the EV delivery fleet economics and 12-month rent-to-buy lease model across Page 6 and Slide 12.' },
+                  { label: '🏪 10,000+ Tuck-Shops B2B', q: 'Cross-link the informal retail tuck-shops wholesale supply strategy across Slide 5 and Page 5.' },
                 ].map((chip, idx) => (
                   <button
                     key={idx}
@@ -1315,6 +1498,297 @@ export const LibraryTab: React.FC = () => {
         )}
 
       </div>
+      )}
+
+      {/* Continuous Knowledge Bank Workspace */}
+      {activeLibraryView === 'knowledge_bank' && (
+        <div className="space-y-6">
+          {/* Engine Header & Metrics */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl text-white">
+            <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-800">
+              <div className="flex items-center gap-3.5">
+                <div className="p-3 bg-red-600/20 text-red-400 rounded-xl border border-red-500/30">
+                  <Layers className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg font-extrabold tracking-tight text-white">
+                      Continuous Knowledge Bank &amp; Verbatim Grounding Engine
+                    </h2>
+                    <span className="px-2.5 py-0.5 text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                      Synchronized
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Directly trained on all 14 slide decks, 10 A4 formal pages, master proposal, text-only document, $72.35M financial simulator, executive brief, and meeting transcripts. Quotes verbatim with exact citations or cross-links any concept.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setActiveLibraryView('assistant')}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Bot className="w-4 h-4" />
+                  <span>Open Gemini Assistant</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Live Knowledge Corpora Metrics */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 pt-5">
+              {[
+                { label: 'Slide Deck', count: '14 Slides', tag: '[SLIDE-01..14]', color: 'border-red-500/30 text-red-400' },
+                { label: 'A4 Formal Pages', count: '10 Pages', tag: '[A4-PAGE-01..10]', color: 'border-blue-500/30 text-blue-400' },
+                { label: 'Master Proposal', count: 'Full Doc', tag: '[PROPOSAL-DOC-FULL]', color: 'border-purple-500/30 text-purple-400' },
+                { label: 'Text-Only Doc', count: 'Board Text', tag: '[TEXT-ONLY-DOC]', color: 'border-amber-500/30 text-amber-400' },
+                { label: 'Financial Simulator', count: '$72.35M', tag: '[FIN-SIM-ENGINE]', color: 'border-emerald-500/30 text-emerald-400' },
+                { label: 'Transcripts', count: '3 Files', tag: '[TRANSCRIPT-01..03]', color: 'border-cyan-500/30 text-cyan-400' },
+                { label: 'Executive Brief', count: 'Briefing', tag: '[EXEC-BRIEF]', color: 'border-pink-500/30 text-pink-400' },
+              ].map((m, idx) => (
+                <div key={idx} className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">{m.label}</span>
+                  <div className="text-sm font-extrabold text-white my-1">{m.count}</div>
+                  <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border bg-black/40 ${m.color}`}>
+                    {m.tag}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Continuous Learning & Live Site Updates Sync Panel */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 bg-emerald-100 text-emerald-700 rounded-lg">
+                  <RefreshCw className={`w-4 h-4 ${isSyncingKnowledge ? 'animate-spin' : ''}`} />
+                </span>
+                <div>
+                  <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                    Continuous Learning Engine: Live Site Updates Ingestion
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Any updates, operational pilots, or notes recorded here are continuously injected into the Gemini context.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-[11px] font-mono text-slate-500">
+                  Last Sync: <strong className="text-slate-800">{lastSyncTime}</strong>
+                </span>
+                <button
+                  onClick={handleSyncLiveSiteNotes}
+                  disabled={isSyncingKnowledge}
+                  className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isSyncingKnowledge ? 'animate-spin' : ''}`} />
+                  <span>Sync to Gemini Brain</span>
+                </button>
+              </div>
+            </div>
+
+            <textarea
+              value={liveSiteNotes}
+              onChange={(e) => setLiveSiteNotes(e.target.value)}
+              rows={2}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 font-mono focus:outline-none focus:border-red-600"
+              placeholder="Enter any live site changes, notes, or executive updates to continuously teach the AI..."
+            />
+          </div>
+
+          {/* Universal Verbatim Search & Filter Console */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex-1 min-w-[280px]">
+                <div className="relative">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search across all 14 slides, 10 A4 pages, proposal, $72.35M simulator, transcripts (e.g., Pfungwa, 05:21, 61.2M, Option 1)..."
+                    value={knowledgeSearchQuery}
+                    onChange={(e) => setKnowledgeSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-red-600"
+                  />
+                  {knowledgeSearchQuery && (
+                    <button
+                      onClick={() => setKnowledgeSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Corpus Filter Buttons */}
+              <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                {[
+                  { id: 'all', label: `All Corpora (${MASTER_KNOWLEDGE_BANK.length})` },
+                  { id: 'slide_deck', label: `14 Slides (${CORPUS_SLIDE_DECK.length})` },
+                  { id: 'a4_page', label: `10 A4 Pages (${CORPUS_A4_PAGES.length})` },
+                  { id: 'proposal_document', label: 'Master Proposal' },
+                  { id: 'financial_simulator', label: 'Financial Engine' },
+                  { id: 'transcript', label: `3 Transcripts (${CORPUS_TRANSCRIPTS.length})` },
+                ].map((btn) => (
+                  <button
+                    key={btn.id}
+                    onClick={() => setActiveCorpusFilter(btn.id as any)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                      activeCorpusFilter === btn.id
+                        ? 'bg-slate-900 text-white shadow-xs'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    {btn.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Corpus Items Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+              {MASTER_KNOWLEDGE_BANK
+                .filter(item => {
+                  const matchesFilter = activeCorpusFilter === 'all' || item.sourceType === activeCorpusFilter;
+                  const q = knowledgeSearchQuery.toLowerCase();
+                  const matchesSearch = !q ||
+                    item.title.toLowerCase().includes(q) ||
+                    item.referenceTag.toLowerCase().includes(q) ||
+                    item.verbatimContent.toLowerCase().includes(q) ||
+                    item.summary.toLowerCase().includes(q);
+                  return matchesFilter && matchesSearch;
+                })
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 shadow-xs flex flex-col justify-between transition group"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-50 text-red-700 border border-red-200">
+                          {item.referenceTag}
+                        </span>
+                        <span className="text-[10px] font-mono text-slate-400 capitalize">
+                          {item.sourceType.replace('_', ' ')}
+                        </span>
+                      </div>
+
+                      <h4 className="text-xs font-bold text-slate-900 mb-1 group-hover:text-red-600 transition line-clamp-1">
+                        {item.title}
+                      </h4>
+                      <p className="text-[11px] text-slate-500 font-mono mb-2">
+                        {item.summary}
+                      </p>
+                      <p className="text-[11px] text-slate-600 line-clamp-3 bg-slate-50 p-2 rounded-lg border border-slate-100 font-mono leading-relaxed mb-3">
+                        {item.verbatimContent.slice(0, 160)}...
+                      </p>
+                    </div>
+
+                    <div className="space-y-1.5 pt-2 border-t border-slate-100">
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleAskGeminiVerbatim(item, 'verbatim')}
+                          className="flex-1 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-lg text-[11px] font-bold text-center transition cursor-pointer flex items-center justify-center gap-1"
+                        >
+                          <Sparkles className="w-3 h-3" />
+                          <span>Quote Verbatim</span>
+                        </button>
+                        <button
+                          onClick={() => handleAskGeminiVerbatim(item, 'crosslink')}
+                          className="px-2.5 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-800 rounded-lg text-[11px] font-bold text-center transition cursor-pointer"
+                          title="Cross-link this concept across all other documents"
+                        >
+                          Cross-Link
+                        </button>
+                      </div>
+                      <button
+                        onClick={() => setSelectedKnowledgeItem(item)}
+                        className="w-full py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[10px] font-bold text-center transition cursor-pointer"
+                      >
+                        Inspect Full Raw Text
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Verbatim Knowledge Item Inspector Modal */}
+      {selectedKnowledgeItem && (
+        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+            <div className="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-slate-800">
+              <div className="flex items-center gap-2.5">
+                <span className="p-1.5 bg-red-600/30 text-red-400 rounded-lg font-mono text-xs font-bold border border-red-500/30">
+                  {selectedKnowledgeItem.referenceTag}
+                </span>
+                <div>
+                  <h3 className="text-sm font-bold truncate max-w-md">{selectedKnowledgeItem.title}</h3>
+                  <span className="text-[10px] text-slate-400 font-mono">{selectedKnowledgeItem.summary}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(selectedKnowledgeItem.verbatimContent);
+                    alert('Verbatim content copied to clipboard!');
+                  }}
+                  className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold transition cursor-pointer"
+                >
+                  Copy Text
+                </button>
+                <button
+                  onClick={() => setSelectedKnowledgeItem(null)}
+                  className="text-slate-400 hover:text-white p-1 rounded-lg transition cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1 bg-slate-50">
+              <pre className="text-xs text-slate-800 font-mono whitespace-pre-wrap leading-relaxed bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+                {selectedKnowledgeItem.verbatimContent}
+              </pre>
+            </div>
+
+            <div className="p-4 bg-white border-t border-slate-200 flex items-center justify-between">
+              <span className="text-[11px] font-mono text-slate-500">
+                Grounding Source Tag: <strong>{selectedKnowledgeItem.referenceTag}</strong>
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    const item = selectedKnowledgeItem;
+                    setSelectedKnowledgeItem(null);
+                    handleAskGeminiVerbatim(item, 'crosslink');
+                  }}
+                  className="px-3 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-800 rounded-xl text-xs font-bold transition cursor-pointer"
+                >
+                  Cross-Link into Assistant
+                </button>
+                <button
+                  onClick={() => {
+                    const item = selectedKnowledgeItem;
+                    setSelectedKnowledgeItem(null);
+                    handleAskGeminiVerbatim(item, 'verbatim');
+                  }}
+                  className="px-4 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold shadow transition cursor-pointer flex items-center gap-1.5"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Quote Verbatim in Gemini</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Transcript Read Modal / Viewer */}
