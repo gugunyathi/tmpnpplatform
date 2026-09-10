@@ -43,7 +43,7 @@ A multi‑million dollar distribution gap exists that can only be closed by an o
 ---
 
 ### 4. Owned Last-Mile Delivery Network
-- **Fleet:** 500 to 2,000 platform-owned electric scooters and heavy-duty cargo e-tricycles.
+- **Fleet:** 500 to 2,000 platform owned scooters and heavy-duty cargo e-tricycles.
 - **Empowerment Model:** 12-month rent-to-buy lease with ~5 month asset payback; ~10% platform fee thereafter.
 - **In-House Garage:** Dedicated maintenance and battery swap network ($18/mo).
 - **Inclusivity:** E-Tricycles deployed for rural/peri-urban routes piloted by women rider collectives.

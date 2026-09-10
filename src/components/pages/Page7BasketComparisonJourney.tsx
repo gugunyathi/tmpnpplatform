@@ -19,7 +19,7 @@ export const Page7BasketComparisonJourney: React.FC<PageProps> = ({ idPrefix, ex
               Full Basket Comparison Engine &amp; Customer Journey
             </h2>
             <p className="text-xs text-slate-600 mt-0.5">
-              Driving diaspora conversion through transparent total family basket savings and single-cluster logistics.
+              Driving repeat customer conversion through transparent total family basket savings and single-cluster logistics.
             </p>
           </div>
 

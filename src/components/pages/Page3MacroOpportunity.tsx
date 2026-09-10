@@ -87,7 +87,7 @@ export const Page3MacroOpportunity: React.FC<PageProps> = ({ idPrefix, extraClas
                 <div className="bg-emerald-50 text-emerald-900 p-1.5 rounded border border-emerald-200">Multi-Currency Rails</div>
                 <div className="bg-slate-900 text-white p-1.5 rounded border border-slate-900">TM PnP Store Hubs</div>
                 <div className="bg-emerald-50 text-emerald-900 p-1.5 rounded border border-emerald-200">Electric Fleet Courier</div>
-                <div className="bg-emerald-600 text-white p-1.5 rounded">Doorstep &amp; Tuckshop</div>
+                <div className="bg-emerald-600 text-white p-1.5 rounded">Doorstep &amp; Informal Trader</div>
               </div>
             </div>
           </div>

@@ -38,9 +38,9 @@ import { PROPOSAL_METADATA } from '../data/proposalData';
 const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   {
     id: 'item-1',
-    title: 'Executive Board Strategy Alignment Meeting (Gugu Nyathi, Pfungwa, Boni Muvevi)',
+    title: 'Executive_Board_Strategy_Alignment_Meeting_2026-09-09.txt',
     type: 'transcript',
-    category: 'Board Meetings',
+    category: 'Transcripts',
     date: '2026-09-09',
     size: '142 KB',
     duration: '26:14',
@@ -52,9 +52,9 @@ Speaker 1 00:14: Okay, we've got Google here. Google like you to meet Funga. Goo
 pfungwa 00:33: No worries, man. Thanks.
 Speaker 1 00:35: Okay, so I'm not sure how much you have seen so far, but I'm quickly just gonna share my screen to show you what we've been up to, right? Can you see my screen?
 pfungwa 00:47: Yes.
-Speaker 1 00:48: Okay. All right. So first and foremost, I think the the proposal was pick and pay online, right? So TMPNP. So in my research, I found out that they already have a an online shopping system, right? And you can select this is this is the pick and the existing pick and pay online shopping experience, but it's a click to collect. So you you buy stuff at your cart, and then you go and pick it up from any of their shops. So it seems it doesn't currently have a delivery service. Okay, so I think our approach, therefore, would be to rather offer, sorry, to enhance what they already have, right? Which would be to offer a shopping experience for people located in the diaspora, who then buy using their local currencies there, and can have a shared cart. So this is the the prototype that I did. Okay, so it allows for you know multiple people. So these all would be like family members. They can do this on a live shopping experience, or they can just do it as a generic. You know, send something to an app. So whoever initiates the app would add other users. So they would add users, send them a code by number, and they would add them to a shopping cart. And various members from different, you know, with different mobile numbers, could all come together and participate in one shopping experience. Okay, this could be via a live call or or via just a generic shopping experience. And then for the people in back home who don't have, you0 know, maybe they might not have access to data, or it might be the older people, right? We will integrate this WhatsApp a WhatsApp platform where there's a WhatsApp chatbot that allows is integrated into the same app. So, like an Ambula could just speak in a language, and she could just type in, you know, whatever she wants, and then the AI would add it to the cart, and then whoever makes the payment on the other side would pay, you know, or the family members would split the payments across all of them. Okay, so just to simulate a quick one, I'll just show you here. Obviously, I'm just gonna simulate a quick one. So this could be a live call with multiple people. So it could be all of us.
+Speaker 1 00:48: Okay. All right. So first and foremost, I think the the proposal was pick and pay online, right? So TMPNP. So in my research, I found out that they already have a an online shopping system, right? And you can select this is this is the pick and the existing pick and pay online shopping experience, but it's a click to collect. So you you buy stuff at your cart, and then you go and pick it up from any of their shops. So it seems it doesn't currently have a delivery service. Okay, so I think our approach, therefore, would be to rather offer, sorry, to enhance what they already have, right? Which would be to offer a shopping experience for people located in the diaspora, who then buy using their local currencies there, and can have a shared cart. So this is the the prototype that I did. Okay, so it allows for you know multiple people. So these all would be like family members. They can do this on a live shopping experience, or they can just do it as a generic. You know, send something to an app. So whoever initiates the app would add other users. So they would add users, send them a code by number, and they would add them to a shopping cart. And various members from different, you know, with different mobile numbers, could all come together and participate in one shopping experience. Okay, this could be via a live call or or via just a generic shopping experience. And then for the people in back home who don't have, you know, maybe they might not have access to data, or it might be the older people, right? We will integrate this WhatsApp a WhatsApp platform where there's a WhatsApp chatbot that allows is integrated into the same app. So, like an Ambula could just speak in a language, and she could just type in, you know, whatever she wants, and then the AI would add it to the cart, and then whoever makes the payment on the other side would pay, you know, or the family members would split the payments across all of them. Okay, so just to simulate a quick one, I'll just show you here. Obviously, I'm just gonna simulate a quick one. So this could be a live call with multiple people. So it could be all of us.
 pfungwa 03:34: just a quick one, right? I mean, it's yeah the the shopping experience is on the on the local grocery database.
-Speaker 1 03:47: Yeah, so it it will be integrated to the local their local databases. So they could probably give us an API to be able to plug into their current app because they already have the TM PMP online, right? Yeah. So it will be an integration either via this app. So this there's a company that built this for them. So we could integrate with that company. So we would offer the diaspora angle, and then locally, I think we would then obviously need to offer a physical, you know, delivery service, right? Because currently they don't have that. They don't have the, you know, the scooters and the sort of the logistical system for that, right? Yeah. So yeah, we we would.
+Speaker 1 03:47: Yeah, so it it will be integrated to the local their local databases. So they could probably give us an API to be able to plug into their current app because they already have the TM PMP online, right? Yeah. So it will be an integration either via this app. So this there's a company that built this for them. So we could integrate with that company. So we would offer the diaspora angle, and then locally, I think we would then obviously need to offer a physical, you0 know, delivery service, right? Because currently they don't have that. They don't have the, you know, the scooters and the sort of the logistical system for that, right? Yeah. So yeah, we we would.
 pfungwa 04:30: So tell me, it will be that. Yeah.
 pfungwa 04:32: Yeah. So tell me on the local platform, right? Does it have the same feature where you can add a few people to participate in the purchase or not?
 Speaker 1 04:43: No, it doesn't have that. So it's a single shopping cart system, where so this is a local one I'm showing you now. Yes. So it can add products. Yes, it's your just your normal pick and pay app like we have in South Africa. Yeah, so check out. Yeah, so it doesn't have all of that.
@@ -64,18 +64,18 @@ pfungwa 09:30: Hold something at the back of your mind, which could be a Retail 
   },
   {
     id: 'item-2',
-    title: 'Strategy Alignment Audio Recording (Call Session 1)',
+    title: 'Strategy_Alignment_Audio_Recording_2026-09-09.ogg',
     type: 'audio',
     category: 'Audio Recordings',
     date: '2026-09-09',
     size: '18.4 MB',
     duration: '26:14',
-    audioUrl: 'https://actions.google.com/sounds/v1/ambiences/office_ambient.ogg', // Sample playable audio stream
+    audioUrl: 'https://actions.google.com/sounds/v1/ambiences/office_ambient.ogg',
     transcriptText: 'Strategy Alignment Recording. Participants: Gugu Nyathi, Pfungwa, Boni Muvevi. Topics: TM Pick n Pay integration, Optimization Gap (Diaspora Market, Informal Retail Traders, Customer Convenience), EV fleet rent-to-buy model, and multi-currency acquiring rails.'
   },
   {
     id: 'item-3',
-    title: 'TM Pick n Pay Marketplace & Last-Mile Infrastructure Proposal (V2.4)',
+    title: 'TM_Pick_n_Pay_Marketplace_Proposal_2026-09-01.pdf',
     type: 'pdf',
     category: 'Formal Proposals',
     date: '2026-09-01',
@@ -84,12 +84,39 @@ pfungwa 09:30: Hold something at the back of your mind, which could be a Retail 
   },
   {
     id: 'item-4',
-    title: 'Executive Board Presentation Deck (14 Slides)',
+    title: 'Executive_Board_Presentation_Deck_2026-09-05.pptx',
     type: 'presentation',
     category: 'Presentations',
     date: '2026-09-05',
     size: '5.1 MB',
     content: 'Full slide deck covering Foundation, Optimization Gap, Value Proposition, Financials ($61.2M Baseline GMV), EV Fleet Specs, and Commercial Options.'
+  },
+  {
+    id: 'item-5',
+    title: 'Full_Meeting_Transcription_OtterAI_2026-09-09.txt',
+    type: 'transcript',
+    category: 'Transcripts',
+    date: '2026-09-09',
+    size: '98 KB',
+    duration: '26:14',
+    transcriptText: `[inaudible] [inaudible] [inaudible] [inaudible] [inaudible] [inaudible] Okay. I think the biggest risk here is, but I guess I wouldn't call it a risk to say, but it is, for some extent, they already have someone someone who developed this system for them. So I think the one question that could always ask is, why we can always get our guide to edit dash for a link. Why do we need you guys? What are you going to bring to the team? [INAUDIBLE] Mayor, and inside of what we are talking to if we are below half the relationship. We are coming out of a place where we have six weight meters. So I think that's that what I want to do. Otherwise, if we are going to be doing the hard and still. Yeah. It's tough. It's a little bit short. Yeah. Okay. Do you guys do you envision a situation where they say, okay, partner up with the other guys since he's already developed the... I wouldn't know about it. No, there's that sort. Yeah. Okay. I don't know what it is. Yeah. Because then we have to look at the dynamic that we have with the current developer. How do we-- because he's already got the integration to the API to the sim switch, the payments platform locally. The whole thing is already integrated. So either way for us to push this to the market faster, we have to leverage that guy who's developed this thing, the website for P P campaign. We don't have to integrate via somehow. He has to help us with that integration.`
+  },
+  {
+    id: 'item-6',
+    title: 'Strategy_Discussion_Gugu_Pfungwa_Boni_Zion_2026-09-09.txt',
+    type: 'transcript',
+    category: 'Transcripts',
+    date: '2026-09-09',
+    size: '115 KB',
+    duration: '26:14',
+    transcriptText: `Gugu Nyathi: Uh. I think it's on mute. So, you guys can unmute yourself. Yeah, and Zion is on mute. You can unmute when you want to talk. I think Mr Funko is still on mute. Okay. Greetings. How are you doing?
+Pfungwa: Very well. Very well, thank you. Thank you.
+Gugu Nyathi: Okay, so I think it's over to you, Bonnie, and fungua.
+Boni Muvevi: I think, maybe, uh, Google, if you can just start. Just taking us through the updated version, and then we can take it from there.
+Gugu Nyathi: Yeah.
+Boni Muvevi: Google. Let's just go back to the. Cuz I think that's the first page.
+Gugu Nyathi: Okay.
+Boni Muvevi: I think just. So that we, we quite clear on. On the Gap and the value proposition.`
   }
 ];
 
@@ -97,8 +124,11 @@ export const LibraryTab: React.FC = () => {
   const [items, setItems] = useState<LibraryItem[]>(INITIAL_LIBRARY_ITEMS);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [activeLibraryView, setActiveLibraryView] = useState<'all' | 'assistant' | 'editor' | 'transcripts' | 'player'>('all');
   const [activePlayerItem, setActivePlayerItem] = useState<LibraryItem | null>(INITIAL_LIBRARY_ITEMS[1]); // Default to audio item
   const [activeViewerItem, setActiveViewerItem] = useState<LibraryItem | null>(null);
+  const [readerMode, setReaderMode] = useState<'scroll' | 'paginate'>('scroll');
+  const [readerPage, setReaderPage] = useState(0);
 
   // Audio Player State
   const [isPlaying, setIsPlaying] = useState(false);
@@ -120,6 +150,113 @@ export const LibraryTab: React.FC = () => {
   const [isAiProcessing, setIsAiProcessing] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isRealtimeVoiceActive, setIsRealtimeVoiceActive] = useState(false);
+  const recognitionRef = useRef<any>(null);
+
+  const startRealtimeVoiceConversation = () => {
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      alert('Speech Recognition is not supported in this browser. Please use Chrome or Edge for voice chat.');
+      return;
+    }
+    setIsRealtimeVoiceActive(true);
+    runVoiceListeningLoop();
+  };
+
+  const stopRealtimeVoiceConversation = () => {
+    setIsRealtimeVoiceActive(false);
+    setIsListening(false);
+    setIsSpeaking(false);
+    if (recognitionRef.current) {
+      try { recognitionRef.current.stop(); } catch(e) {}
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
+  const runVoiceListeningLoop = () => {
+    if (!isRealtimeVoiceActive) return;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognitionRef.current = recognition;
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onresult = async (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setIsListening(false);
+        if (!transcript.trim()) return;
+
+        const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        setChatMessages(prev => [...prev, { role: 'user', text: transcript, time: now }]);
+        setIsAiProcessing(true);
+
+        let reply = "Based on our repository transcripts and market knowledge, TM Pick n Pay is uniquely positioned as the principal anchor retail partner.";
+        try {
+          const res = await fetch('/api/gemini-chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: transcript, context: { itemsCount: items.length } })
+          });
+          const data = await res.json();
+          if (data.reply) reply = data.reply;
+        } catch (err) {
+          const lower = transcript.toLowerCase();
+          if (lower.includes('diaspora') || lower.includes('remittance')) {
+            reply = "The diaspora corridor represents 100k to 500k+ active senders across South Africa, UK, USA, and Australia, generating US$61,200,000 in baseline retail GMV.";
+          } else if (lower.includes('spaza') || lower.includes('informal') || lower.includes('trader')) {
+            reply = "Informal township tuck-shops represent a massive wholesale supply gap. TM Pick n Pay can step in as bulk wholesale supplier with zero store CapEx.";
+          } else if (lower.includes('fleet') || lower.includes('delivery') || lower.includes('scooter')) {
+            reply = "The green EV last-mile grid deploys 500 to 2,000 cargo e-tricycles on a 12-month rent-to-buy lease model with ~5 month asset payback.";
+          }
+        }
+
+        setIsAiProcessing(false);
+        setChatMessages(prev => [...prev, { role: 'assistant', text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
+
+        if ('speechSynthesis' in window) {
+          setIsSpeaking(true);
+          const utterance = new SpeechSynthesisUtterance(reply);
+          utterance.rate = 1.0;
+          utterance.onend = () => {
+            setIsSpeaking(false);
+            setTimeout(() => {
+              if (isRealtimeVoiceActive) {
+                runVoiceListeningLoop();
+              }
+            }, 600);
+          };
+          utterance.onerror = () => {
+            setIsSpeaking(false);
+          };
+          window.speechSynthesis.speak(utterance);
+        }
+      };
+
+      recognition.onerror = () => {
+        setIsListening(false);
+        if (isRealtimeVoiceActive) {
+          setTimeout(() => runVoiceListeningLoop(), 1000);
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } catch (e) {
+      setIsListening(false);
+    }
+  };
 
   // Document Editor & Drafts State
   const [editorTargetDoc, setEditorTargetDoc] = useState('Slide Deck (Slide 3 - The Optimization Gap)');
@@ -330,6 +467,43 @@ export const LibraryTab: React.FC = () => {
         />
       )}
 
+      {/* Top Dedicated Feature Navigation Bar */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 shadow-xl flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          {[
+            { id: 'all', label: 'Knowledge Hub', icon: FolderOpen },
+            { id: 'assistant', label: 'Gemini AI Assistant', icon: Bot },
+            { id: 'editor', label: 'AI Document Editor', icon: Edit3 },
+            { id: 'transcripts', label: 'Transcripts', icon: BookOpen },
+            { id: 'player', label: 'Advanced Audio & Subtitles', icon: Headphones },
+          ].map((tab) => {
+            const IconComponent = tab.icon;
+            const isActive = activeLibraryView === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  setActiveLibraryView(tab.id as any);
+                  if (tab.id === 'transcripts') {
+                    setSelectedCategory('Transcripts');
+                  } else if (tab.id === 'all') {
+                    setSelectedCategory('All');
+                  }
+                }}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+                  isActive
+                    ? 'bg-red-600 text-white shadow-lg shadow-red-600/30 border border-red-500'
+                    : 'bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60'
+                }`}
+              >
+                <IconComponent className={`w-4 h-4 ${isActive ? 'text-white' : 'text-red-400'}`} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Library Top Header & Actions */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center space-x-3.5">
@@ -362,19 +536,21 @@ export const LibraryTab: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Grid: Repository & Advanced Audio Player */}
+      {/* Main Feature Workspaces based on activeLibraryView */}
+      {(activeLibraryView === 'all' || activeLibraryView === 'transcripts' || activeLibraryView === 'player') && (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left / Top: File Repository & Search */}
-        <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+        {(activeLibraryView === 'all' || activeLibraryView === 'transcripts') && (
+        <div className={`${activeLibraryView === 'transcripts' ? 'lg:col-span-12' : 'lg:col-span-7'} bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all duration-300`}>
           <div>
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
               <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-red-600" />
-                Knowledge Base &amp; Repository Files
+                {activeLibraryView === 'transcripts' ? 'Dedicated Transcripts Workspace' : 'Knowledge Base & Repository Files'}
               </h3>
               <div className="flex items-center gap-1.5 text-xs">
-                {['All', 'Board Meetings', 'Audio Recordings', 'Formal Proposals', 'Presentations'].map(cat => (
+                {['All', 'Transcripts', 'Audio Recordings', 'Formal Proposals', 'Presentations'].map(cat => (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
@@ -401,14 +577,14 @@ export const LibraryTab: React.FC = () => {
             </div>
 
             {/* Files List */}
-            <div className="space-y-2.5 max-h-[360px] overflow-y-auto pr-1">
+            <div className={`space-y-2.5 ${activeLibraryView === 'transcripts' ? 'max-h-[500px]' : 'max-h-[360px]'} overflow-y-auto pr-1`}>
               {filteredItems.map(item => (
                 <div
                   key={item.id}
-                  className="p-3 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-xl transition flex items-center justify-between gap-3 group"
+                  className="p-3.5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-xl transition flex items-center justify-between gap-3 group"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className={`p-2 rounded-lg shrink-0 ${
+                    <div className={`p-2.5 rounded-lg shrink-0 ${
                       item.type === 'audio' ? 'bg-amber-100 text-amber-700' :
                       item.type === 'transcript' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'
                     }`}>
@@ -447,10 +623,10 @@ export const LibraryTab: React.FC = () => {
                     {(item.type === 'transcript' || item.transcriptText) && (
                       <button
                         onClick={() => setActiveViewerItem(item)}
-                        className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-xs transition"
+                        className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-xs transition"
                         title="View Transcript in Read Mode"
                       >
-                        <BookOpen className="w-3 h-3" />
+                        <BookOpen className="w-3 h-3 text-red-400" />
                         <span>Read Transcript</span>
                       </button>
                     )}
@@ -471,14 +647,16 @@ export const LibraryTab: React.FC = () => {
             </div>
           </div>
         </div>
+        )}
 
-        {/* Right / Bottom: Advanced Audio & Subtitles Player */}
-        <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl text-white flex flex-col justify-between">
+        {/* Right / Top: Advanced Audio & Subtitles Player */}
+        {(activeLibraryView === 'all' || activeLibraryView === 'player') && (
+        <div className={`${activeLibraryView === 'player' ? 'lg:col-span-12' : 'lg:col-span-5'} bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl text-white flex flex-col justify-between transition-all duration-300`}>
           <div>
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
                 <Headphones className="w-4 h-4 text-amber-400 animate-pulse" />
-                Advanced Audio Player &amp; Live Subtitles
+                Advanced Audio Player &amp; Live Subtitles Workspace
               </h3>
               <span className="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded font-mono text-[10px]">
                 {activePlayerItem ? activePlayerItem.title : 'No Audio Selected'}
@@ -549,7 +727,7 @@ export const LibraryTab: React.FC = () => {
                 </div>
 
                 {/* Live Synchronized Subtitles / Transcript Feed */}
-                <div className="bg-slate-950 border border-slate-800 rounded-xl p-3 h-36 overflow-y-auto text-[11px] font-mono text-slate-300 leading-relaxed space-y-2">
+                <div className={`bg-slate-950 border border-slate-800 rounded-xl p-3 ${activeLibraryView === 'player' ? 'h-64' : 'h-36'} overflow-y-auto text-[11px] font-mono text-slate-300 leading-relaxed space-y-2`}>
                   <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">
                     Live Synchronized Subtitles (Transcript Feed):
                   </div>
@@ -571,14 +749,18 @@ export const LibraryTab: React.FC = () => {
             )}
           </div>
         </div>
+        )}
 
       </div>
+      )}
 
       {/* Gemini AI Intelligent Real-Time Assistant & Document Editor Grid */}
+      {(activeLibraryView === 'all' || activeLibraryView === 'assistant' || activeLibraryView === 'editor') && (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         {/* Gemini AI Real-Time Assistant Chat & Voice */}
-        <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+        {(activeLibraryView === 'all' || activeLibraryView === 'assistant') && (
+        <div className={`${activeLibraryView === 'assistant' ? 'lg:col-span-12' : 'lg:col-span-6'} bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all duration-300`}>
           <div>
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
               <div className="flex items-center gap-2">
@@ -586,18 +768,64 @@ export const LibraryTab: React.FC = () => {
                   <Bot className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Gemini AI Real-Time Assistant</h3>
+                  <h3 className="text-sm font-bold text-slate-900">Gemini AI Real-Time Assistant Workspace</h3>
                   <p className="text-[10px] text-slate-500">Query all transcripts, recordings, proposals &amp; global retail knowledge</p>
                 </div>
               </div>
-              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
-                Online
-              </span>
+              <div className="flex items-center gap-2">
+                {isRealtimeVoiceActive ? (
+                  <button
+                    onClick={stopRealtimeVoiceConversation}
+                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow animate-pulse flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <MicOff className="w-3.5 h-3.5" />
+                    <span>Stop Voice Chat</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={startRealtimeVoiceConversation}
+                    className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Mic className="w-3.5 h-3.5" />
+                    <span>Start Real-Time Voice Chat</span>
+                  </button>
+                )}
+                <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
+                  Online
+                </span>
+              </div>
             </div>
 
+            {/* Realtime voice conversational active status banner */}
+            {isRealtimeVoiceActive && (
+              <div className="bg-purple-900 text-purple-100 p-3 rounded-xl mb-4 flex items-center justify-between shadow-inner">
+                <div className="flex items-center gap-3">
+                  <div className="relative flex items-center justify-center w-8 h-8 bg-purple-600 rounded-full">
+                    <Mic className="w-4 h-4 text-white animate-bounce" />
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
+                  </div>
+                  <div>
+                    <div className="text-xs font-extrabold flex items-center gap-2">
+                      <span>Real-Time Voice Conversation Active</span>
+                      {isListening && <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded font-mono">🔴 Listening... Speak now</span>}
+                      {isSpeaking && <span className="text-[10px] bg-emerald-500 text-white px-1.5 py-0.5 rounded font-mono">🔊 AI Speaking...</span>}
+                      {isAiProcessing && <span className="text-[10px] bg-amber-500 text-white px-1.5 py-0.5 rounded font-mono">✨ Processing...</span>}
+                    </div>
+                    <p className="text-[10px] text-purple-300 mt-0.5">Gemini is listening continuously. Speak naturally—it responds back aloud and keeps the conversation flowing.</p>
+                  </div>
+                </div>
+                <button
+                  onClick={stopRealtimeVoiceConversation}
+                  className="px-2.5 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-bold transition"
+                >
+                  End Chat
+                </button>
+              </div>
+            )}
+
             {/* Chat Messages Box */}
-            <div className="space-y-3 max-h-[280px] overflow-y-auto mb-4 pr-1">
+            <div className={`space-y-3 ${activeLibraryView === 'assistant' ? 'max-h-[420px]' : 'max-h-[280px]'} overflow-y-auto mb-4 pr-1`}>
               {chatMessages.map((msg, i) => (
                 <div key={i} className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'assistant' && (
@@ -658,9 +886,11 @@ export const LibraryTab: React.FC = () => {
             </button>
           </form>
         </div>
+        )}
 
         {/* AI Document Editor & Preview with Drafts */}
-        <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+        {(activeLibraryView === 'all' || activeLibraryView === 'editor') && (
+        <div className={`${activeLibraryView === 'editor' ? 'lg:col-span-12' : 'lg:col-span-6'} bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all duration-300`}>
           <div>
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
               <div className="flex items-center gap-2">
@@ -668,7 +898,7 @@ export const LibraryTab: React.FC = () => {
                   <Edit3 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">AI Document Editor &amp; Drafts</h3>
+                  <h3 className="text-sm font-bold text-slate-900">AI Document Editor &amp; Drafts Workspace</h3>
                   <p className="text-[10px] text-slate-500">Instruct AI to edit proposals or slide decks with live preview</p>
                 </div>
               </div>
@@ -738,7 +968,7 @@ export const LibraryTab: React.FC = () => {
               {/* Saved Drafts List */}
               <div className="border-t border-slate-100 pt-3">
                 <h4 className="text-[11px] font-bold text-slate-700 uppercase mb-2">Saved Drafts Review:</h4>
-                <div className="space-y-2 max-h-28 overflow-y-auto">
+                <div className="space-y-2 max-h-36 overflow-y-auto">
                   {drafts.map(draft => (
                     <div key={draft.id} className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
                       <div>
@@ -758,46 +988,118 @@ export const LibraryTab: React.FC = () => {
             </div>
           </div>
         </div>
+        )}
 
       </div>
+      )}
 
       {/* Transcript Read Modal / Viewer */}
-      {activeViewerItem && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-slate-800">
-              <div className="flex items-center gap-2.5">
-                <BookOpen className="w-5 h-5 text-red-500" />
-                <div>
-                  <h3 className="text-sm font-bold truncate">{activeViewerItem.title}</h3>
-                  <span className="text-[10px] text-slate-400 font-mono">Read Mode • {activeViewerItem.date}</span>
+      {activeViewerItem && (() => {
+        const fullText = activeViewerItem.transcriptText || activeViewerItem.content || 'No transcript text available.';
+        const CHUNK_SIZE = 1200;
+        const pages = [];
+        let i = 0;
+        while (i < fullText.length) {
+          pages.push(fullText.slice(i, i + CHUNK_SIZE));
+          i += CHUNK_SIZE;
+        }
+
+        return (
+          <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+              <div className="bg-slate-900 text-white p-4 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
+                <div className="flex items-center gap-2.5">
+                  <BookOpen className="w-5 h-5 text-red-500" />
+                  <div>
+                    <h3 className="text-sm font-bold truncate max-w-md">{activeViewerItem.title}</h3>
+                    <span className="text-[10px] text-slate-400 font-mono">Read Mode • {activeViewerItem.date}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  {/* Reader Mode Toggle */}
+                  <div className="bg-slate-800 p-1 rounded-xl flex items-center text-[11px] font-bold">
+                    <button
+                      onClick={() => setReaderMode('scroll')}
+                      className={`px-3 py-1 rounded-lg transition ${readerMode === 'scroll' ? 'bg-red-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                    >
+                      Full Scroll
+                    </button>
+                    <button
+                      onClick={() => { setReaderMode('paginate'); setReaderPage(0); }}
+                      className={`px-3 py-1 rounded-lg transition ${readerMode === 'paginate' ? 'bg-red-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                    >
+                      Ebook Pages ({pages.length})
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={() => setActiveViewerItem(null)}
+                    className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center font-bold text-xs transition"
+                  >
+                    ✕
+                  </button>
                 </div>
               </div>
-              <button
-                onClick={() => setActiveViewerItem(null)}
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center font-bold text-xs"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="p-6 overflow-y-auto text-xs font-mono text-slate-800 leading-relaxed whitespace-pre-wrap bg-slate-50 flex-1">
-              {activeViewerItem.transcriptText || activeViewerItem.content || 'No transcript text available.'}
-            </div>
-            <div className="p-3 bg-white border-t border-slate-200 flex items-center justify-between text-xs">
-              <span className="text-slate-500 font-mono">Document Code: {PROPOSAL_METADATA.documentCode}</span>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(activeViewerItem.transcriptText || activeViewerItem.content || '');
-                  alert('Transcript text copied to clipboard!');
-                }}
-                className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold shadow transition"
-              >
-                Copy Transcript Text
-              </button>
+
+              {/* Modal Body */}
+              <div className="p-6 overflow-y-auto text-xs font-mono text-slate-800 leading-relaxed whitespace-pre-wrap bg-slate-50 flex-1 min-h-[350px]">
+                {readerMode === 'scroll' ? (
+                  <div>{fullText}</div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="p-4 bg-white border border-slate-200 rounded-xl shadow-xs">
+                      {pages[readerPage] || 'End of transcript.'}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-3.5 bg-white border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+                {readerMode === 'paginate' ? (
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setReaderPage(p => Math.max(0, p - 1))}
+                      disabled={readerPage === 0}
+                      className="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 disabled:opacity-50 text-slate-700 rounded-lg font-bold transition"
+                    >
+                      Previous Page
+                    </button>
+                    <span className="font-mono text-slate-600">
+                      Page {readerPage + 1} of {pages.length}
+                    </span>
+                    <button
+                      onClick={() => setReaderPage(p => Math.min(pages.length - 1, p + 1))}
+                      disabled={readerPage === pages.length - 1}
+                      className="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 disabled:opacity-50 text-slate-700 rounded-lg font-bold transition"
+                    >
+                      Next Page
+                    </button>
+                  </div>
+                ) : (
+                  <span className="text-slate-500 font-mono">Document Code: {PROPOSAL_METADATA.documentCode}</span>
+                )}
+
+                <div className="flex items-center gap-2">
+                  {readerMode === 'scroll' && (
+                    <span className="text-slate-500 font-mono">Document Code: {PROPOSAL_METADATA.documentCode}</span>
+                  )}
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(fullText);
+                      alert('Transcript text copied to clipboard!');
+                    }}
+                    className="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold shadow transition flex items-center gap-1.5"
+                  >
+                    <span>Copy Transcript Text</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Upload Modal */}
       {showUploadModal && (
@@ -832,9 +1134,8 @@ export const LibraryTab: React.FC = () => {
                   onChange={(e) => setUploadCategory(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-red-600"
                 >
-                  <option value="Board Meetings">Board Meetings</option>
-                  <option value="Audio Recordings">Audio Recordings</option>
                   <option value="Transcripts">Transcripts</option>
+                  <option value="Audio Recordings">Audio Recordings</option>
                   <option value="Formal Proposals">Formal Proposals</option>
                   <option value="Presentations">Presentations</option>
                 </select>

@@ -106,7 +106,7 @@ export const BASKET_COMPARISON_DATA: BasketComparisonItem[] = [
 ];
 
 export const FLEET_SPECS = [
-  { metric: "Fleet Size", value: "500 – 2,000 Units", detail: "Platform-owned electric scooters and heavy-duty cargo e-tricycles" },
+  { metric: "Fleet Size", value: "500 – 2,000 Units", detail: "Platform owned scooters and heavy-duty cargo e-tricycles" },
   { metric: "Rent-to-Buy Period", value: "12 Months", detail: "Riders pay daily lease installments until full asset ownership transfers" },
   { metric: "Asset Payback", value: "~5 Months", detail: "Capital cost recovered rapidly; months 6 to 12 generate direct profit" },
   { metric: "Post-Ownership Fee", value: "~10% Take Rate", detail: "Perpetual recurring platform connection fee per completed delivery" },

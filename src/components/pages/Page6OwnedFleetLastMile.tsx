@@ -58,7 +58,7 @@ export const Page6OwnedFleetLastMile: React.FC<PageProps> = ({ idPrefix, extraCl
                 <h4 className="text-[11px] font-bold uppercase">Rent-to-Buy Empowerment</h4>
               </div>
               <p className="text-[10px] text-slate-600 leading-relaxed mb-2">
-                Riders pay daily operational lease fees for 12 months, after which they own the electric scooter. The asset repays itself in roughly 5 months; remaining months provide software margin.
+                Riders pay daily operational lease fees for 12 months, after which they own the scooter. The asset repays itself in roughly 5 months; remaining months provide software margin.
               </p>
               <div className="text-[9px] bg-blue-50 text-blue-800 p-1.5 rounded font-medium">
                 Drives exceptional rider retention, vehicle care, and SLA reliability.

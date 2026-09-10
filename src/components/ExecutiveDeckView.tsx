@@ -813,12 +813,11 @@ function getSlideBody(slideNum: number, isPrintExport: boolean) {
                   Legacy System — Store-Bound Click &amp; Collect
                 </span>
               </div>
-              <div className="grid grid-cols-5 gap-2 text-center text-xs">
+              <div className="grid grid-cols-4 gap-2 text-center text-xs">
                 <div className="bg-slate-50 border border-slate-200 p-2 rounded font-medium text-slate-700">Local Shopper</div>
                 <div className="bg-slate-50 border border-slate-200 p-2 rounded font-medium text-slate-700">Web / App Order</div>
                 <div className="bg-red-50 border border-red-200 p-2 rounded font-semibold text-red-700">Recipient Travel Required</div>
                 <div className="bg-slate-50 border border-slate-200 p-2 rounded font-medium text-slate-700">Urban Flagship Branch Only</div>
-                <div className="bg-red-50 border border-red-200 p-2 rounded font-semibold text-red-700">Informal Transporter Risk</div>
               </div>
             </div>
 
@@ -835,7 +834,7 @@ function getSlideBody(slideNum: number, isPrintExport: boolean) {
                 <div className="bg-emerald-50 border border-emerald-200 p-2 rounded font-medium text-emerald-900">Multi-Currency Gateway</div>
                 <div className="bg-red-600 text-white p-2 rounded font-bold shadow-sm">TM Pick n Pay Anchor Retail Node</div>
                 <div className="bg-slate-100 border border-slate-200 p-2 rounded font-medium text-slate-800">Courier &amp; Informal Fleet</div>
-                <div className="bg-emerald-50 border border-emerald-200 p-2 rounded font-semibold text-emerald-800">Direct Door &amp; Tuckshop</div>
+                <div className="bg-emerald-50 border border-emerald-200 p-2 rounded font-semibold text-emerald-800">Direct Door &amp; Informal Trader</div>
               </div>
             </div>
 
@@ -1251,7 +1250,7 @@ function getSlideBody(slideNum: number, isPrintExport: boolean) {
         <div className="space-y-4">
           <div>
             <h2 className="text-xl font-black text-slate-900 tracking-tight">
-              Full basket comparison drives diaspora conversion
+              Full basket comparison drives repeat customer conversion
             </h2>
           </div>
 
@@ -1332,7 +1331,7 @@ function getSlideBody(slideNum: number, isPrintExport: boolean) {
           <div className="grid grid-cols-4 gap-3">
             <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-1">
               <div className="text-2xl font-black text-slate-900">500–2,000</div>
-              <p className="text-[11px] text-slate-600">Platform-owned electric scooters</p>
+              <p className="text-[11px] text-slate-600">Platform owned scooters</p>
             </div>
 
             <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-1">
