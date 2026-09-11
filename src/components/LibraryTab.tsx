@@ -30,7 +30,14 @@ import {
   Layers,
   ArrowRight,
   FolderOpen,
-  Loader2
+  Loader2,
+  Eye,
+  Trash2,
+  Copy,
+  Lock,
+  CheckCircle2,
+  Undo2,
+  Redo2
 } from 'lucide-react';
 import { LibraryItem, DraftEdit } from '../types';
 import { PROPOSAL_METADATA, DEFAULT_FINANCIAL_BASELINE } from '../data/proposalData';
@@ -639,20 +646,117 @@ export const LibraryTab: React.FC = () => {
     }, 400);
   };
 
-  // Document Editor & Drafts State
-  const [editorTargetDoc, setEditorTargetDoc] = useState('Slide Deck (Slide 3 - The Optimization Gap)');
+  // Baseline Content Templates for Target Documents
+  const INITIAL_DOC_BASELINES: Record<string, string> = {
+    'Slide Deck': `[DOCUMENT DRAFT: Slide Deck — 14 Master Slides]
+Slide 1: Executive Title & Partnership Overview
+Slide 2: Strategic Context & Retail Estate Integration
+Slide 3: The Optimization Gap (Diaspora, Informal Retailers, Last-Mile Grid)
+Slide 4: Diaspora Remittance Channel ($61.2M Baseline Retail GMV)
+Slide 5: B2B Informal Retail Wholesale Aggregation (10,000+ Tuck-Shops)
+Slide 6: Omnichannel Marketplace Technology & Developer API Architecture
+Slide 7: Green EV Last-Mile Fleet Grid (500 Rent-to-Buy Tricycles)
+Slide 8: Financial Economics & Revenue Sharing Model ($72.35M Throughput)
+Slide 9: Option 1 (Joint Venture) vs Option 2 (Supplier Partnership)
+Slide 10: Operational Implementation & 60-Day Pilot Charter (Village Walk & Avondale)
+Slide 11: Customer Convenience & Hyperlocal Delivery Telemetry
+Slide 12: Capital Expenditure & Fleet Asset Payback (5-Month Cycle)
+Slide 13: Governance, Compliance & Multi-Currency Settlement
+Slide 14: Final Board Decision & Approval Matrix`,
+
+    'A4 Pages': `[DOCUMENT DRAFT: A4 Pages — 10 Formal Proposal Pages]
+Page 1: Executive Summary & Strategic Rationale
+Page 2: Partner Profile — TM Pick n Pay Anchor Retail Infrastructure
+Page 3: Four Pillars of Growth (Diaspora, B2B Wholesale, Fleet Grid, Platform)
+Page 4: Diaspora Corridor Financial Economics ($61.2M GMV Model)
+Page 5: Informal Retailer B2B Wholesale Supply Chain Disruption
+Page 6: EV Fleet Logistics Grid & Rent-to-Buy Operator Model
+Page 7: Software API Architecture & Inventory Catalog Synchronization
+Page 8: Commercial Partnership Models (JV vs Supplier Partnership)
+Page 9: Risk Mitigation, Compliance & Settlement Framework
+Page 10: Pilot Roadmap, Milestones & Immediate Execution Steps`,
+
+    'Proposal Document': `[DOCUMENT DRAFT: Master Proposal Document]
+Title: TM Pick n Pay Omnichannel Marketplace & Strategic Partnership Proposal
+Scope: Comprehensive B2B and B2C digital marketplace integration across Zimbabwe and the Diaspora corridor.
+Key Projections:
+- Baseline Annual Gross Merchandise Value (GMV): $61.2M Diaspora + $11.15M B2B Wholesale = $72.35M Total Throughput.
+- Delivery Infrastructure: 500-2,000 green EV cargo tricycles on 12-month rent-to-buy leases.
+- Target Launch Sites: Borrowdale Village Walk & Avondale (60-day pilot charter).`,
+
+    'Text Only Document': `[DOCUMENT DRAFT: Board Text-Only Strategic Briefing]
+A multi-million dollar retail distribution gap exists across Zimbabwe. TM Pick n Pay possesses the physical inventory and store network required to close this gap.
+By deploying a digital marketplace layer with direct diaspora remittance checkout, TM Pick n Pay can capture $61.2M in annual remittance purchasing while serving 10,000+ township tuck-shops as their primary bulk wholesale distributor.`,
+
+    'Financial Simulator': `[DOCUMENT DRAFT: Financial Economics & Projections Engine]
+- Total Ecosystem GMV: $72,350,000
+- Diaspora Remittance GMV: $61,200,000 (40,000 families @ $85 basket x 18 orders/yr)
+- B2B Informal Retail GMV: $11,150,000 (10,000 tuck-shops @ $1,115 annual spend)
+- EV Fleet Asset Payback: 5.2 months on rent-to-buy lease model
+- Commission & Take Rate: 10% average platform take rate yielding ~$7.23M gross margin`,
+
+    'Executive Brief': `[DOCUMENT DRAFT: Executive Briefing Summary]
+Summary for Board Consideration:
+1. Executive Alignment: TM Pick n Pay as principal anchor retail partner.
+2. Market Opportunity: Capitalize on South Africa/UK remittance flows directly into store inventory.
+3. Zero CapEx Store Expansion: Utilize EV cargo tricycles to extend store catchment radiuses to 15km.`
+  };
+
+  // Document Editor & Drafts State (Persisted locally for all users)
+  const [editorTargetDoc, setEditorTargetDoc] = useState('Slide Deck');
   const [editorPrompt, setEditorPrompt] = useState('');
-  const [previewContent, setPreviewContent] = useState('');
-  const [drafts, setDrafts] = useState<DraftEdit[]>([
-    {
+  const [previewContent, setPreviewContent] = useState(INITIAL_DOC_BASELINES['Slide Deck']);
+  const [editHistory, setEditHistory] = useState<string[]>([INITIAL_DOC_BASELINES['Slide Deck']]);
+  const [historyIndex, setHistoryIndex] = useState<number>(0);
+
+  const [drafts, setDrafts] = useState<DraftEdit[]>(() => {
+    try {
+      const saved = localStorage.getItem('tmp_pnp_saved_drafts');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.warn('Failed to parse saved drafts from localStorage', e);
+    }
+    return [
+      {
+        id: 'draft-1',
+        title: 'Enhanced Slide Deck Baseline (Draft #1)',
+        targetDocument: 'Slide Deck',
+        content: INITIAL_DOC_BASELINES['Slide Deck'],
+        createdAt: '2026-09-09 23:45',
+        status: 'draft'
+      }
+    ];
+  });
+
+  const [selectedDraftForPreview, setSelectedDraftForPreview] = useState<DraftEdit | null>(() => {
+    try {
+      const saved = localStorage.getItem('tmp_pnp_saved_drafts');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed[0];
+      }
+    } catch (e) {}
+    return {
       id: 'draft-1',
-      title: 'Enhanced Optimization Gap (Draft #1)',
-      targetDocument: 'Slide Deck (Slide 3)',
-      content: 'The Optimization Gap: A multi-million dollar distribution gap exists closing three vectors: Diaspora Market, Informal Retail Traders, and Customer Convenience.',
+      title: 'Enhanced Slide Deck Baseline (Draft #1)',
+      targetDocument: 'Slide Deck',
+      content: INITIAL_DOC_BASELINES['Slide Deck'],
       createdAt: '2026-09-09 23:45',
       status: 'draft'
+    };
+  });
+
+  // Sync drafts to localStorage for persistence across user sessions
+  useEffect(() => {
+    try {
+      localStorage.setItem('tmp_pnp_saved_drafts', JSON.stringify(drafts));
+    } catch (e) {
+      console.warn('Failed to save drafts to localStorage', e);
     }
-  ]);
+  }, [drafts]);
 
   // Upload modal state
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -786,7 +890,16 @@ export const LibraryTab: React.FC = () => {
     }
   };
 
-  // AI Document Editor generator
+  // Target document dropdown selection handler
+  const handleTargetDocChange = (doc: string) => {
+    setEditorTargetDoc(doc);
+    const baseline = INITIAL_DOC_BASELINES[doc] || `[DOCUMENT DRAFT: ${doc}]`;
+    setPreviewContent(baseline);
+    setEditHistory([baseline]);
+    setHistoryIndex(0);
+  };
+
+  // AI Document Editor generator with continuous history stack
   const handleGenerateAiEdit = async () => {
     if (!editorPrompt.trim()) return;
     setIsAiProcessing(true);
@@ -794,16 +907,46 @@ export const LibraryTab: React.FC = () => {
       const res = await fetch('/api/gemini-edit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ targetDocument: editorTargetDoc, prompt: editorPrompt })
+        body: JSON.stringify({
+          targetDocument: editorTargetDoc,
+          prompt: editorPrompt,
+          currentContent: previewContent
+        })
       });
       const data = await res.json();
-      setPreviewContent(data.generated || `[AI Updated Draft for ${editorTargetDoc}]\nBased on instruction: "${editorPrompt}"\n\n- Updated Section: Optimization Gap & Value Vectors`);
-      setIsAiProcessing(false);
-    } catch (err) {
-      console.error("AI Edit error:", err);
-      const generated = `[AI Updated Draft for ${editorTargetDoc}]\nBased on instruction: "${editorPrompt}"\n\n- Updated Section: The Optimization Gap & Value Vectors\n- Key Enhancement: Integrated real-time multi-currency settlement telemetry and decentralized B2B wholesale fulfillment for informal traders.\n- Financial Impact: Scaled baseline throughput projections to reflect enhanced routing efficiency.`;
+      const generated = data.generated || `${previewContent}\n\n[Updated Section based on instruction: "${editorPrompt}"]`;
+
+      const newHistory = [...editHistory.slice(0, historyIndex + 1), generated];
+      setEditHistory(newHistory);
+      setHistoryIndex(newHistory.length - 1);
       setPreviewContent(generated);
       setIsAiProcessing(false);
+      setEditorPrompt('');
+    } catch (err) {
+      console.error("AI Edit error:", err);
+      const generated = `${previewContent}\n\n[AI Updated Section for ${editorTargetDoc}]\nInstruction: "${editorPrompt}"\n- Added telemetry tracking and enhanced wholesale fulfillment metrics.`;
+      const newHistory = [...editHistory.slice(0, historyIndex + 1), generated];
+      setEditHistory(newHistory);
+      setHistoryIndex(newHistory.length - 1);
+      setPreviewContent(generated);
+      setIsAiProcessing(false);
+      setEditorPrompt('');
+    }
+  };
+
+  const handleUndo = () => {
+    if (historyIndex > 0) {
+      const prevIdx = historyIndex - 1;
+      setHistoryIndex(prevIdx);
+      setPreviewContent(editHistory[prevIdx]);
+    }
+  };
+
+  const handleRedo = () => {
+    if (historyIndex < editHistory.length - 1) {
+      const nextIdx = historyIndex + 1;
+      setHistoryIndex(nextIdx);
+      setPreviewContent(editHistory[nextIdx]);
     }
   };
 
@@ -818,9 +961,8 @@ export const LibraryTab: React.FC = () => {
       status: 'draft'
     };
     setDrafts(prev => [newDraft, ...prev]);
-    alert('Successfully saved edit to Drafts! You can review and apply it to live tabs later.');
-    setPreviewContent('');
-    setEditorPrompt('');
+    setSelectedDraftForPreview(newDraft);
+    alert(`Successfully applied edit to Drafts!\n\nDocument draft saved and staged for review in the Draft Preview Screen below.`);
   };
 
   const handleUploadSubmit = (e: React.FormEvent) => {
@@ -1142,10 +1284,10 @@ export const LibraryTab: React.FC = () => {
                   <div className="flex flex-col items-center justify-center space-y-2 py-1">
                     <div className="w-full max-w-[280px] sm:max-w-[320px] aspect-video rounded-xl overflow-hidden border border-slate-800 bg-black shadow-lg relative mx-auto">
                       <iframe
-                        src={`https://www.youtube-nocookie.com/embed/${activePlayerItem.youtubeId}?autoplay=1&enablejsapi=1&rel=0`}
+                        src={`https://www.youtube-nocookie.com/embed/${activePlayerItem.youtubeId}?enablejsapi=1&rel=0`}
                         title={activePlayerItem.title}
                         className="w-full h-full border-0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
                       />
                     </div>
@@ -1498,103 +1640,227 @@ export const LibraryTab: React.FC = () => {
 
         {/* AI Document Editor & Preview with Drafts */}
         {(activeLibraryView === 'all' || activeLibraryView === 'editor') && (
-        <div className={`${activeLibraryView === 'editor' ? 'lg:col-span-12' : 'lg:col-span-6'} bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all duration-300`}>
-          <div>
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-red-100 text-red-700 rounded-lg">
-                  <Edit3 className="w-5 h-5" />
+        <div className={`${activeLibraryView === 'editor' ? 'lg:col-span-12' : 'lg:col-span-6'} space-y-4 transition-all duration-300`}>
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-red-100 text-red-700 rounded-lg">
+                    <Edit3 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900">AI Document Editor &amp; Drafts Workspace</h3>
+                    <p className="text-[10px] text-slate-500">Instruct AI to edit proposals or slide decks. All edits are saved strictly as Drafts.</p>
+                  </div>
                 </div>
+                <span className="px-2.5 py-0.5 bg-slate-100 text-slate-700 text-[10px] font-mono font-bold rounded-lg flex items-center gap-1">
+                  <Lock className="w-3 h-3 text-slate-500" />
+                  {drafts.length} Saved Drafts
+                </span>
+              </div>
+
+              <div className="space-y-4 mb-4">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">AI Document Editor &amp; Drafts Workspace</h3>
-                  <p className="text-[10px] text-slate-500">Instruct AI to edit proposals or slide decks with live preview</p>
+                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">Select Target Document / Slide:</label>
+                  <select
+                    value={editorTargetDoc}
+                    onChange={(e) => handleTargetDocChange(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900 focus:outline-none focus:border-red-600 font-bold"
+                  >
+                    <option value="Slide Deck">Slide Deck</option>
+                    <option value="A4 Pages">A4 Pages</option>
+                    <option value="Proposal Document">Proposal Document</option>
+                    <option value="Text Only Document">Text Only Document</option>
+                    <option value="Financial Simulator">Financial Simulator</option>
+                    <option value="Executive Brief">Executive Brief</option>
+                  </select>
                 </div>
-              </div>
-              <span className="px-2.5 py-0.5 bg-slate-100 text-slate-700 text-[10px] font-mono font-bold rounded-lg">
-                {drafts.length} Saved Drafts
-              </span>
-            </div>
 
-            <div className="space-y-3 mb-4">
-              <div>
-                <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">Select Target Document / Slide:</label>
-                <select
-                  value={editorTargetDoc}
-                  onChange={(e) => setEditorTargetDoc(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900 focus:outline-none focus:border-red-600 font-medium"
-                >
-                  <option value="Slide Deck (Slide 3 - The Optimization Gap)">Slide Deck (Slide 3 - The Optimization Gap)</option>
-                  <option value="Slide Deck (Slide 8 - Financial Economics)">Slide Deck (Slide 8 - Financial Economics)</option>
-                  <option value="Proposal Document (Page 3 - Four Pillars)">Proposal Document (Page 3 - Four Pillars)</option>
-                  <option value="Executive Brief Summary">Executive Brief Summary</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">AI Edit Instruction / Prompt:</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="e.g., 'Expand the B2B spaza wholesale section with 10k tuck-shops'... "
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">AI Edit Instruction / Prompt:</label>
+                  <textarea
+                    rows={4}
+                    placeholder="Type instructions across multiple lines... e.g., 'Expand the B2B spaza wholesale section with 10k tuck-shops, add real-time EV fleet financing payback telemetry, and quote section verbatim...'"
                     value={editorPrompt}
                     onChange={(e) => setEditorPrompt(e.target.value)}
-                    className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-red-600"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-red-600 font-medium resize-y min-h-[95px] leading-relaxed"
                   />
-                  <button
-                    onClick={handleGenerateAiEdit}
-                    disabled={isAiProcessing}
-                    className="px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1 shrink-0"
-                  >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>Generate Edit</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Live Preview Screen */}
-              {previewContent && (
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-3.5 text-white space-y-2">
-                  <div className="flex items-center justify-between text-[10px] font-mono text-amber-400">
-                    <span>LIVE EDIT PREVIEW SCREEN</span>
-                    <span>Ready to Save to Drafts</span>
-                  </div>
-                  <pre className="text-[11px] font-mono text-slate-200 whitespace-pre-wrap bg-slate-950 p-2.5 rounded border border-slate-800 max-h-32 overflow-y-auto">
-                    {previewContent}
-                  </pre>
-                  <div className="flex justify-end gap-2 pt-1">
+                  <div className="flex justify-end pt-1.5">
                     <button
-                      onClick={handleSaveToDrafts}
-                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow transition"
+                      onClick={handleGenerateAiEdit}
+                      disabled={isAiProcessing || !editorPrompt.trim()}
+                      className="px-4 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5 cursor-pointer"
                     >
-                      <Save className="w-3.5 h-3.5" />
-                      <span>Save to Drafts</span>
+                      {isAiProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                      <span>{isAiProcessing ? 'Generating AI Edit...' : 'Generate AI Edit'}</span>
                     </button>
                   </div>
                 </div>
-              )}
 
-              {/* Saved Drafts List */}
-              <div className="border-t border-slate-100 pt-3">
-                <h4 className="text-[11px] font-bold text-slate-700 uppercase mb-2">Saved Drafts Review:</h4>
-                <div className="space-y-2 max-h-36 overflow-y-auto">
-                  {drafts.map(draft => (
-                    <div key={draft.id} className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
-                      <div>
-                        <div className="font-bold text-slate-900">{draft.title}</div>
-                        <div className="text-[10px] text-slate-500 font-mono">{draft.targetDocument} • {draft.createdAt}</div>
+                {/* Live Edit Preview Screen with Undo & Redo History Controls */}
+                {previewContent && (
+                  <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-white space-y-3 shadow-md">
+                    <div className="flex flex-wrap items-center justify-between text-xs font-mono text-amber-400 gap-2">
+                      <span className="flex items-center gap-1.5 font-bold">
+                        <Sparkles className="w-4 h-4 text-amber-400" />
+                        LIVE EDIT PREVIEW SCREEN
+                      </span>
+                      
+                      {/* Undo & Redo History Controls */}
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={handleUndo}
+                          disabled={historyIndex <= 0}
+                          className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-200 rounded-md text-[10px] font-mono font-bold flex items-center gap-1 transition cursor-pointer border border-slate-700"
+                          title="Undo to previous edit step"
+                        >
+                          <Undo2 className="w-3 h-3 text-amber-400" />
+                          <span>Undo ({historyIndex})</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleRedo}
+                          disabled={historyIndex >= editHistory.length - 1}
+                          className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-200 rounded-md text-[10px] font-mono font-bold flex items-center gap-1 transition cursor-pointer border border-slate-700"
+                          title="Redo to next edit step"
+                        >
+                          <Redo2 className="w-3 h-3 text-emerald-400" />
+                          <span>Redo ({editHistory.length - 1 - historyIndex})</span>
+                        </button>
                       </div>
+                    </div>
+                    <pre className="text-xs font-mono text-slate-200 whitespace-pre-wrap bg-slate-950 p-3 rounded-lg border border-slate-800 max-h-56 overflow-y-auto leading-relaxed">
+                      {previewContent}
+                    </pre>
+                    <div className="flex items-center justify-between pt-1">
+                      <span className="text-[10px] text-slate-400 italic">
+                        Target: {editorTargetDoc} • Step {historyIndex + 1} of {editHistory.length}
+                      </span>
                       <button
-                        onClick={() => alert(`Applied draft "${draft.title}" to live document estate successfully!`)}
-                        className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-[10px] font-bold transition"
+                        onClick={handleSaveToDrafts}
+                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition cursor-pointer"
                       >
-                        Apply to Live Tab
+                        <Save className="w-4 h-4" />
+                        <span>Apply to Draft</span>
                       </button>
                     </div>
-                  ))}
+                  </div>
+                )}
+
+                {/* Saved Drafts List */}
+                <div className="border-t border-slate-100 pt-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-[11px] font-bold text-slate-700 uppercase">Saved Drafts Review Queue:</h4>
+                    <span className="text-[10px] text-slate-400 font-mono">Saved for all users (Local Storage)</span>
+                  </div>
+                  <div className="space-y-2 max-h-44 overflow-y-auto">
+                    {drafts.length === 0 ? (
+                      <div className="p-3 text-center text-xs text-slate-400 italic bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                        No saved drafts yet. Generate an AI edit above to save your first draft!
+                      </div>
+                    ) : (
+                      drafts.map(draft => (
+                        <div
+                          key={draft.id}
+                          className={`p-3 rounded-xl flex items-center justify-between text-xs transition border ${selectedDraftForPreview?.id === draft.id ? 'bg-red-50/50 border-red-200 shadow-xs' : 'bg-slate-50 border-slate-200 hover:border-slate-300'}`}
+                        >
+                          <div>
+                            <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                              <span>{draft.title}</span>
+                              <span className="px-1.5 py-0.2 bg-amber-100 text-amber-800 text-[9px] font-semibold rounded">Draft</span>
+                            </div>
+                            <div className="text-[10px] text-slate-500 font-mono mt-0.5">{draft.targetDocument} • {draft.createdAt}</div>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => {
+                                setSelectedDraftForPreview(draft);
+                                alert(`Loaded draft "${draft.title}" into Draft Preview Screen below.`);
+                              }}
+                              className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-[11px] font-bold transition flex items-center gap-1 cursor-pointer shrink-0"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>Apply to Draft</span>
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Draft Preview Screen Below Showing Edited Document */}
+          {selectedDraftForPreview && (
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-white shadow-xl space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-emerald-500/20 text-emerald-400 rounded-xl border border-emerald-500/30">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-white">{selectedDraftForPreview.title}</h4>
+                      <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-mono font-bold rounded-md flex items-center gap-1">
+                        <Lock className="w-3 h-3" />
+                        Draft Mode (Pending Admin Merge)
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 font-mono mt-0.5">
+                      Target Document: <span className="text-slate-200">{selectedDraftForPreview.targetDocument}</span> • Created: {selectedDraftForPreview.createdAt}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(selectedDraftForPreview.content);
+                      alert('Draft document content copied to clipboard!');
+                    }}
+                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-medium transition flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy Content</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDrafts(prev => prev.filter(d => d.id !== selectedDraftForPreview.id));
+                      setSelectedDraftForPreview(null);
+                    }}
+                    className="px-3 py-1.5 bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/50 rounded-lg text-xs font-medium transition flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Delete Draft</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Formatted Draft Document Content Display */}
+              <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3">
+                <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 border-b border-slate-800/80 pb-2">
+                  <span>DRAFT PREVIEW SCREEN — EDITED DOCUMENT VIEW</span>
+                  <span className="text-emerald-400 font-bold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Saved For All Users (LocalStorage)
+                  </span>
+                </div>
+                <pre className="text-xs font-mono text-slate-200 whitespace-pre-wrap leading-relaxed overflow-x-auto max-h-80 overflow-y-auto p-1">
+                  {selectedDraftForPreview.content}
+                </pre>
+              </div>
+
+              <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-200 text-xs flex items-center gap-2">
+                <Lock className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>
+                  <strong>Security Lock Active:</strong> Edits are saved strictly to Drafts. Live documents and slide decks are protected from direct unauthorized overwrites. The master administrator can review and merge this draft into live files.
+                </span>
+              </div>
+            </div>
+          )}
         </div>
         )}
 

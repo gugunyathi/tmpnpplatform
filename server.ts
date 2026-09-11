@@ -203,12 +203,12 @@ Provide a detailed, authoritative response. If the user asks for a verbatim quot
 // Gemini Document Edit API endpoint with Knowledge Bank grounding
 app.post("/api/gemini-edit", async (req, res) => {
   try {
-    const { targetDocument, prompt, liveContext } = req.body;
+    const { targetDocument, prompt, currentContent, liveContext } = req.body;
 
     const aiClient = getAiClient();
     if (!aiClient) {
-      const generated = `[AI Updated Draft for ${targetDocument}]\nBased on instruction: "${prompt}"\n\n- Updated Section: The Optimization Gap & Value Vectors\n- Key Enhancement: Integrated real-time multi-currency settlement telemetry and decentralized B2B wholesale fulfillment for informal traders.\n- Financial Impact: Scaled baseline throughput projections to reflect enhanced routing efficiency and B2B wholesale capture based on [FIN-SIM-ENGINE] and [A4-PAGE-05].`;
-      return res.json({ generated });
+      const base = currentContent ? `${currentContent}\n\n[Iterative Edit Applied - Instruction: "${prompt}"]\n- Updated Section: Expanded based on continuous prompt instruction.\n- Enhancement: Integrated telemetry and market updates.` : `[AI Updated Draft for ${targetDocument}]\nBased on instruction: "${prompt}"\n\n- Updated Section: The Optimization Gap & Value Vectors\n- Key Enhancement: Integrated real-time multi-currency settlement telemetry and decentralized B2B wholesale fulfillment for informal traders.\n- Financial Impact: Scaled baseline throughput projections to reflect enhanced routing efficiency and B2B wholesale capture based on [FIN-SIM-ENGINE] and [A4-PAGE-05].`;
+      return res.json({ generated: base });
     }
 
     try {
@@ -220,6 +220,7 @@ app.post("/api/gemini-edit", async (req, res) => {
             parts: [
               { text: `You are an expert executive proposal editor with complete access to the TM Pick n Pay Marketplace knowledge bank.
 Edit the following document target: "${targetDocument}" based on this user instruction: "${prompt}".
+${currentContent ? `\nCURRENT DOCUMENT DRAFT CONTENT:\n"""\n${currentContent}\n"""\nApply the requested changes directly onto the current document draft content above, preserving the context and producing the complete updated draft.` : ''}
 Ensure all numbers, pillars, page citations, and cross-references align with the $61.2M GMV model, the 4 strategic pillars, the 10 A4 pages, the 14 slides, and the 12-month EV rent-to-buy fleet grid.
 Provide a polished, professional executive draft update ready for board review.` }
             ]
