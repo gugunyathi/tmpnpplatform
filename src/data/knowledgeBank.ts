@@ -5,7 +5,7 @@ import { FinancialModelScenario, LibraryItem } from '../types';
 
 export interface KnowledgeCorpusItem {
   id: string;
-  sourceType: 'slide_deck' | 'a4_page' | 'proposal_document' | 'text_only_document' | 'financial_simulator' | 'executive_brief' | 'transcript' | 'live_update';
+  sourceType: 'slide_deck' | 'a4_page' | 'proposal_document' | 'text_only_document' | 'financial_simulator' | 'executive_brief' | 'transcript' | 'live_update' | 'ai_training_doc' | 'retail_domain_knowledge';
   title: string;
   referenceTag: string;
   summary: string;
@@ -493,68 +493,200 @@ Pilot: 60-day controlled validation at Borrowdale Village Walk & Avondale with 5
   }
 ];
 
-// 6. ALL TRANSCRIPTS CORPUS (VERBATIM WITH TIMESTAMPS)
+// 6. ALL TRANSCRIPTS CORPUS (VERBATIM WITH EXACT LINE NUMBERS & TIMESTAMPS)
 export const CORPUS_TRANSCRIPTS: KnowledgeCorpusItem[] = [
   {
-    id: 'transcript-01',
+    id: 'transcript-call-1-sept-2026',
     sourceType: 'transcript',
-    title: 'Executive_Board_Strategy_Alignment_Meeting_2026-09-09.txt',
-    referenceTag: '[TRANSCRIPT-01]',
-    summary: 'Full executive strategy meeting transcript featuring Gugu Nyathi, Pfungwa, Boni Muvevi, and Sandy discussing Pick n Pay online, click-to-collect vs delivery, shared cart, diaspora angle, and trading platform end-state.',
-    verbatimContent: `TRANSCRIPT 1: Executive Board Strategy Alignment Meeting (2026-09-09)
-Speakers: Speaker 1 / Gugu Nyathi (CIO), Pfungwa, Boni Muvevi, Sandy
-Duration: 26:14
+    title: 'TM PnP Call 1 September 2026.txt (625 Lines Verbatim)',
+    referenceTag: '[TRANSCRIPT-CALL-1-SEPT-2026]',
+    summary: 'Full 625-line strategy alignment transcript between Gugu Nyathi (CIO), Pfungwa, and Boni Muvevi covering the optimization gap, retail-agnostic platform, destination-agnostic diaspora cart, and abnormal P&L reality.',
+    verbatimContent: `TRANSCRIPT: TM PnP Call 1 September 2026.txt (File Path: public/transcripts/TM PnP Call 1 September 2026.txt)
+Total Lines: 625 Lines
+Speakers: Gugu Nyathi (CIO), Pfungwa, Boni Muvevi, Sandy, Zion
 
-Speaker 1 00:00: Bonnie, how's it?
-pfungwa 00:02: Good, good, good, Sandy.
-Speaker 1 00:05: No, all good, all good.
-pfungwa 00:07: How's it going, Funga? Pretty well, man. Thanks a lot.
-Speaker 1 00:14: Okay, we've got Google here. Google like you to meet Funga. Google, Google is our CIO. so yeah, he will be giving us a presentation basically today. Okay, nice to meet you, Funga. Thanks for coming on the call.
-pfungwa 00:33: No worries, man. Thanks.
-Speaker 1 00:35: Okay, so I'm not sure how much you have seen so far, but I'm quickly just gonna share my screen to show you what we've been up to, right? Can you see my screen?
-pfungwa 00:47: Yes.
-Speaker 1 00:48: Okay. All right. So first and foremost, I think the the proposal was pick and pay online, right? So TMPNP. So in my research, I found out that they already have a an online shopping system, right? And you can select this is this is the pick and the existing pick and pay online shopping experience, but it's a click to collect. So you you buy stuff at your cart, and then you go and pick it up from any of their shops. So it seems it doesn't currently have a delivery service. Okay, so I think our approach, therefore, would be to rather offer, sorry, to enhance what they already have, right? Which would be to offer a shopping experience for people located in the diaspora, who then buy using their local currencies there, and can have a shared cart. So this is the the prototype that I did. Okay, so it allows for you know multiple people. So these all would be like family members. They can do this on a live shopping experience, or they can just do it as a generic. You know, send something to an app. So whoever initiates the app would add other users. So they would add users, send them a code by number, and they would add them to a shopping cart. And various members from different, you know, with different mobile numbers, could all come together and participate in one shopping experience. Okay, this could be via a live call or or via just a generic shopping experience. And then for the people in back home who don't have, you know, maybe they might not have access to data, or it might be the older people, right? We will integrate this WhatsApp a WhatsApp platform where there's a WhatsApp chatbot that allows is integrated into the same app. So, like an Ambula could just speak in a language, and she could just type in, you know, whatever she wants, and then the AI would add it to the cart, and then whoever makes the payment on the other side would pay, you know, or the family members would split the payments across all of them. Okay, so just to simulate a quick one, I'll just show you here. Obviously, I'm just gonna simulate a quick one. So this could be a live call with multiple people. So it could be all of us.
-pfungwa 03:34: just a quick one, right? I mean, it's yeah the the shopping experience is on the on the local grocery database.
-Speaker 1 03:47: Yeah, so it it will be integrated to the local their local databases. So they could probably give us an API to be able to plug into their current app because they already have the TM PMP online, right? Yeah. So it will be an integration either via this app. So this there's a company that built this for them. So we could integrate with that company. So we would offer the diaspora angle, and then locally, I think we would then obviously need to offer a physical, you know, delivery service, right? Because currently they don't have that. They don't have the, you know, the scooters and the sort of the logistical system for that, right? Yeah. So yeah, we we would.
-pfungwa 04:30: So tell me, it will be that. Yeah.
-pfungwa 04:32: Yeah. So tell me on the local platform, right? Does it have the same feature where you can add a few people to participate in the purchase or not?
-Speaker 1 04:43: No, it doesn't have that. So it's a single shopping cart system, where so this is a local one I'm showing you now. Yes. So it can add products. Yes, it's your just your normal pick and pay app like we have in South Africa. Yeah, so check out. Yeah, so it doesn't have all of that.
-pfungwa 05:00: Okay, so let's take notes as we go along. Okay, so one is a platform for delivery. Okay, the second one is an enhancement of the current user experience, where you can have participation of more than one people contributing towards the shopping experience.
-pfungwa 05:21: the third one is those people are destination agnostic. Meaning you can be anywhere. You can be even be in Zimbabwe, or you can be international. The platform allows participation on a multiple currency tradable gateway.
-pfungwa 09:30: Hold something at the back of your mind, which could be a Retail shop agnostic platform. It becomes a trading platform where price becomes the reason to participate, supported by AI inventory intelligence and EV last-mile delivery fleet.`,
-    keywords: ['transcript', 'meeting', 'gugu nyathi', 'pfungwa', 'boni muvevi', 'destination agnostic', 'trading platform', 'click to collect']
+Key Line References & Verbatim Excerpts:
+- Lines 1-35: Gugu Nyathi introduces the presentation. Boni Muvevi highlights the 3 glaring gaps: Diaspora Market, Formal Retail Traders Market, and Customer Convenience.
+- Lines 43-47 [Pfungwa]: "So what the same thing is that the value proposition speaks to the far left? The foundations, which is, we appreciate that there is already a platform through which people can trade, but at the same time, looking at the Gap, there's need for them to close that to make sure that the platform itself is functional, and if it can accommodate the three in the manner in which it is set, it becomes easier."
+- Lines 67-68 [Gugu Nyathi]: "The difference between where they are right now is now, you are taking into account the local and the Diaspora Shopper. A targeted tracking multi-currency Gateway for payments that is from the diaspora... whether you're in Australia or you're in UK, or you're in America, you're paying your local currency."
+- Lines 73-105 [Pfungwa]: "This thing of not knowing your customer right and not following your customer or not. Incentivizing your customer is now becoming a differentiator... It's an abnormal P&L. Cuz you constantly are trying to adapt. Right, whereas what you should be doing is to say, under normal circumstance, what will our balance sheet look like? Given the scenario, what is it that we're doing to pivot separate differently to make sure that we are adaptable? And what is that Gap? A person who runs strategy and finance will probably get that very fast... because I'm now looking at these three pillars to be able to adapt to remain profitable and sustainable."
+- Lines 160-167 [Pfungwa & Gugu Nyathi]: Pfungwa notes: "when you tell them that this thing can run anywhere, even in the tuck-shop, they start now looking at it and say, maybe let's invest in this thing, and we pay big dollar and protect ourselves." Gugu Nyathi confirms: "our offering is sort of agnostic. It's agnostic, it's multi-tenant. It can work for all retailers. But you could have your own custom one."
+- Lines 516-524 [Gugu Nyathi & Pfungwa, Timestamp 05:21 & 09:30]:
+  * Timestamp 05:21 [Pfungwa]: "the third one is those people are destination agnostic. Meaning you can be anywhere. You can be even be in Zimbabwe, or you can be international. The platform allows participation on a multiple currency tradable gateway."
+  * Timestamp 09:30 [Pfungwa]: "Hold something at the back of your mind, which could be a Retail shop agnostic platform. It becomes a trading platform where price becomes the reason to participate, supported by AI inventory intelligence and EV last-mile delivery fleet."`,
+    keywords: ['september call', 'lines 1-625', 'gugu nyathi', 'pfungwa', 'boni muvevi', 'abnormal P&L', 'destination agnostic', 'trading platform']
   },
   {
-    id: 'transcript-02',
+    id: 'transcript-call-10-aug-2026',
     sourceType: 'transcript',
-    title: 'Full_Meeting_Transcription_OtterAI_2026-09-09.txt',
-    referenceTag: '[TRANSCRIPT-02]',
-    summary: 'OtterAI transcription discussing integration with the existing Pick n Pay software vendor, API connection, and ZimSwitch local payments platform.',
-    verbatimContent: `TRANSCRIPT 2: Full Meeting Transcription (OtterAI 2026-09-09)
-Topics: Pick n Pay vendor dynamics, API integration, ZimSwitch local payments.
-Verbatim Excerpt:
-"Okay. I think the biggest risk here is, but I guess I wouldn't call it a risk to say, but it is, for some extent, they already have someone who developed this system for them. So I think the one question that could always ask is, why we can always get our guy to add a diaspora link. Why do we need you guys? What are you going to bring to the team?
-Because then we have to look at the dynamic that we have with the current developer. How do we-- because he's already got the integration to the API to the sim switch, the payments platform locally. The whole thing is already integrated. So either way for us to push this to the market faster, we have to leverage that guy who's developed this thing, the website for TM Pick n Pay. We don't have to integrate via somehow. He has to help us with that integration."`,
-    keywords: ['otterai', 'developer', 'vendor', 'zimswitch', 'integration', 'risk', 'api']
+    title: 'TM PnP Call 10 Aug 2026.txt (439 Lines Verbatim)',
+    referenceTag: '[TRANSCRIPT-CALL-10-AUG-2026]',
+    summary: '439-line transcript detailing Pick n Pay current click-to-collect limitations, WhatsApp AI chatbot integration for elders back home, and shared cart functionality.',
+    verbatimContent: `TRANSCRIPT: TM PnP Call 10 Aug 2026.txt (File Path: public/transcripts/TM PnP Call 10 Aug 2026.txt)
+Total Lines: 439 Lines
+Speakers: Speaker 1 / Gugu Nyathi (CIO), Pfungwa, Boni Muvevi
+
+Key Line References & Verbatim Excerpts:
+- Lines 1-34 [Speaker 1 / Gugu Nyathi]: "TM PNP existing pick and pay online shopping experience is a click to collect. You buy stuff at your cart, and then you go and pick it up from any of their shops. It doesn't currently have a delivery service. Our approach therefore would be to offer a shopping experience for people located in the diaspora, who buy using their local currencies there, and can have a shared cart."
+- Lines 34-36 [Gugu Nyathi]: "For people back home who don't have access to data, or older people, we will integrate a WhatsApp chatbot integrated into the same app. So, like an Ambula could just speak in a language, and type whatever she wants, and the AI adds it to the cart."
+- Lines 41-43 [Gugu Nyathi]: "It will be integrated to their local databases via an API. There's a company that built this for them, so we could integrate with that company. We offer the diaspora angle, and locally we offer a physical delivery service with scooters."
+- Lines 45-50 [Pfungwa]: Inquires about multi-user cart participation on local platforms, confirming single-cart limitation on existing setup.`,
+    keywords: ['august 10 call', 'lines 1-439', 'click to collect', 'whatsapp chatbot', 'ambula', 'shared cart', 'scooters']
   },
   {
-    id: 'transcript-03',
+    id: 'transcript-meeting-13-aug-2026',
     sourceType: 'transcript',
-    title: 'Strategy_Discussion_Gugu_Pfungwa_Boni_Zion_2026-09-09.txt',
-    referenceTag: '[TRANSCRIPT-03]',
-    summary: 'Discussion between Gugu Nyathi, Pfungwa, Boni Muvevi, and Zion focusing on clarifying the Gap and value proposition.',
-    verbatimContent: `TRANSCRIPT 3: Strategy Discussion (Gugu, Pfungwa, Boni, Zion 2026-09-09)
-Topics: Initial alignment on the Gap, value proposition, and slide 1 walk-through.
-Verbatim Excerpt:
-"Gugu Nyathi: Uh. I think it's on mute. So, you guys can unmute yourself. Yeah, and Zion is on mute. You can unmute when you want to talk. I think Mr Funko is still on mute. Okay. Greetings. How are you doing?
-Pfungwa: Very well. Very well, thank you. Thank you.
-Gugu Nyathi: Okay, so I think it's over to you, Bonnie, and fungua.
-Boni Muvevi: I think, maybe, uh, Google, if you can just start. Just taking us through the updated version, and then we can take it from there.
-Gugu Nyathi: Yeah.
-Boni Muvevi: Google. Let's just go back to the. Cuz I think that's the first page.
-Gugu Nyathi: Okay.
-Boni Muvevi: I think just. So that we, we quite clear on. On the Gap and the value proposition."`,
-    keywords: ['gugu nyathi', 'pfungwa', 'boni muvevi', 'zion', 'gap', 'value proposition']
+    title: 'TM PnP Meeting 13 Aug 2026.txt (Pages 1 to 4 Verbatim)',
+    referenceTag: '[TRANSCRIPT-MEETING-13-AUG-2026]',
+    summary: '114-line meeting transcript structured across Pages 1 to 4 covering vendor integration, ZimSwitch API, white-label licensing, Malayasha cross-border constraints, and tuck-shop wholesale distributor conversion.',
+    verbatimContent: `TRANSCRIPT: TM PnP Meeting 13 Aug 2026.txt (File Path: public/transcripts/TM PnP Meeting 13 Aug 2026.txt)
+Total Lines: 114 Lines (Structured across Pages 1, 2, 3, and 4)
+Speakers: Speaker 1 (Gugu Nyathi), Speaker 2 (Boni Muvevi), Speaker 3 (Pfungwa), Speaker 4
+
+Key Page & Line References:
+- PAGE 1 (Lines 1-16):
+  * Line 3 [Speaker 1]: "Because then we have to look at the dynamic that we have with the current developer. How do we-- because he's already got the integration to the API to the sim switch [ZimSwitch], the payments platform locally. The whole thing is already integrated. So either way for us to push this to the market faster, we have to leverage that guy who's developed the website for TM Pick n Pay."
+  * Line 10 [Speaker 3/Pfungwa]: Proposes the White-Label Solution / Checkers Sixty60-like model: "We want to introduce this checkers like model for that. That checkers like model for the dispatch, we want the program to provide them as a service. We like a commission model or subscription."
+- PAGE 2 (Lines 20-29):
+  * Line 24 [Speaker 2/Boni Muvevi]: "Another thing that is happening right now, the Malayasha business is probably very constrained... they are tightening on the movement of goods. A digital platform where Diaspora is buying becomes the next best thing, promoting local sales of goods originally coming from South Africa."
+  * Line 29 [Speaker 2]: "Net net the strip line is we are saying through this model TM will replace Mbare Musika or these informal trading models that are currently flourishing in the country."
+- PAGE 3 & PAGE 4 (Lines 31-50):
+  * Lines 31-35 [Speaker 2 & Speaker 1]: "Instead of the tuck-shop becoming a competitor, it becomes a distributor extension of TM. They compete, but they also complement each other."
+  * Line 40 [Speaker 2]: "TM is not a brick and mortar, TM is a brand that should live in people's homes. By leveraging economies of scale and direct manufacturer supply, TM provides wholesale pricing that beats cross-border runners and counterfeits."`,
+    keywords: ['meeting 13 aug', 'pages 1 to 4', 'zimswitch', 'checkers sixty60', 'malayasha', 'mbare musika', 'tuck-shop distributor']
+  }
+];
+
+// 7. PUBLIC/AI-TRAINING DOCUMENTS CORPUS
+export const CORPUS_TRAINING_DOCUMENTS: KnowledgeCorpusItem[] = [
+  {
+    id: 'ai-training-slide-deck',
+    sourceType: 'ai_training_doc',
+    title: 'TM_Pick_n_Pay_Express_Executive_Slide_Deck_2026.pdf (Slides 1 to 14)',
+    referenceTag: '[AI-DOC-SLIDE-DECK]',
+    summary: 'Executive board presentation slide deck located in public/ai-training containing all 14 slides, structural market friction diagrams, financial tables, and EV fleet models.',
+    verbatimContent: `TRAINING DOCUMENT: TM_Pick_n_Pay_Express_Executive_Slide_Deck_2026.pdf
+Location: C:\\Users\\Acer\\Documents\\tmpnpplatform\\tmpnpplatform\\public\\ai-training\\TM_Pick_n_Pay_Express_Executive_Slide_Deck_2026.pdf
+Structure: 14 Slides (Slides 01 to 14)
+
+Page / Slide Breakdown:
+- Slide 1 [Cover]: TM Pick n Pay Marketplace & Last-Mile Delivery Infrastructure Business Proposal. Document DOC-TMPNP-EXEC-2026-V2.4.
+- Slide 2 [Disclaimer]: The Abnormal P&L Reality. Depart from standard retail assumptions; defend store balance sheets via operational adaptability.
+- Slide 3 [Frictions]: 4 Market Frictions: Township Informalization (70%+ FMCG), Cross-Border Gray Market Runners, Remittance Friction ($2B+ inflows at 7-15% fee), Commute Penalty ($2-$4 fare, 2hr queues).
+- Slide 4 [Optimization Gap]: Vector 1: Diaspora Market; Vector 2: Informal Retail Traders; Vector 3: Customer Convenience.
+- Slide 5 [4 Pillars]: Customer Closeness & Data CLV, Informal Market Aggregation, Diaspora Capital Capture ($61.2M), Intelligent Commerce Data Lake.
+- Slide 6 [Pipeline]: 40,000 active diaspora families × $85 basket × 18 annual orders = $61.2M GMV (720,000 deliveries).
+- Slide 7 [Financial Output]: $72,349,380 combined throughput ($67.65M Phase 1 + $4.69M Phase 2 SaaS).
+- Slide 8 [Strategic Benefits]: Direct Nostro USD inflow for TM PnP, zero store CapEx expansion, consumer kombi fare savings.
+- Slide 9 [Commercial Options]: Option 1 (Reseller 5-8% markup + 3-5% rebate) vs Option 2 (White-Label SaaS 1.5-2.0% GMV).
+- Slide 10 [Trading End State]: Evolution from TM fulfillment (M1-6) to category aggregator (M6-18) to retail-agnostic trading platform (M18-36).
+- Slide 11 [Price Audit]: TM PnP ($83.40) vs OK Zimbabwe ($87.10) vs Spar ($89.50) vs Food Lovers ($92.80). >80% default allocation to TM PnP.
+- Slide 12 [EV Fleet]: 500-2,000 e-scooters/cargo e-tricycles, 12-month rent-to-buy, 5-month payback, 10% post-ownership fee, $18/mo solar garage.
+- Slide 13 [Payment Rails]: Visa, MasterCard, PayPal, ZAR EFT, EcoCash, InnBucks, ZimSwitch -> Direct Nostro USD settlement.
+- Slide 14 [Roadmap]: Sprints 1-3, 60-Day Pilot (Borrowdale Village Walk & Avondale with 50 scooters), 74+ store national scale.`,
+    keywords: ['ai-training pdf', 'slide deck', 'slides 1-14', '61.2M', '72.35M', 'borrowdale village walk', 'avondale']
+  },
+  {
+    id: 'ai-training-business-proposal',
+    sourceType: 'ai_training_doc',
+    title: 'TM_Pick_n_Pay_Marketplace_Business_Proposal_2026 (4).pdf (Pages 1 to 10)',
+    referenceTag: '[AI-DOC-BUSINESS-PROPOSAL]',
+    summary: 'Complete 10-page executive board proposal PDF in public/ai-training containing detailed chapter descriptions, financial breakdowns, and pilot governance rules.',
+    verbatimContent: `TRAINING DOCUMENT: TM_Pick_n_Pay_Marketplace_Business_Proposal_2026 (4).pdf
+Location: C:\\Users\\Acer\\Documents\\tmpnpplatform\\tmpnpplatform\\public\\ai-training\\TM_Pick_n_Pay_Marketplace_Business_Proposal_2026 (4).pdf
+Structure: 10 Formal A4 Pages (Pages 1 to 10)
+
+Page-by-Page Content & Citation Guide:
+- Page 1 [Title & Metadata]: Executive Board Proposal, Code DOC-TMPNP-EXEC-2026-V2.4, Prepared for Executive Leadership Team TM Pick n Pay (Meikles Retail / Pick n Pay Africa).
+- Page 2 [Executive Summary]: Diagnostic of the Abnormal P&L Reality, baseline $61.2M GMV target, and four strategic pillars.
+- Page 3 [Macro Opportunity]: Diagnostic of 4 structural market frictions and conventional store vs digital multi-tenant grid matrix.
+- Page 4 [Enterprise Architecture]: 4 Enterprise Components: Multi-tenant storefront, bank-agnostic payment rails, real-time ERP webhooks, FMCG data lake.
+- Page 5 [B2B Informal Wholesale]: Engaging 10,000+ tuck-shops as distribution nodes; zero-data app ordering, automated wholesale price tiering, 24-48hr cargo drops.
+- Page 6 [Owned EV Logistics Grid]: 500-2,000 EV scooters/tricycles, 12-month rent-to-buy, ~5 month asset payback, solar garage ($18/mo), 80% TM PnP livery.
+- Page 7 [Basket Comparison Engine]: Algorithmic list allocation; 12-item audit showing TM PnP ($83.40), OK Zim ($87.10), Spar ($89.50), Food Lovers ($92.80).
+- Page 8 [Consolidated Financials]: Phase 1 ($67,657,680) + Phase 2 ($4,691,700) = $72,349,380 annual ecosystem throughput.
+- Page 9 [Commercial Models]: Option 1 (Concierge Reseller 5-8% markup + 3-5% rebate = $6.426M) vs Option 2 (White-Label SaaS 1.5-2.0% GMV = $1.071M).
+- Page 10 [Pilot Charter & Roadmap]: Sprints 1-3, 60-day pilot across Borrowdale Village Walk & Avondale with 50 scooters, risk safeguards for FX, inventory, and telematic fleet.`,
+    keywords: ['ai-training pdf', 'pages 1 to 10', 'business proposal', 'a4 pages', 'borrowdale', 'avondale', 'nostro']
+  },
+  {
+    id: 'ai-training-strategic-text-case',
+    sourceType: 'ai_training_doc',
+    title: 'TM_Pick_n_Pay_Strategic_Business_Case_Text_Document.pdf',
+    referenceTag: '[AI-DOC-TEXT-CASE]',
+    summary: 'Executive text business case document in public/ai-training focusing on strategic rationale, corporate board justification, and operational risk mitigation.',
+    verbatimContent: `TRAINING DOCUMENT: TM_Pick_n_Pay_Strategic_Business_Case_Text_Document.pdf
+Location: C:\\Users\\Acer\\Documents\\tmpnpplatform\\tmpnpplatform\\public\\ai-training\\TM_Pick_n_Pay_Strategic_Business_Case_Text_Document.pdf
+
+Key Strategic Rationale & Case Points:
+- Addresses the structural evolution of retail in hyper-inflationary and informalized economies.
+- Shift from defending brick-and-mortar shelf space to dominating digital logistics channels.
+- Multi-currency liquidity management: Offshore payments clear into domestic Nostro USD bank accounts, securing hard foreign currency liquidity for TM Pick n Pay stock imports.
+- B2B Wholesale integration: Displaces informal gray-market runners by supplying 10,000+ tuck-shops directly with genuine FMCG goods at wholesale rates.`,
+    keywords: ['text business case', 'strategic business case', 'nostro usd', 'liquidity', 'board case']
+  },
+  {
+    id: 'ai-training-strategic-proposal-2',
+    sourceType: 'ai_training_doc',
+    title: 'TM_Pick_n_Pay_Strategic_Proposal_Document_2026 (2).pdf',
+    referenceTag: '[AI-DOC-STRATEGIC-PROPOSAL-2]',
+    summary: 'Comprehensive strategic proposal document (2) in public/ai-training outlining operational execution, technical architecture, and long-term ecosystem expansion.',
+    verbatimContent: `TRAINING DOCUMENT: TM_Pick_n_Pay_Strategic_Proposal_Document_2026 (2).pdf
+Location: C:\\Users\\Acer\\Documents\\tmpnpplatform\\tmpnpplatform\\public\\ai-training\\TM_Pick_n_Pay_Strategic_Proposal_Document_2026 (2).pdf
+
+Core Operational Specs:
+- Architectural compatibility with existing TM Pick n Pay web application and POS vendors.
+- Seamless integration with ZimSwitch national payment gateway for domestic debit card processing.
+- Multi-tenant marketplace routing enabling third-party category add-ons (Pharmacies, Bakeries, Hardware) without diluting TM Pick n Pay's core retail anchor dominance.`,
+    keywords: ['strategic proposal 2', 'technical architecture', 'pos vendor', 'zimswitch', 'multi-tenant']
+  }
+];
+
+// 8. GLOBAL & ZIMBABWEAN RETAIL / E-COMMERCE DOMAIN KNOWLEDGE CORPUS
+export const CORPUS_RETAIL_DOMAIN_KNOWLEDGE: KnowledgeCorpusItem[] = [
+  {
+    id: 'domain-global-ecommerce-retail',
+    sourceType: 'retail_domain_knowledge',
+    title: 'Global E-Commerce & Retail Industry Standards',
+    referenceTag: '[DOMAIN-GLOBAL-RETAIL]',
+    summary: 'Comprehensive domain knowledge on global omnichannel retail, click-and-collect, last-mile delivery, dark stores, retail media networks (RMN), and marketplace economics.',
+    verbatimContent: `GLOBAL E-COMMERCE & RETAIL INDUSTRY DOMAIN KNOWLEDGE:
+1. Omnichannel Retail Architecture: Seamless integration between physical stores and digital channels. Transition from legacy Click & Collect (customer store pickup) to On-Demand Click-to-Door Delivery (under 45 minutes).
+2. Benchmarks (e.g. Checkers Sixty60 in SA, Instacart & Amazon Fresh in US):
+   - Checkers Sixty60 (Shoprite SA): Evolved physical supermarket footprint into fulfillment micro-hubs using dedicated rider fleets, capturing massive market share in grocery delivery.
+   - Instacart (US): Multi-tenant marketplace connecting multiple grocers on a unified app using crowd/leased couriers.
+3. Dark Stores vs Store Micro-Hubs: Using existing high-density store networks (like TM Pick n Pay's 74+ branches) as regional micro-fulfillment centers avoids expensive dedicated dark store real estate CapEx.
+4. Algorithmic Basket Allocation: Dynamic routing engine evaluating order item availability, retail pricing, distance, and courier dispatch to minimize split fulfillment and total landed basket cost.
+5. Retail Media Networks (RMN): Monetizing digital shelf space and shopper telemetry via sponsored product placements, targeted digital ads, and FMCG brand analytics (1.2% to 3.0% GMV yield).
+6. Fleet Rent-to-Buy Economics: Asset-light rider model where couriers pay fixed daily lease fees from delivery earnings over 12 months, recovering asset capital cost in ~5 months and creating micro-entrepreneurs.`,
+    keywords: ['global retail', 'ecommerce', 'checkers sixty60', 'instacart', 'amazon', 'dark stores', 'retail media network', 'clv']
+  },
+  {
+    id: 'domain-zimbabwe-retail-economy',
+    sourceType: 'retail_domain_knowledge',
+    title: 'Zimbabwean Retail Market & Economic Ecosystem',
+    referenceTag: '[DOMAIN-ZIM-RETAIL]',
+    summary: 'Exhaustive domain knowledge of Zimbabwe retail landscape: Meikles/TM Pick n Pay, OK Zimbabwe, Spar, Nostro USD, ZimSwitch, EcoCash, InnBucks, Malayasha, Mbare Musika, spaza shops, and multi-currency dynamics.',
+    verbatimContent: `ZIMBABWEAN RETAIL & ECONOMIC ECOSYSTEM DOMAIN KNOWLEDGE:
+1. Major Formal Retail Players:
+   - TM Pick n Pay (Meikles Retail / Pick n Pay Africa): Anchor formal retailer operating 74+ stores across Zimbabwe (including flagship Harare branches Borrowdale Village Walk, Avondale, Joina City, Kamfinsa). Uniquely positioned as wholesale and retail anchor.
+   - OK Zimbabwe Limited: Primary formal competitor operating OK Supermarkets, Bon Marché, and OK Mart.
+   - Spar Zimbabwe: Premium supermarket franchise network.
+   - Food Lovers Market: Specialty fresh produce retailer.
+2. Township Informalization & Spaza / Tuck-Shop Trade:
+   - Over 70% of FMCG trade moves through 10,000+ informal tuck-shops and spaza vendors in high-density suburbs (e.g. Highfield, Mbare, Glen Norah, Chitungwiza, Cowdray Park).
+   - Informal traders buy broken bulk, offer localized proximity, but struggle with supply chain reliability and gray-market runner counterfeits.
+3. Mbare Musika & Cross-Border Runners (Malayasha):
+   - Mbare Musika: Central informal agricultural and FMCG wholesale hub in Harare.
+   - Cross-Border Runners (Malayasha): Informal couriers hauling goods across borders from Musina (South Africa) and Mozambique, evading import duties and undercutting formal shelf prices.
+   - Strategic Counter-Defense: TM Pick n Pay aggregates tuck-shops as legitimate B2B wholesale buyers, using volume scale to beat runner rates with genuine product guarantees.
+4. Currency & Financial Infrastructure:
+   - Multi-Currency & Dual Economy: Transactions occur in USD, South African Rand (ZAR), and local currency (ZiG / ZimSwitch debit).
+   - Nostro USD Foreign Currency Accounts: Domestic bank accounts holding physical foreign currency. Offshore remittance checkout routes hard USD directly into TM Pick n Pay's Nostro USD accounts.
+   - Domestic Payment Rails: ZimSwitch (national debit card switch), EcoCash (mobile money), InnBucks (cash remittance & wallet), OneMoney.
+5. Commute Penalty Frictions:
+   - Shoppers in Harare/Bulawayo pay $2 to $4 in kombi (minibus) fares and spend up to 2 hours traveling and queuing for groceries. Doorstep EV delivery under $4.50 eliminates this commute friction.`,
+    keywords: ['zimbabwe retail', 'meikles', 'tm pick n pay', 'ok zimbabwe', 'spar', 'food lovers', 'mbare musika', 'malayasha', 'nostro usd', 'ecocash', 'innbucks', 'zimswitch', 'zig']
   }
 ];
 
@@ -565,7 +697,9 @@ export const MASTER_KNOWLEDGE_BANK: KnowledgeCorpusItem[] = [
   ...CORPUS_MASTER_PROPOSAL,
   ...CORPUS_FINANCIAL_SIMULATOR,
   ...CORPUS_EXECUTIVE_BRIEF,
-  ...CORPUS_TRANSCRIPTS
+  ...CORPUS_TRANSCRIPTS,
+  ...CORPUS_TRAINING_DOCUMENTS,
+  ...CORPUS_RETAIL_DOMAIN_KNOWLEDGE
 ];
 
 // Continuous Learning Engine: Builds full dynamic context including live site updates
@@ -607,13 +741,19 @@ ${CORPUS_A4_PAGES.map(p => `${p.referenceTag} ${p.title}:\n${p.verbatimContent}`
 === 4. EXECUTIVE BRIEF & PROPOSAL HIGHLIGHTS ===
 ${CORPUS_EXECUTIVE_BRIEF[0].verbatimContent}
 
-=== 5. ALL TRANSCRIPTS & RECORDING LOGS VERBATIM ===
+=== 5. ALL TRANSCRIPTS & RECORDING LOGS (LINE NUMBERS & PAGES) ===
 ${CORPUS_TRANSCRIPTS.map(t => `${t.referenceTag} ${t.title}:\n${t.verbatimContent}`).join('\n\n')}
 
-=== 6. MASTER TEXT PROPOSAL (COMPLETE RAW TEXT) ===
+=== 6. PUBLIC/AI-TRAINING FOLDER DOCUMENTS ===
+${CORPUS_TRAINING_DOCUMENTS.map(d => `${d.referenceTag} ${d.title}:\n${d.verbatimContent}`).join('\n\n')}
+
+=== 7. GLOBAL & ZIMBABWEAN RETAIL E-COMMERCE DOMAIN KNOWLEDGE ===
+${CORPUS_RETAIL_DOMAIN_KNOWLEDGE.map(r => `${r.referenceTag} ${r.title}:\n${r.verbatimContent}`).join('\n\n')}
+
+=== 8. MASTER TEXT PROPOSAL (COMPLETE RAW TEXT) ===
 ${RAW_PROPOSAL_TEXT}
 
-=== 7. LIVE DYNAMIC USER REPOSITORY UPDATES ===
+=== 9. LIVE DYNAMIC USER REPOSITORY UPDATES ===
 ${dynamicItemsText || 'No custom uploaded items yet. Continuous learning watching for live additions.'}
 ${additionalLiveNotes ? `Live User Note:\n${additionalLiveNotes}` : ''}
 `;

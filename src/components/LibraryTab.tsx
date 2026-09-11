@@ -48,40 +48,49 @@ import {
 const INITIAL_LIBRARY_ITEMS: LibraryItem[] = [
   {
     id: 'item-1',
-    title: 'Executive_Board_Strategy_Alignment_Meeting_2026-09-09.txt',
+    title: 'TM PnP Call 1 September 2026.txt',
     type: 'transcript',
     category: 'Transcripts',
-    date: '2026-09-09',
-    size: '142 KB',
+    date: '1 Sept 2026',
+    size: '43 KB',
     duration: '26:14',
-    transcriptText: `Speaker 1 00:00: Bonnie, how's it?
-pfungwa 00:02: Good, good, good, Sandy.
-Speaker 1 00:05: No, all good, all good.
-pfungwa 00:07: How's it going, Funga? Pretty well, man. Thanks a lot.
-Speaker 1 00:14: Okay, we've got Google here. Google like you to meet Funga. Google, Google is our CIO. so yeah, he will be giving us a presentation basically today. Okay, nice to meet you, Funga. Thanks for coming on the call.
-pfungwa 00:33: No worries, man. Thanks.
-Speaker 1 00:35: Okay, so I'm not sure how much you have seen so far, but I'm quickly just gonna share my screen to show you what we've been up to, right? Can you see my screen?
-pfungwa 00:47: Yes.
-Speaker 1 00:48: Okay. All right. So first and foremost, I think the the proposal was pick and pay online, right? So TMPNP. So in my research, I found out that they already have a an online shopping system, right? And you can select this is this is the pick and the existing pick and pay online shopping experience, but it's a click to collect. So you you buy stuff at your cart, and then you go and pick it up from any of their shops. So it seems it doesn't currently have a delivery service. Okay, so I think our approach, therefore, would be to rather offer, sorry, to enhance what they already have, right? Which would be to offer a shopping experience for people located in the diaspora, who then buy using their local currencies there, and can have a shared cart. So this is the the prototype that I did. Okay, so it allows for you know multiple people. So these all would be like family members. They can do this on a live shopping experience, or they can just do it as a generic. You know, send something to an app. So whoever initiates the app would add other users. So they would add users, send them a code by number, and they would add them to a shopping cart. And various members from different, you know, with different mobile numbers, could all come together and participate in one shopping experience. Okay, this could be via a live call or or via just a generic shopping experience. And then for the people in back home who don't have, you know, maybe they might not have access to data, or it might be the older people, right? We will integrate this WhatsApp a WhatsApp platform where there's a WhatsApp chatbot that allows is integrated into the same app. So, like an Ambula could just speak in a language, and she could just type in, you know, whatever she wants, and then the AI would add it to the cart, and then whoever makes the payment on the other side would pay, you know, or the family members would split the payments across all of them. Okay, so just to simulate a quick one, I'll just show you here. Obviously, I'm just gonna simulate a quick one. So this could be a live call with multiple people. So it could be all of us.
-pfungwa 03:34: just a quick one, right? I mean, it's yeah the the shopping experience is on the on the local grocery database.
-Speaker 1 03:47: Yeah, so it it will be integrated to the local their local databases. So they could probably give us an API to be able to plug into their current app because they already have the TM PMP online, right? Yeah. So it will be an integration either via this app. So this there's a company that built this for them. So we could integrate with that company. So we would offer the diaspora angle, and then locally, I think we would then obviously need to offer a physical, you0 know, delivery service, right? Because currently they don't have that. They don't have the, you know, the scooters and the sort of the logistical system for that, right? Yeah. So yeah, we we would.
-pfungwa 04:30: So tell me, it will be that. Yeah.
-pfungwa 04:32: Yeah. So tell me on the local platform, right? Does it have the same feature where you can add a few people to participate in the purchase or not?
-Speaker 1 04:43: No, it doesn't have that. So it's a single shopping cart system, where so this is a local one I'm showing you now. Yes. So it can add products. Yes, it's your just your normal pick and pay app like we have in South Africa. Yeah, so check out. Yeah, so it doesn't have all of that.
-pfungwa 05:00: Okay, so let's take notes as we go along. Okay, so one is a platform for delivery. Okay, the second one is an enhancement of the current user experience, where you can have participation of more than one people contributing towards the shopping experience.
-pfungwa 05:21: the third one is those people are destination agnostic. Meaning you can be anywhere. You can be even be in Zimbabwe, or you can be international. The platform allows participation on a multiple currency tradable gateway.
-pfungwa 09:30: Hold something at the back of your mind, which could be a Retail shop agnostic platform. It becomes a trading platform where price becomes the reason to participate, supported by AI inventory intelligence and EV last-mile delivery fleet.`
+    transcriptText: 'TM PnP Call 1 September 2026 full transcript.'
   },
   {
-    id: 'item-2',
-    title: 'Strategy_Alignment_Audio_Recording_2026-09-09.ogg',
+    id: 'yt-audio-1',
+    title: 'TM PnP App Call 1 Sept 2026',
     type: 'audio',
     category: 'Audio Recordings',
-    date: '2026-09-09',
-    size: '18.4 MB',
+    date: '1 Sept 2026',
+    size: 'YouTube Audio',
     duration: '26:14',
-    audioUrl: 'https://actions.google.com/sounds/v1/ambiences/office_ambient.ogg',
-    transcriptText: 'Strategy Alignment Recording. Participants: Gugu Nyathi, Pfungwa, Boni Muvevi. Topics: TM Pick n Pay integration, Optimization Gap (Diaspora Market, Informal Retail Traders, Customer Convenience), EV fleet rent-to-buy model, and multi-currency acquiring rails.'
+    youtubeId: 's8gnB46c0sc',
+    youtubeUrl: 'https://youtu.be/s8gnB46c0sc',
+    transcriptText: 'TM PnP App Call - 1 Sept 2026. Executive alignment session covering TM Pick n Pay online catalog integration, click-to-collect vs click-to-door delivery, shared diaspora shopping cart, WhatsApp AI ordering chatbot, and last-mile EV logistics.'
+  },
+  {
+    id: 'yt-audio-2',
+    title: 'TM PnP Meeting 13 Aug 2026',
+    type: 'audio',
+    category: 'Audio Recordings',
+    date: '13 Aug 2026',
+    size: 'YouTube Audio',
+    duration: '18:45',
+    youtubeId: '3xJOwKi67AY',
+    youtubeUrl: 'https://youtu.be/3xJOwKi67AY',
+    transcriptText: 'TM PnP Meeting - 13 Aug 2026. Discussion on strategic positioning, anchor merchant terms, $61.2M diaspora GMV corridor, multi-currency acquiring, and Nostro USD direct settlement.'
+  },
+  {
+    id: 'yt-audio-3',
+    title: 'TM PnP Call 10 Aug 2026',
+    type: 'audio',
+    category: 'Audio Recordings',
+    date: '10 Aug 2026',
+    size: 'YouTube Audio',
+    duration: '14:20',
+    youtubeId: 'ViRBPkVados',
+    youtubeUrl: 'https://youtu.be/ViRBPkVados',
+    transcriptText: 'TM PnP Call - 10 Aug 2026. Focus on informal retail trader spaza shop aggregation (10,000+ tuck-shops), B2B wholesale replenishment, and micro-fulfillment hub operations.'
   },
   {
     id: 'item-3',
@@ -103,30 +112,23 @@ pfungwa 09:30: Hold something at the back of your mind, which could be a Retail 
   },
   {
     id: 'item-5',
-    title: 'Full_Meeting_Transcription_OtterAI_2026-09-09.txt',
+    title: 'TM PnP Call 10 Aug 2026.txt',
     type: 'transcript',
     category: 'Transcripts',
-    date: '2026-09-09',
-    size: '98 KB',
-    duration: '26:14',
-    transcriptText: `[inaudible] [inaudible] [inaudible] [inaudible] [inaudible] [inaudible] Okay. I think the biggest risk here is, but I guess I wouldn't call it a risk to say, but it is, for some extent, they already have someone someone who developed this system for them. So I think the one question that could always ask is, why we can always get our guide to edit dash for a link. Why do we need you guys? What are you going to bring to the team? [INAUDIBLE] Mayor, and inside of what we are talking to if we are below half the relationship. We are coming out of a place where we have six weight meters. So I think that's that what I want to do. Otherwise, if we are going to be doing the hard and still. Yeah. It's tough. It's a little bit short. Yeah. Okay. Do you guys do you envision a situation where they say, okay, partner up with the other guys since he's already developed the... I wouldn't know about it. No, there's that sort. Yeah. Okay. I don't know what it is. Yeah. Because then we have to look at the dynamic that we have with the current developer. How do we-- because he's already got the integration to the API to the sim switch, the payments platform locally. The whole thing is already integrated. So either way for us to push this to the market faster, we have to leverage that guy who's developed this thing, the website for P P campaign. We don't have to integrate via somehow. He has to help us with that integration.`
+    date: '10 Aug 2026',
+    size: '25 KB',
+    duration: '14:20',
+    transcriptText: 'TM PnP Call 10 Aug 2026 full transcript.'
   },
   {
     id: 'item-6',
-    title: 'Strategy_Discussion_Gugu_Pfungwa_Boni_Zion_2026-09-09.txt',
+    title: 'TM PnP Meeting 13 Aug 2026.txt',
     type: 'transcript',
     category: 'Transcripts',
-    date: '2026-09-09',
-    size: '115 KB',
-    duration: '26:14',
-    transcriptText: `Gugu Nyathi: Uh. I think it's on mute. So, you guys can unmute yourself. Yeah, and Zion is on mute. You can unmute when you want to talk. I think Mr Funko is still on mute. Okay. Greetings. How are you doing?
-Pfungwa: Very well. Very well, thank you. Thank you.
-Gugu Nyathi: Okay, so I think it's over to you, Bonnie, and fungua.
-Boni Muvevi: I think, maybe, uh, Google, if you can just start. Just taking us through the updated version, and then we can take it from there.
-Gugu Nyathi: Yeah.
-Boni Muvevi: Google. Let's just go back to the. Cuz I think that's the first page.
-Gugu Nyathi: Okay.
-Boni Muvevi: I think just. So that we, we quite clear on. On the Gap and the value proposition.`
+    date: '13 Aug 2026',
+    size: '37 KB',
+    duration: '18:45',
+    transcriptText: 'TM PnP Meeting 13 Aug 2026 full transcript.'
   }
 ];
 
@@ -139,6 +141,44 @@ export const LibraryTab: React.FC = () => {
   const [activeViewerItem, setActiveViewerItem] = useState<LibraryItem | null>(null);
   const [readerMode, setReaderMode] = useState<'scroll' | 'paginate'>('scroll');
   const [readerPage, setReaderPage] = useState(0);
+
+  // Fetch full transcript text files dynamically on mount
+  useEffect(() => {
+    const loadFullTranscripts = async () => {
+      try {
+        const [t1, t2, t3] = await Promise.all([
+          fetch('/transcripts/TM%20PnP%20Call%201%20September%202026.txt').then(r => r.ok ? r.text() : null).catch(() => null),
+          fetch('/transcripts/TM%20PnP%20Call%2010%20Aug%202026.txt').then(r => r.ok ? r.text() : null).catch(() => null),
+          fetch('/transcripts/TM%20PnP%20Meeting%2013%20Aug%202026.txt').then(r => r.ok ? r.text() : null).catch(() => null),
+        ]);
+
+        setItems(prevItems => prevItems.map(item => {
+          if (item.id === 'item-1' && t1) {
+            return { ...item, transcriptText: t1, size: `${Math.round(t1.length / 1024)} KB` };
+          }
+          if (item.id === 'yt-audio-1' && t1) {
+            return { ...item, transcriptText: t1 };
+          }
+          if (item.id === 'item-5' && t2) {
+            return { ...item, transcriptText: t2, size: `${Math.round(t2.length / 1024)} KB` };
+          }
+          if (item.id === 'yt-audio-3' && t2) {
+            return { ...item, transcriptText: t2 };
+          }
+          if (item.id === 'item-6' && t3) {
+            return { ...item, transcriptText: t3, size: `${Math.round(t3.length / 1024)} KB` };
+          }
+          if (item.id === 'yt-audio-2' && t3) {
+            return { ...item, transcriptText: t3 };
+          }
+          return item;
+        }));
+      } catch (e) {
+        console.warn('Transcript loader error:', e);
+      }
+    };
+    loadFullTranscripts();
+  }, []);
 
   // Knowledge Bank & Continuous Learning State
   const [knowledgeSearchQuery, setKnowledgeSearchQuery] = useState('');
@@ -1070,81 +1110,142 @@ export const LibraryTab: React.FC = () => {
 
             {activePlayerItem ? (
               <div className="space-y-4">
-                {/* Scrub Bar */}
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[11px] font-mono text-slate-400">
-                    <span>{formatTime(currentTime)}</span>
-                    <span>{formatTime(duration)}</span>
+                {/* Audio Recording Selector Buttons */}
+                <div className="bg-slate-950 p-2 rounded-xl border border-slate-800 space-y-1.5">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block px-1">
+                    Select Executive Recording:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {items.filter(i => i.type === 'audio').map((aItem) => (
+                      <button
+                        key={aItem.id}
+                        onClick={() => {
+                          setActivePlayerItem(aItem);
+                          setIsPlaying(true);
+                        }}
+                        className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                          activePlayerItem?.id === aItem.id
+                            ? 'bg-red-600 text-white font-bold shadow-md ring-1 ring-red-400'
+                            : 'bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60'
+                        }`}
+                      >
+                        <Headphones className="w-3.5 h-3.5" />
+                        <span className="truncate max-w-[170px]">{aItem.title}</span>
+                        <span className="text-[10px] font-mono text-slate-300 opacity-90">({aItem.date})</span>
+                      </button>
+                    ))}
                   </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max={duration}
-                    value={currentTime}
-                    onChange={handleSeek}
-                    className="w-full accent-red-600 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
-                  />
                 </div>
 
-                {/* Player Controls Strip */}
-                <div className="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
-                  <button
-                    onClick={togglePlay}
-                    className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shadow-lg transition"
-                  >
-                    {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-                  </button>
-
-                  <div className="flex items-center gap-4 text-xs font-mono">
-                    {/* Volume Boost up to 300% */}
-                    <div className="flex items-center gap-1.5">
-                      <Volume2 className="w-4 h-4 text-slate-400" />
-                      <span className="text-[10px] text-slate-400">Vol: {Math.round(volume * 100)}%</span>
+                {/* Inline Embedded Compact Player for YouTube Audio Recordings (Reduced by 75%) */}
+                {activePlayerItem.youtubeId ? (
+                  <div className="flex flex-col items-center justify-center space-y-2 py-1">
+                    <div className="w-full max-w-[280px] sm:max-w-[320px] aspect-video rounded-xl overflow-hidden border border-slate-800 bg-black shadow-lg relative mx-auto">
+                      <iframe
+                        src={`https://www.youtube-nocookie.com/embed/${activePlayerItem.youtubeId}?autoplay=1&enablejsapi=1&rel=0`}
+                        title={activePlayerItem.title}
+                        className="w-full h-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </div>
+                    <div className="flex items-center justify-between w-full max-w-[280px] sm:max-w-[320px] text-xs text-slate-400 font-mono px-1">
+                      <span className="flex items-center gap-1.5 text-emerald-400 font-bold text-[10px]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Compact Audio Player Active
+                      </span>
+                      <a
+                        href={activePlayerItem.youtubeUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-amber-400 hover:underline text-[10px] font-semibold"
+                      >
+                        YouTube ↗
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Scrub Bar */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[11px] font-mono text-slate-400">
+                        <span>{formatTime(currentTime)}</span>
+                        <span>{formatTime(duration)}</span>
+                      </div>
                       <input
                         type="range"
-                        min="0.5"
-                        max="3"
-                        step="0.1"
-                        value={volume}
-                        onChange={(e) => setVolume(Number(e.target.value))}
-                        className="w-16 accent-amber-400 h-1 bg-slate-800"
-                        title="Increase volume up to 300%"
+                        min="0"
+                        max={duration}
+                        value={currentTime}
+                        onChange={handleSeek}
+                        className="w-full accent-red-600 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
                       />
                     </div>
 
-                    {/* Speed Controls */}
-                    <div className="flex items-center gap-1.5">
-                      <FastForward className="w-4 h-4 text-slate-400" />
-                      <select
-                        value={playbackRate}
-                        onChange={(e) => setPlaybackRate(Number(e.target.value))}
-                        className="bg-slate-800 text-white text-[10px] font-mono rounded px-1.5 py-1 border border-slate-700"
+                    {/* Player Controls Strip */}
+                    <div className="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                      <button
+                        onClick={togglePlay}
+                        className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shadow-lg transition"
                       >
-                        <option value="0.5">0.5x</option>
-                        <option value="1.0">1.0x</option>
-                        <option value="1.25">1.25x</option>
-                        <option value="1.5">1.5x</option>
-                        <option value="2.0">2.0x</option>
-                        <option value="3.0">3.0x (Max)</option>
-                      </select>
+                        {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                      </button>
+
+                      <div className="flex items-center gap-4 text-xs font-mono">
+                        {/* Volume Boost up to 300% */}
+                        <div className="flex items-center gap-1.5">
+                          <Volume2 className="w-4 h-4 text-slate-400" />
+                          <span className="text-[10px] text-slate-400">Vol: {Math.round(volume * 100)}%</span>
+                          <input
+                            type="range"
+                            min="0.5"
+                            max="3"
+                            step="0.1"
+                            value={volume}
+                            onChange={(e) => setVolume(Number(e.target.value))}
+                            className="w-16 accent-amber-400 h-1 bg-slate-800"
+                            title="Increase volume up to 300%"
+                          />
+                        </div>
+
+                        {/* Speed Controls */}
+                        <div className="flex items-center gap-1.5">
+                          <FastForward className="w-4 h-4 text-slate-400" />
+                          <select
+                            value={playbackRate}
+                            onChange={(e) => setPlaybackRate(Number(e.target.value))}
+                            className="bg-slate-800 text-white text-[10px] font-mono rounded px-1.5 py-1 border border-slate-700"
+                          >
+                            <option value="0.5">0.5x</option>
+                            <option value="1.0">1.0x</option>
+                            <option value="1.25">1.25x</option>
+                            <option value="1.5">1.5x</option>
+                            <option value="2.0">2.0x</option>
+                            <option value="3.0">3.0x (Max)</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </>
+                )}
 
                 {/* Live Synchronized Subtitles / Transcript Feed */}
-                <div className={`bg-slate-950 border border-slate-800 rounded-xl p-3 ${activeLibraryView === 'player' ? 'h-64' : 'h-36'} overflow-y-auto text-[11px] font-mono text-slate-300 leading-relaxed space-y-2`}>
-                  <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">
-                    Live Synchronized Subtitles (Transcript Feed):
+                <div className={`bg-slate-950 border border-slate-800 rounded-xl p-3.5 ${activeLibraryView === 'player' ? 'h-64' : 'h-36'} overflow-y-auto text-[11px] font-mono text-slate-300 leading-relaxed space-y-2.5`}>
+                  <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center justify-between">
+                    <span>Synchronized Subtitles &amp; Recording Summary:</span>
+                    <span className="text-slate-400 font-mono text-[9px]">{activePlayerItem.date}</span>
                   </div>
-                  <p className="text-white bg-amber-500/10 border-l-2 border-amber-500 p-1.5 rounded">
-                    &ldquo;...looking at the Optimization Gap: Diaspora Market, Informal Retail Traders, and Customer Convenience. A multi-million dollar distribution gap exists closing three vectors...&rdquo;
+                  <p className="text-white bg-amber-500/10 border-l-2 border-amber-500 p-2.5 rounded leading-relaxed text-xs">
+                    {activePlayerItem.transcriptText}
                   </p>
-                  <p className="text-slate-400">
-                    &ldquo;...underpinned by an AI intelligent engine that predicts replenishment triggers and secures guaranteed foreign currency retail settlement...&rdquo;
-                  </p>
-                  <p className="text-slate-400">
-                    &ldquo;...EV scooter fleet rent-to-buy lease model achieving full asset payback in ~5 months...&rdquo;
-                  </p>
+                  <div className="text-[10px] text-slate-400 space-y-1 font-mono pt-1">
+                    <p className="flex items-center gap-1">
+                      <span className="text-red-400 font-bold">• Primary Focus:</span> TM Pick n Pay Marketplace &amp; Last-Mile Delivery Infrastructure.
+                    </p>
+                    <p className="flex items-center gap-1">
+                      <span className="text-blue-400 font-bold">• Core Drivers:</span> Diaspora $61.2M Remittance Corridor, 10,000+ Tuck-Shop Spaza Wholesale, and Green EV Fleet.
+                    </p>
+                  </div>
                 </div>
               </div>
             ) : (

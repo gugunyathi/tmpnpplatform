@@ -1,0 +1,439 @@
+﻿Speaker 1  00:00
+Bonnie, how's it?
+
+
+pfungwa  00:02
+Good, good, good, Sandy.
+
+
+Speaker 1  00:05
+No, all good, all good.
+
+
+pfungwa  00:07
+How's it going, Funga? Pretty well, man. Thanks a lot.
+
+
+Speaker 1  00:14
+Okay, we've got Google here. Google like you to meet Funga. Google, Google is our CIO. so yeah, he will be giving us a presentation basically today. Okay, nice to meet you, Funga. Thanks for coming on the call.
+
+
+pfungwa  00:33
+No worries, man. Thanks.
+
+
+Speaker 1  00:35
+Okay, so I'm not sure how much you have seen so far, but I'm quickly just gonna share my screen to show you what we've been up to, right? Can you see my screen?
+
+
+pfungwa  00:47
+Yes.
+
+
+Speaker 1  00:48
+Okay. All right. So first and foremost, I think the the proposal was pick and pay online, right? So TMPNP. So in my research, I found out that they already have a an online shopping system, right? And you can select this is this is the pick and the existing pick and pay online shopping experience, but it's a click to collect. So you you buy stuff at your cart, and then you go and pick it up from any of their shops. So it seems it doesn't currently have a delivery service. Okay, so I think our approach, therefore, would be to rather offer, sorry, to enhance what they already have, right? Which would be to offer a shopping experience for people located in the diaspora, who then buy using their local currencies there, and can have a shared cart. So this is the the prototype that I did. Okay, so it allows for you know multiple people. So these all would be like family members. They can do this on a live shopping experience, or they can just do it as a generic. You know, send something to an app. So whoever initiates the app would add other users. So they would add users, send them a code by number, and they would add them to a shopping cart. And various members from different, you know, with different mobile numbers, could all come together and participate in one shopping experience. Okay, this could be via a live call or or via just a generic shopping experience. And then for the people in back home who don't have, you know, maybe they might not have access to data, or it might be the older people, right? We will integrate this WhatsApp a WhatsApp platform where there's a WhatsApp chatbot that allows is integrated into the same app. So, like an Ambula could just speak in a language, and she could just type in, you know, whatever she wants, and then the AI would add it to the cart, and then whoever makes the payment on the other side would pay, you know, or the family members would split the payments across all of them. Okay, so just to simulate a quick one, I'll just show you here. Obviously, I'm just gonna simulate a quick one. So this could be a live call with multiple people. So it could be all of us. So
+
+
+pfungwa  03:34
+just a quick one, right? I mean, it's yeah the the shopping experience is on the on the local grocery database.
+
+
+Speaker 1  03:47
+Yeah, so it it will be integrated to the local their local databases. So they could probably give us an API to be able to plug into their current app because they already have the TM PMP online, right? Yeah. So it will be an integration either via this app. So this there's a company that built this for them. So we could integrate with that company. So we would offer the diaspora angle, and then locally, I think we would then obviously need to offer a physical, you know, delivery service, right? Because currently they don't have that. They don't have the, you know, the scooters and the sort of the logistical system for that, right? Yeah. So yeah, we we would.
+
+
+pfungwa  04:30
+So tell me, it
+
+
+Speaker 1  04:30
+will be that. Yeah.
+
+
+pfungwa  04:32
+Yeah. So tell me on the local platform, right? Does it have the same feature where you can add a few people to participate in the purchase or not?
+
+
+Speaker 1  04:43
+No, it doesn't have that. So it's a single shopping cart system, where so this is a local one I'm showing you now. Yes. So it can add products. Yes, it's your just your normal pick and pay app like we have in South Africa. Yeah, so check out. Yeah, so it doesn't have all of that.
+
+
+pfungwa  05:00
+Okay, so let's take notes as we go along. Okay, so one is a platform for delivery. Okay, the second one is an enhancement of the current user experience, where you can have participation of more than one people contributing towards the shopping experience.
+
+
+Speaker 1  05:20
+Yeah,
+
+
+pfungwa  05:21
+the third one is those people are destination agnostic.
+
+
+Speaker 1  05:29
+Yeah.
+
+
+pfungwa  05:30
+Meaning, are you talking about the
+
+
+Speaker 1  05:32
+shopper? The shopper, yes. Yes.
+
+
+pfungwa  05:35
+Yeah. So no. Yeah. Call it territory or destination or address agnostic, meaning you can be anywhere. You can be even be in Zimbabwe, or you can be international. So
+
+
+Speaker 1  05:51
+yeah, that's right.
+
+
+pfungwa  05:52
+Yeah. So what you're saying is that the platform allows participation on a on a multiple Currency, so it's not it's not a single currency. It's a multiple tradable currency.
+
+
+Speaker 1  06:11
+That's right.
+
+
+pfungwa  06:13
+Okay, tell me. So I'm I'm going ahead of your convers presentation, right? Or maybe let me stop. We'll add some stuff as we go along.
+
+
+Speaker 1  06:26
+Yeah, but I think you've you've really just you know picked up the three of those things. I think the last one to add there is bill split. You know because you might have different family members paying for that one cut because a multi cut system, then you know they can choose how they want to split. You know, so you could have someone in Australia, London, South Africa. They are all on one call. They are all family members. One person in Zim, they have a group cut and they can split the bill.
+
+
+pfungwa  06:56
+Okay, so you've got also if you should also have a functionality. I think that's another piece, which is where you can have a list of of items. So you can have someone who would elect what is required, right, and then have the participants select items that they would like to contribute.
+
+
+Speaker 1  07:19
+So we've added, especially for the people that are. I guess the people that would send the list would be the people in Zim, right? Because they they know what they are looking for. So how they they send that they can use via WhatsApp or they can use a cart if they have access to like an online, you know, enough data, etc. etc. So they can send it via this. So it converts that list into a shopping cart, basically. So it's a list to cart. So whatever you
+
+
+Speaker 1  07:50
+beg your pardon.
+
+
+pfungwa  07:51
+What you're saying now? What you're saying is that your your AI, right? Your agent, right, will pick up the list, and then align the list to specific items.
+
+
+Speaker 1  08:08
+Yes.
+
+
+pfungwa  08:10
+Okay. Yeah. Good. All right. And then add those to
+
+
+Speaker 1  08:12
+a cart. Okay. Exactly. So then that cut, anyone can then go and see. You know, the family members can decide. You know, so if someone might put two kg in Zim of of millimil, then the family member decides, no, we've got budget. Let's increase it to five kgs. You know that sort of thing. So yeah, so it allows multiple people in one cart, multiple family members, and seamless checkout experience with with with shared, you know, shared payments, split bill payments, and there's the option of delivery or option of collection, but I think the value add, of course, is you know because collection is already there, then you want we want to add a delivery service to this.
+
+
+pfungwa  08:53
+Yeah, so I think one of the things that Bonnie we we need to look at right is is provision. of that as as a service for them, which then becomes something that we will bring onto the platform.
+
+
+Speaker 1  09:12
+Yeah.
+
+
+pfungwa  09:14
+Okay.
+
+
+Speaker 1  09:15
+Yeah. All right. Okay. Yeah. But I think outside of the delivery service, then I think the biggest value add is then bringing in those diaspora shoppers. I think the the opportunity. Okay, this is where it takes me now to the presentation of the business model, right? Yeah.
+
+
+pfungwa  09:30
+So can you hold? Sorry, I tend to ask a lot of questions, but I mean, hold something at the back of your mind, right? Which could be a Retail shop agnostic platform.
+
+
+Speaker 1  09:45
+Yes,
+
+
+pfungwa  09:46
+I think we we probably need to lead lead towards that. Okay,
+
+
+Speaker 1  09:51
+like to to link to other like any any other retail shops besides PKM Pay.
+
+
+pfungwa  09:59
+Aha. So, so my my suggestion will be we should we should also incline our thinking towards that because then it becomes a trading a trading platform. Okay. So basically, what we
+
+
+Speaker 1  10:14
+started with that, but then we realize that look, the relationship actually lies more with pick and pay, but if you're speaking to that, we had so you see this one is we had called this one you know initially we thought oh maybe it's going to be part of CBZ is Ziki so we're playing around with words and we thought okay maybe we're going to call it something else like Tenga or Tengai, but it had like what you're talking about, where you can have my shop, and as you can see here, you can have OK Zimbabwe, Pick and Pay or Spa, you know. So you could have a multi, you know, like you are saying, sort of a multi-tenant system, where there's multiple shops and on one delivery app, so that's the idea we started with. But then after we spoke at length and we were like, okay, look, the initial conversation starts with pick and pay, so maybe that's how we introduce that to them without scaring them that their competitors are on the same platform. Okay, so yeah, so we kind of like touched on on on this system initially, but then we went back to the basic and said, "Look, if we go back to basics and we're offering this as a value add for pick and pay, what does that look like? So yeah, so to respond to your side, that was something that we already built prototyped on as well.
+
+
+pfungwa  11:37
+Okay, keep that at the back of your mind, and it'll be retail labor agnostic, meaning don't worry about putting okay whatever pick and pay whatever. It it has to be a platform where it's almost like you you trade your your your your your goods. So you say I want cooking oil. Yeah. Then then it it goes through everyone, and you want the best price.
+
+
+Speaker 1  12:16
+All right, right, right. Okay. So it's got a comparison engine, and then can find you the best price based on all the available suppliers who are online, right?
+
+
+pfungwa  12:26
+100% and this also then goes into so so what I'm what I'm trying to look at right is the ease of of access to goods by by individual because I mean, individuals are moving away from the brick and mortar.
+
+
+Speaker 1  12:44
+Yeah,
+
+
+pfungwa  12:45
+into these tax shops. I presume Gugu you will speak Shona today.
+
+
+Speaker 1  12:52
+Yeah, yeah, good.
+
+
+pfungwa  12:52
+Okay, Kuma Kuma townships into into those little tax shops. So what you want to do is to lift and shift that onto a trading platform.
+
+
+Speaker 1  13:08
+Okay,
+
+
+pfungwa  13:09
+right, where you say to someone you want this list of items will give you the best price. So the engine now will do the comparison across all tradable items. irrespective of who is delivering them. So it becomes a trading platform where price becomes the the the reason to participate.
+
+
+Speaker 1  13:35
+Okay.
+
+
+pfungwa  13:36
+So for the owners of the platform, right? What what is exciting is that you, whichever way you look at it, you you you have a handshake. So you have a handshake with a person buying, and you have a handshake with a participating trader or retailer.
+
+
+Speaker 1  13:58
+Right, right,
+
+
+pfungwa  14:00
+and then you control the network in terms of delivery.
+
+
+Speaker 1  14:05
+Yeah.
+
+
+pfungwa  14:07
+Then you've got also an AI intelligent engine that looks at the most tradable assets. I mean items, and Across, you know, the the population spectrum, so that even in terms of predicting your order to cash process, right, becomes an easier conversation because you know what to what to stock and what not to stock. Okay,
+
+
+Speaker 1  14:46
+okay, yeah, yeah.
+
+
+pfungwa  14:48
+So I mean, we can talk about the the those engines, but I mean, we are digressing a little bit. Let's let's focus on pick and pay.
+
+
+Speaker 1  14:55
+Okay, all right, okay. So I've made notes of all of that. Okay, so we're more looking like for an almost like an eBay or Amazon type of, you know, experience or take a lot. So I don't know if take a lot is the right thing, but I think yeah, take a lot does sell groceries as well.
+
+
+pfungwa  15:14
+No, don't worry. You're you're you're putting it one with steroids because I mean this is more yeah
+
+
+Speaker 1  15:19
+Africanized
+
+
+pfungwa  15:21
+Africanized, Africanized model.
+
+
+Speaker 1  15:24
+Yeah. Okay. All right. But we are on the same page. Okay. So this presentation was really just based on you know everything prior to the conversation with you, right? So the information and thoughts that we're having at that stage, right? I'm just gonna skip through all the the the nitty gritty stuff and just get to where the business models were, and I think it comes down to just based on our research and what you could tap into into the diaspora market, and if we're cutting out, you know, like up on these Malaysia guys who are sending, you know, goods across borders and all that, right? And who are saying we're tapping into that cross-border markets for like groceries or or fast-moving collageable goods as well. We're looking at maybe you you could have a situation where at a reasonably sustainable rate of adoption, you have about 40,000 diaspora customers, and the orders are maybe 1.5 per month, and the average basket is $85 per basket. Then over 12 months, you are looking at you know a volume of about 61,000, you know 61 million sorry $61 million per annum. So I'm not sure if these figures are pretty conservative or not, because I'm not really sure what the the current online shopping is in Zim. But I think if if this could be pulled off, then I think the projects is sustainable on its own, right?
+
+
+pfungwa  16:58
+Yeah, yeah. It's it's maybe let's replace the word conservative with it's a practical number.
+
+
+Speaker 1  17:09
+Okay, thank you. A practical number, yes.
+
+
+pfungwa  17:13
+Yes, a practical number because when you start talking about online, it's not online. It's in its in its true sense, right? It's it's it's it's a behavioral model based on you know trying to find ways in which you you legitimize access to goods.
+
+
+Speaker 1  17:36
+Yeah. So
+
+
+pfungwa  17:37
+for us, it's a it's a it's not online as we we see it, is people like these Malayashas, right? Or and or people that end up sending someone to go and buy vegetables, kumbari kuya kuya, right? And or someone who sent people to go and buy that's that's a that's a traditional online model. So what you're then saying is that let's lift and shift that because most of the people have got either you know three 5g phones and they're able to have you know data and and access to technology that allows them to trade. Yes, part of it again take notes of this is that how do we start looking at empowering people that have got two 2g and 3g phones to so that because that's the bigger bigger part of the society, right? That will probably want to benefit out of this. So to say, how do we either give them an affordable phone,
+
+
+Speaker 2  18:53
+right?
+
+
+Speaker 1  18:54
+Okay.
+
+
+pfungwa  18:54
+Where the which is a smartphone, right? And and everyone is on on on provision of data, but they're using WhatsApp, and so at least people are moving towards some sort of a 5g light phone.
+
+
+Speaker 1  19:11
+Yeah, yeah. Now these people are talking about are we are we talking of traders? I suppose then this benefits the traders more because then you know, there's more incentive to also give traders a device, right? And
+
+
+pfungwa  19:27
+by traders, by traders, you mean?
+
+
+Speaker 1  19:31
+I mean, so you mentioned that there's like these small little spaza shops as well.
+
+
+pfungwa  19:37
+Yeah, so it's a, it's, it's both. It's it's an end user because you are trying to make it easier for people to trade without limitation of brick and mortar, and also you want people in diaspora to to to to have access to to certain required goods and services, right, that are required by their by their families. Okay, so speaking to your incentive of a phone, right, one of the things that one can do out of this, right, is to say if a person trades, you know, 100, $100, right? Instead of the 85 average, $100 for five months. You know, consistently, we we we give them a smartphone.
+
+
+Speaker 1  20:36
+Okay, got you.
+
+
+pfungwa  20:38
+Yeah, because a smart a smart a smartphone landed in Zim, right, is about, and I'm talking about these mobile light or 5G light phones, right? It's $50.
+
+
+Speaker 1  20:52
+Yeah,
+
+
+pfungwa  20:53
+right. So for five months, 15 by five, already this thing would have paid itself with about maybe another 40% markup.
+
+
+Speaker 1  21:05
+Yeah.
+
+
+pfungwa  21:06
+Okay.
+
+
+Speaker 1  21:07
+Okay. That makes sense, and I think that would also encourage. Obviously, would run something that would require running something like a vitality program. You get the family, you know, a family in sharing a basket, and then that increases trading volume. You know, so we might get this 100, you know, dollars worth of trading for five months quicker if you have more family members, and then one of them gets a phone. You know, so I guess yeah, we can incentivize.
+
+
+pfungwa  21:43
+quantified. Call it a loyalty program.
+
+
+Speaker 1  21:46
+Can you say that again?
+
+
+pfungwa  21:48
+It's it's a loyalty program.
+
+
+Speaker 1  21:50
+Yeah, loyalty program. Yeah, similar to Discovery Vitality type vibes where they give you the smart smart watch or whatever. Yeah, but I I get it.
+
+
+pfungwa  21:59
+You get it. Okay, cool.
+
+
+Speaker 1  22:00
+Yeah. Okay. Happy. All right. So, um, I think, uh, let me see. Okay. So this was us just breaking down the difference, the different ways to make money out of this, right? For revenue. Um, the one way there is the margins on the actual product, and then a small share of the delivery business,
+
+
+pfungwa  22:21
+yeah.
+
+
+Speaker 1  22:22
+Cross border, you know, transaction charges.
+
+
+pfungwa  22:25
+Don't call it a boni share. My my suggestion, my suggestion, right? Boni, you're still on the call, right?
+
+
+Speaker 1  22:34
+Yeah. Oh, you mean Boni? Okay.
+
+
+pfungwa  22:36
+Yeah. I'm here. I'm here. Okay. My my my suggestion is this works right on on a proper attachment program. Don't don't allow the initial participation of outsiders. Okay, so what you do as as part of this program, right, is to say we will bring the platform with its associated ancillaries, right? And for me, we can say, okay, how many of these scooters should we have, right? So we can simply say the first 500 or 1000 or 2000, right? Hours, hours, okay. Anything beyond that, because what you can simply say you want it proven, whatever you know, normal nonsense value points, right? To be honest with you, then you control that because you want to be able to control the 80% of it, right? And by the way, these guys have unnecessarily because what you say, what you do is you say to them, my friend, we buy you a scooter, all right, electrical or battery driven, right? You let's say it pays itself in five months, right? You say to someone, you you operate this thing for 12 months, and after 12 months, it's yours.
+
+
+Speaker 1  24:07
+Yeah.
+
+
+pfungwa  24:08
+Okay. So the first five months is us. The first, the next seven months, we're making money, and then we let the person own it, right? But by giving them a promisory arrangement, they will look after the asset very well.
+
+
+Speaker 1  24:26
+Yeah, the rent to buy model definitely,
+
+
+pfungwa  24:28
+right? Exactly, and for us on the scooter, right, there will be also advertisement rights, and 80% of that will be pick and pay. The other 20% could be anyone else. So whatever is advertised there, we own. Then we do it on a subscription. Makes sense.
+
+
+Speaker 3  24:50
+Yeah.
+
+
+pfungwa  24:51
+Right. Then what we do is all these scooters, right? Just make sure that when it comes to you know accessories and repairs and everything. We just put a garage somewhere that provide that service. Then that becomes also revenue, which which this entity should own. Makes
+
+
+Speaker 1  25:17
+sense. Makes sense.
+
+
+pfungwa  25:19
+Okay, because otherwise you are taking yourself out of action, but by not holding on to what will make you sustainable money into the future. Yeah, and then for every scooter guy, right, they pay rent, meaning you want to participate on on the platform. We have given you scooter, but after 12 months, you shall be paying a fee. Right. So for every dollar they make, it's there's a 10% fee.
+
+
+Speaker 1  25:57
+Okay.
+
+
+pfungwa  25:59
+Right. So I mean, if the guy is contracted for 10,000, let's say for argument, say 1000, let's say 2000 a month, what else is you know we make 200 per person? Okay, because whatever we are talking about here, gentlemen, I hope there's no lady here. If there's a lady, I'm sorry, lady and gentlemen. Anything that we talk about that allows a subscription is is is the model. The rest is not is is is is not is not sustainable.
+
+
+Speaker 3  26:39
+Yeah.
+
+
+pfungwa  26:40
+Okay.
+
+
+Speaker 1  26:42
+I guess this leads into the other part, Gugu, the part of you know who owns what. You know, is it a company? Is it a you know that business model? What what? Maybe we need to get into that part of the conversation and just get that cleared as well, yeah. Okay, yeah. Um, you know, when we also thought about this, we had not thought as far as um, you know, Pfungwa has mentioned where he's looking at you know the whole business model end to end, and is talking more of ownership and you know um big scale. Okay, so I think we we largely dealt with the issue around software. You know, to say, look, for what we know with the knowledge that we had, we were just talking software at that time, and then that software. But that software translates the way the software is owned. It translates to everything else, right? So the first part was, you know, let's say pick and pay because from what I saw, they they the current model that they have, the pick and pay online, they own that. So someone built it for them and seems to have passed it on to them, right? So it's a part of their business model. It's a part of the. It seems it's a part of their website, I researched the developer. They are core software developers, so they are not. They don't seem to be running or expanding the service or adding the delivery, you know, scooters and stuff like that. So it looks like it was a build and transfer type of arrangement. But for such an arrangement, I'm not sure what the numbers would run into in Zim, but they probably would likely be more expensive than what you would get in South Africa. In South Africa, 100,000, you know, dollars you can build something and transfer it, and then there could be like a revenue model where, out of every product that's sold, you have a percentage markup, and there's some type of rebates here and there, and that translates to the same with a white label solution where they're just licensing the software, and there is you know constant updates management and on the back end, and they've got a white label solution, and that the white label solution obviously allows you to sell the software to other people, but I think because what Pfunga is talking about now is more of like build an agnostic platform, right? That caters for you know it focuses more on the products and not so much on who is selling the product, right? So it's agnostic. So any any products can be traded and stuff like that. Then that kind of an approach is slightly different because it's it's more like an in-house development, and then you are working with all these other retailers and bringing them on board, and maybe getting you know charging them for this, for charging for that, or charging them in some instances for being tenants on the system, perhaps. So that one is slightly different to what I had in mind when I prepared this. So I think what I have here, in terms of you know, I looked primarily at the software. It doesn't apply to the conversation we're having now, but if we have to have an ideal figures, I would say anything from, you know, from the software, anything from $35,000 can build a basic functional system, right? But then the model then is a different type of animal based on what Funga was saying, so yeah, so I think for that business model, we need to give it a little more thoughts and come back with a structure that speaks to what Funga was saying. So if I present anything here, it wouldn't apply how it goes with the business model. Yeah.
+
+
+
+
+Transcribed by https://otter.ai

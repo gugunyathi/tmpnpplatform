@@ -65,6 +65,8 @@ export interface LibraryItem {
   duration?: string;
   content?: string;
   audioUrl?: string;
+  youtubeId?: string;
+  youtubeUrl?: string;
   transcriptText?: string;
 }
 

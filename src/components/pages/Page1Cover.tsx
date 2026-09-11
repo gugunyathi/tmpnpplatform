@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageWrapper } from './PageWrapper';
 import { PROPOSAL_METADATA } from '../../data/proposalData';
-import { TMPicknPaySquareLogo } from '../TMPicknPaySquareLogo';
+import { TMPicknPaySquareLogo, TMPicknPayRectangleLogo } from '../TMPicknPaySquareLogo';
 import { ShieldCheck, ArrowRight, Zap, Globe, Truck, Database, Layers } from 'lucide-react';
 
 interface PageProps {
@@ -21,12 +21,9 @@ export const Page1Cover: React.FC<PageProps> = ({ idPrefix, extraClassName }) =>
         {/* Top bar */}
         <div className="relative z-10 flex items-center justify-between border-b border-slate-800 pb-6">
           <div className="flex items-center space-x-3">
-            <TMPicknPaySquareLogo size={52} className="shadow-xl ring-1 ring-white/20" />
+            <TMPicknPayRectangleLogo height={48} className="shadow-xl ring-1 ring-white/20" />
             <div>
-              <span className="text-white font-extrabold text-lg tracking-tight block">
-                TM Pick n Pay
-              </span>
-              <span className="text-slate-400 text-xs font-mono">
+              <span className="text-slate-400 text-xs font-mono block">
                 Executive Board Proposal
               </span>
             </div>

@@ -2,6 +2,9 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
+import dotenv from "dotenv";
+dotenv.config();
+
 import {
   buildComprehensiveKnowledgeContext,
   MASTER_KNOWLEDGE_BANK,
@@ -13,14 +16,16 @@ const PORT = 3000;
 
 app.use(express.json({ limit: '15mb' }));
 
-// Initialize Gemini AI if API key is present
-let aiClient: GoogleGenAI | null = null;
-try {
-  if (process.env.GEMINI_API_KEY) {
-    aiClient = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Helper to dynamically obtain Gemini AI client using current process.env.GEMINI_API_KEY
+function getAiClient(): GoogleGenAI | null {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey || !apiKey.trim()) return null;
+  try {
+    return new GoogleGenAI({ apiKey: apiKey.trim() });
+  } catch (e) {
+    console.error("Failed to initialize GoogleGenAI:", e);
+    return null;
   }
-} catch (e) {
-  console.error("Failed to initialize GoogleGenAI:", e);
 }
 
 // Endpoint to inspect and search the authoritative Knowledge Bank
@@ -129,6 +134,7 @@ app.post("/api/gemini-chat", async (req, res) => {
       liveNotes
     );
 
+    const aiClient = getAiClient();
     if (!aiClient) {
       const reply = generateSmartFallbackResponse(message, comprehensiveContext);
       return res.json({ reply, source: 'knowledge_bank_engine' });
@@ -139,20 +145,22 @@ app.post("/api/gemini-chat", async (req, res) => {
 
 YOUR KNOWLEDGE BANK (COMPREHENSIVELY TRAINED AND CONTINUOUSLY UPDATED):
 You have absolute, verbatim memory and direct access to:
-1. Executive Slide Deck: All 14 slides, titles, bullet points, metrics, and figures.
-2. Formal A4 Pages: All 10 pages, including Page 1 Cover, Page 2 Executive Summary, Page 3 Macro Opportunity, Page 4 Architecture Data Lake, Page 5 Informal Trader Wholesale B2B, Page 6 Owned Fleet Last-Mile, Page 7 Basket Comparison Journey, Page 8 Financial Projections, Page 9 Commercial Options, Page 10 Roadmap & Pilot.
+1. Executive Slide Deck: All 14 slides, titles, bullet points, metrics, and figures (Slides 1 to 14).
+2. Formal A4 Pages: All 10 pages (Pages 1 to 10), including Page 1 Cover, Page 2 Executive Summary, Page 3 Macro Opportunity, Page 4 Architecture Data Lake, Page 5 Informal Trader Wholesale B2B, Page 6 Owned Fleet Last-Mile, Page 7 Basket Comparison Journey, Page 8 Financial Projections, Page 9 Commercial Options, Page 10 Roadmap & Pilot.
 3. Master Strategic Proposal Document: The complete unabridged executive board proposal.
 4. Text-Only Document: Complete chapter-by-chapter board text.
 5. Financial Simulator Engine: Mathematical formulas, 10 revenue streams, baseline $61.2M GMV (40k families × $85 × 18 orders), Phase 1 $67.65M, Phase 2 $4.69M, Combined $72.35M output, Option 1 & 2 commercial yields.
 6. Executive Brief: Key strategic takeaways, KPIs, and executive summaries.
-7. All Meeting Transcripts & Audio Recordings Verbatim: Exact dialogue, timestamps, and speaker quotes for Speaker 1 / Gugu Nyathi (CIO), Pfungwa, Boni Muvevi, Sandy, and Zion.
-8. Continuous Learning Updates: Any newly uploaded files, edited items, dynamic user notes, or modified financial parameters passed in the request.
+7. All Meeting Transcripts & Audio Recordings Verbatim: Exact dialogue, line numbers (e.g. Lines 1 to 625 in Call 1 Sept 2026; Lines 1 to 439 in Call 10 Aug 2026; Pages 1 to 4 in Meeting 13 Aug 2026), timestamps, and speaker quotes for Gugu Nyathi (CIO), Pfungwa, Boni Muvevi, Sandy, and Zion.
+8. AI Training Folder Documents: All proposal files located in public/ai-training and public/transcripts.
+9. Global & Zimbabwean E-Commerce / Retail Domain Knowledge: Deep expertise in global retail models (Instacart, Checkers Sixty60, Amazon Marketplace, dark stores, retail media networks) and the Zimbabwean retail ecosystem (Meikles Retail / TM Pick n Pay 74+ stores, OK Zimbabwe, Spar, Food Lovers, Nostro USD accounts, ZimSwitch national switch, EcoCash/InnBucks mobile wallets, informal spaza/tuck-shop trade, Mbare Musika wholesale, cross-border runners/Malayasha, kombi commute penalties).
 
 STRICT BEHAVIORAL DIRECTIVES:
-1. VERBATIM QUOTATION: When asked to quote any section, statement, speaker dialogue, or document clause, you MUST provide the EXACT VERBATIM text enclosed in quotation marks, citing the specific source tag (e.g., [TRANSCRIPT-01 at 05:21], [SLIDE-05], [A4-PAGE-09], or [FIN-SIM-ENGINE]).
-2. CROSS-LINKING & SYNTHESIS: When asked to explain or cross-link, you must connect concepts across multiple documents. For example, explain how Pfungwa's comment on a 'retail shop agnostic platform' (09:30) informs Slide 10, A4 Page 7's basket routing engine, and the $72.35M financial ecosystem.
-3. CONTINUOUS LEARNING: Always respect and incorporate any live updates or custom repository items passed in the context. If the user refers to something just updated on this site, look at the LIVE DYNAMIC USER REPOSITORY UPDATES section.
-4. TONE: Executive, highly articulate, confident, and precise. For speech synthesis, ensure numbers and abbreviations are clearly articulated.`;
+1. EXACT CITATION & VERBATIM QUOTES: When asked to cite or quote any section, statement, transcript line, or page number, ALWAYS specify exact Page Numbers (e.g. [A4-PAGE-05, Page 5], [SLIDE-09, Slide 9]), Line Numbers (e.g. [TRANSCRIPT-CALL-1-SEPT, Lines 108-126]), Timestamps (e.g. 05:21, 09:30), and Speaker Names (Pfungwa, Gugu Nyathi, Boni Muvevi). Enclose quotes in verbatim quotation marks.
+2. E-COMMERCE & RETAIL ADVISORY: Answer all questions regarding global e-commerce practices, retail logistics, dynamic pricing, basket allocation algorithms, multi-currency accounting, and local Zimbabwean market nuances with exhaustive detail.
+3. CROSS-LINKING & SYNTHESIS: Connect concepts across documents (e.g. connect Pfungwa's 'retail shop agnostic platform' quote to Slide 10, A4 Page 7 basket engine, and the $72.35M financial simulation).
+4. CONTINUOUS LEARNING: Incorporate any live updates or custom repository items passed in the context.
+5. TONE: Highly articulate, executive, confident, and precise.`;
 
       const prompt = `CURRENT AUTHORITATIVE KNOWLEDGE BANK & LIVE SITE STATE:
 ${comprehensiveContext}
@@ -163,10 +171,10 @@ ${JSON.stringify(context || {})}
 USER QUERY:
 "${message}"
 
-Provide a detailed, authoritative response. If the user asks for a verbatim quote, provide the exact words with quotes and source tags. If they ask for cross-linking, synthesize connections across transcripts, slides, A4 pages, and financial numbers.`;
+Provide a detailed, authoritative response. If the user asks for a verbatim quote or page/line reference, provide exact words, quotes, page numbers, line ranges, and source tags. If asked about e-commerce or retail in Zimbabwe/globally, synthesize full domain expertise.`;
 
       const response = await aiClient.models.generateContent({
-        model: 'gemini-3.8-flash',
+        model: 'gemini-2.5-flash',
         contents: [
           {
             role: 'user',
@@ -180,7 +188,7 @@ Provide a detailed, authoritative response. If the user asks for a verbatim quot
       });
 
       const reply = response.text || generateSmartFallbackResponse(message, comprehensiveContext);
-      return res.json({ reply, source: 'gemini-3.8-flash' });
+      return res.json({ reply, source: 'gemini-2.5-flash' });
     } catch (apiErr: any) {
       console.warn("Gemini API call error (falling back to Knowledge Bank Engine):", apiErr?.message);
       const reply = generateSmartFallbackResponse(message, comprehensiveContext);
@@ -197,6 +205,7 @@ app.post("/api/gemini-edit", async (req, res) => {
   try {
     const { targetDocument, prompt, liveContext } = req.body;
 
+    const aiClient = getAiClient();
     if (!aiClient) {
       const generated = `[AI Updated Draft for ${targetDocument}]\nBased on instruction: "${prompt}"\n\n- Updated Section: The Optimization Gap & Value Vectors\n- Key Enhancement: Integrated real-time multi-currency settlement telemetry and decentralized B2B wholesale fulfillment for informal traders.\n- Financial Impact: Scaled baseline throughput projections to reflect enhanced routing efficiency and B2B wholesale capture based on [FIN-SIM-ENGINE] and [A4-PAGE-05].`;
       return res.json({ generated });
@@ -204,14 +213,14 @@ app.post("/api/gemini-edit", async (req, res) => {
 
     try {
       const response = await aiClient.models.generateContent({
-        model: 'gemini-3.8-flash',
+        model: 'gemini-2.5-flash',
         contents: [
           {
             role: 'user',
             parts: [
               { text: `You are an expert executive proposal editor with complete access to the TM Pick n Pay Marketplace knowledge bank.
 Edit the following document target: "${targetDocument}" based on this user instruction: "${prompt}".
-Ensure all numbers, pillars, and cross-references align with the $61.2M GMV model, the 4 strategic pillars, and the 12-month EV rent-to-buy fleet grid.
+Ensure all numbers, pillars, page citations, and cross-references align with the $61.2M GMV model, the 4 strategic pillars, the 10 A4 pages, the 14 slides, and the 12-month EV rent-to-buy fleet grid.
 Provide a polished, professional executive draft update ready for board review.` }
             ]
           }
